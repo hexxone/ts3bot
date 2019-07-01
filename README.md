@@ -10,3 +10,27 @@ Telegram to TS3 Bot
 4th:  ???
 
 5th:  Profit
+
+
+List of features (not in particular order):
+- Multilanguage Support (Eng, Ger)
+- Easy to use Inline Menu navigation
+- Every user can add up to five TS3 Servers being watched
+- Customize the Bot Display name and channel to join
+- There can only be one TS3 Server linked to a group but you can link multiple groups to a server
+- Each group will have its own notification and language settings (e.g. have a "User" and "Admin" Group)
+- Get fully customizable Join, Leave, & Channel Switch notifications
+- Bots can be ignored when listing users or showing Notifications
+- List all online users per channel
+- Cross Chat in both directions can be set to Server, Channel or Off
+- Group or Server names can be displayed in front of messages
+- Telegram User Names in TS3 chat will be clickable with a link to their Profile
+- TS3 User DB id will be included in messages sent to Telegram to ensure identity
+- Media files from Telegram can be shared to TS3 in form of a link to download
+- Silent mode wont send a notification when sending a message to a group
+- Auto connect will try to stay connected at all times (will also reconnect after error or restart)
+- Spam checker can avoid sending too much messages to TS3 (even bots can get banned for spam)
+- "Admin 4 All" will allow all users in a group to change the settings (Admin Group?)
+- Easy to add languages, commands and response actions
+- Automatic reload of language, command and action files when running
+- FAQ, Help, Stats, DevMessage
