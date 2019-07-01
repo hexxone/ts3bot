@@ -29,7 +29,7 @@ module.exports = self => {
     self.useWebHook = true;
     // the address the webhook should use and where your server is reachable.
     // dont include the https:// part, as it is added automatically.
-    self.webHookAddr = 'hexxon.me';
+    self.webHookAddr = 'example.com';
     // Only following Ports are allowed by Telegram: [80,443,8080,8443]
     self.webHookPort = 8443;
 
@@ -55,7 +55,7 @@ module.exports = self => {
 
 
     // The Telegram User ID of the Developer (for special commands)
-    self.developer_id = 34675103;
+    self.developer_id = 12345678;
     // will send occuring Exceptions to the Developer if possible.
     self.debug = true;
 
