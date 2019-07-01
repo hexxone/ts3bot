@@ -1,15 +1,12 @@
 # ts3bot
 Telegram to TS3 Bot
+Completely rewritten by me
 
-1st:   git pull
-
-2nd:   npm install
-
-3rd:   npm [test/start/stop]
-
-4th:  ???
-
-5th:  Profit
+1. git pull
+2. npm install
+3. copy sample.config.js => config.js
+4. edit bot_token & developer_id
+5. npm start
 
 
 List of features (not in particular order):
