@@ -10,12 +10,12 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 121,
-    available: 0, // available group, 0 = admin, 1 = single chat, 2 = group, 3 = chat & group
-    groupperm: false, // group permission, if(available=2|3) and set true, command can only be used by admin
-    needslinking: false, // the command requires the group to have a linked instance (available 2|3)
-    needsselected: false, // the command requires the sender to have an instance selected (available 1|3)
-    usage: '/rstdev [id]', // command usage (including arguments)
-    description: 'rstdev', // language bundle description
+    available: 0, 
+    groupperm: false,
+    needslinking: false,
+    needsselected: false,
+    usage: '/rstdev [id]',
+    description: 'rstdev',
     command: ["/rstdev"],
     callback: function (main, ctx) {
         if (ctx.sender.id == ctx.developer_id) {

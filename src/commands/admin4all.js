@@ -8,12 +8,12 @@
 
 module.exports = {
     id: 101,
-    available: 2, // available group, 0 = admin, 1 = single chat, 2 = group, 3 = chat & group
-    groupperm: true, // group permission, if(available=2|3) and set true, command can only be used by admin
-    needslinking: true, // the command requires the group to have a linked instance (available 2|3)
-    needsselected: false, // the command requires the sender to have an instance selected (available 1|3)
-    usage: '/admin4all [on|off]', // command usage (including arguments)
-    description: 'admin4all', // language bundle description
+    available: 2, 
+    groupperm: true,
+    needslinking: true,
+    needsselected: false,
+    usage: '/admin4all [on|off]',
+    description: 'admin4all',
     command: ["/admin4all"],
     callback: function (main, ctx) {
     	let usage = ctx.groupMessages.usage + this.usage;
