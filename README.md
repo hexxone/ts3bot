@@ -1,5 +1,6 @@
 # ts3bot
 Telegram to TS3 Bot
+
 Author: Hexxon
 
 1. git pull
@@ -15,9 +16,9 @@ Next you could take a look at the 'src/commands/aaa_sample.js' file which should
 Going on, the code is mostly commented but you'll have to work yourself through it.
 I won't be accepting any issues regarding setup or installation at this point.
 
+# Features
 
-
-List of features (not in particular order):
+(not in particular order):
 - Multilanguage Support (Eng, Ger)
 - Easy to use Inline Menu navigation
 - Every user can add up to five TS3 Servers being watched
