@@ -9,12 +9,12 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 118,
-    available: 2, // available group, 0 = admin, 1 = single chat, 2 = group, 3 = chat & group
-    groupperm: true, // group permission, if(available=2|3) and set true, command can only be used by admin
-    needslinking: true, // the command requires the group to have a linked instance (available 2|3)
-    needsselected: false, // the command requires the sender to have an instance selected (available 1|3)
-    usage: '/notifymove [global|channel|off]', // command usage (including arguments)
-    description: 'notifymove', // language bundle description
+    available: 2, 
+    groupperm: true,
+    needslinking: true,
+    needsselected: false,
+    usage: '/notifymove [global|channel|off]',
+    description: 'notifymove',
     command: ["/notifymove"],
     callback: function (main, ctx) {
         let usage = 'Use: /notifymove [global|channel|false]';

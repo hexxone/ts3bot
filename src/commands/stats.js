@@ -9,12 +9,12 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 137,
-    available: 3, // available group, 0 = admin, 1 = single chat, 2 = group, 3 = chat & group
-    groupperm: false, // group permission, if(available=2|3) and set true, command can only be used by admin
-    needslinking: false, // the command requires the group to have a linked instance (available 2|3)
-    needsselected: false, // the command requires the sender to have an instance selected (available 1|3)
-    usage: '/stats', // command usage (including arguments)
-    description: 'stats', // language bundle description
+    available: 3, 
+    groupperm: false,
+    needslinking: false,
+    needsselected: false,
+    usage: '/stats',
+    description: 'stats',
     command: ["/stats"],
     callback: function (main, ctx) {
         ctx.opt.parse_mode = "html";
