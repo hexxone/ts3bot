@@ -1,6 +1,6 @@
 # ts3bot
 Telegram to TS3 Bot
-Completely rewritten by me
+Author: Hexxon
 
 1. git pull
 2. npm install
