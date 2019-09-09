@@ -8,12 +8,12 @@
 
 module.exports = {
     id: 138,
-    available: 3, // available group, 0 = admin, 1 = single chat, 2 = group, 3 = chat & group
-    groupperm: false, // group permission, if(available=2|3) and set true, command can only be used by admin
-    needslinking: true, // the command requires the group to have a linked instance (available 2|3)
-    needsselected: true, // the command requires the sender to have an instance selected (available 1|3)
-    usage: '/susers', // command usage (including arguments)
-    description: 'susers', // language bundle description
+    available: 3, 
+    groupperm: false,
+    needslinking: true,
+    needsselected: true,
+    usage: '/susers',
+    description: 'susers',
     command: ["/susers"],
     callback: function(main, ctx) {
         ctx.opt.parse_mode = "html";
