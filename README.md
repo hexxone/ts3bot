@@ -3,7 +3,7 @@ Telegram to TS3 Bot
 
 Author: Hexxon
 
-1. git pull
+1. git clone https://github.com/Hexxonite/ts3bot.git
 2. npm install
 3. copy sample.config.js => config.js
 4. edit bot_token & developer_id
