@@ -58,8 +58,8 @@ const myObject = {
     spamTimeUnit: ' Minuten.',
     noAgreement: 'Bitte lies und bestätige die AGB\'s (/tos) bevor du einen Server hinzufügst.',
     addInfo: 'Du wirst folgende Informationen benötigen:<code>\r\n- server Addresse\r\n- Query Port\r\n- Vserver ID\r\n- Query Benutzer</code>\r\nUm zu beginnen, nenne mir einen Namen für den Server (z.B.: jeff)',
-    addLimit: 'Du hast bereits 5 Server hinzugefügt. Wenn du welche nicht benötigst kannst du sie jederzeit löschen (/delete). Solltest du trotzdem mehr benötigen, kontaktiere mich (/devmessage).',
-    linkLimit: 'Du hast bereits 20 Gruppen verlinkt. Wenn du welche nicht benötigst kannst du sie jederzeit löschen (/unlink). Solltest du trotzdem mehr benötigen, kontaktiere mich (/devmessage).',
+    addLimit: 'Du hast bereits 3 Server hinzugefügt. Wenn du diese nicht benötigst kannst du sie jederzeit löschen (/delete). Solltest du trotzdem mehr benötigen, kontaktiere mich (/devmessage).',
+    linkLimit: 'Du hast bereits 5 Gruppen verlinkt. Wenn du diese nicht benötigst kannst du sie jederzeit löschen (/unlink). Solltest du trotzdem mehr benötigen, kontaktiere mich (/devmessage).',
     admin4allOn: 'Jeder ist jetzt ein Admin.',
     admin4allOff: 'Admin-Rechte zurückgezogen.',
     availableCommands: 'Verfügbare Befehle:',
@@ -72,14 +72,14 @@ const myObject = {
     delConfirmStr: 'Verstanden, lösche ',
     devWait: 'Bitte warte zuerst auf eine Antwort.',
     devSend: 'In Ordnung :) Hinterlass jetzt deine Nachricht.',
-    disconnect: 'Trenne Verbindung...',
+    disconnect: 'Verbindung wird getrennt...',
     faqText: 'TS3Bot FAQ (Häufig gestellte Fragen):\r\nDu kannst einen Query Acount erstellen indem du ich zu deinem Server verbindest und dann in der Toolbar "Extras > ServerQuery Login" auswählst.\r\n'
         + 'Der Bot braucht folgende Berechtigungen um Ordnungsgemäß zu funktionieren:\r\n'
         + ' - b_virtualserver_info_view\r\n - b_virtualserver_connectioninfo_view\r\n - b_virtualserver_channel_list\r\n'
         + ' - b_virtualserver_client_list\r\n - b_virtualserver_notify_register\r\n - b_virtualserver_notify_unregister\r\n'
-        + 'Die User Namen & Channel werden aus Performance Gründen nur alle 2 Minuten aktualisiert.'
-        + 'Dieser Bot wurde mit NodeJS erstellt.\r\nBenutzte Pakete:\r\n'
-        + ' - node-telegram-bot-api\r\n - crypto\r\n - alfred-teamspeak\r\n - hashmap\r\nCodezeilen: <sloc>',
+        + 'Die User Namen & Channel werden nur alle 2 Minuten aktualisiert.'
+        + 'Dieser Bot wurde mit NodeJS realisiert.\r\n'
+        + 'Codezeilen: <sloc>',
     helpText: 'TS3Bot Hilfe:\r\nDieser Bot bietet ein Interface um TS3 Server'
         + ' mit Telegram(-Gruppen) zu verbinden. Hauptzweck ist Cross-Chat und User Anzeige.\r\nDie TS3-Verbindung wird über'
         + ' die offizielle Query API hergestellt und benötigt daher einen Account.\r\nBevor du diesen Bot benutzt, stimme bitte den /tos (Nutzungsbedingungen) zu.\r\nDu kannst einen Server mit /add hinzufügen.\r\n'
@@ -119,7 +119,6 @@ const myObject = {
 	setServerFirst: ' Als nächstes bitte die TS3 Query Account Daten in folgenden Format angeben:\r\n\'<query_user>|<query_password>\'.',
 	linkingNotFound: 'Diese Verlinkung existiert nicht.',
 	groupAlreadyLinked: 'Diese Gruppe ist bereits mit einem Server verlinkt.',
-	rateBot: '\r\nBot bewerten:\r\nhttps://telegram.me/storebot?start=ts3bot',
 	groupLinked: 'TS3 Server wurde erfolgreich mit der Gruppe verlinkt',
 	invalidLink: 'Fehler: Ungültiger Deeplink-Schlüssel.',
 	startChat: 'Hi! Dieser Bot verbindet deinen TeamSpeak3 Server mit Telegram Gruppen.',
