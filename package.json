@@ -11,17 +11,15 @@
   "author": "Hexxon",
   "license": "GNU",
   "dependencies": {
-	"https-proxy-agent": ">=2.2.0",
     "alfred-teamspeak": "^4.0.1",
     "circular-json": "^0.3.3",
     "crypto": "0.0.3",
-    "hashmap": "^2.0.6",
+    "https-proxy-agent": "^2.2.2",
     "node-telegram-bot-api": "github:yagop/node-telegram-bot-api#experimental",
     "proxysocket": "^1.2.0",
     "request": "^2.88.0",
     "shortid": "^2.2.13",
     "sloc": "^0.2.0",
-    "typings": "^2.1.1",
     "url-regex": "^4.1.0"
   }
 }

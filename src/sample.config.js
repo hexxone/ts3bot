@@ -31,6 +31,7 @@ module.exports = self => {
     // dont include the https:// part, as it is added automatically.
     self.webHookAddr = 'example.com';
     // Only following Ports are allowed by Telegram: [80,443,8080,8443]
+    // Btw cloudflare will only support these aswell
     self.webHookPort = 8443;
 
     // Either generate a Cert in Cloudflare and save it locallly or

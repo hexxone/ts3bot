@@ -18,7 +18,7 @@ module.exports = {
     description: 'link', // language bundle description
     command: ["/link"],
     callback: function (main, ctx) {
-        if(ctx.senderLinkings.length < 20) {
+        if(ctx.senderLinkings.length < 5) {
             ctx.sender.menu = 'link_name';
             ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('cancel', ctx.senderMessages), ] ]; 
             ctx.respondChat(ctx.senderMessages.addLink, ctx.opt);

@@ -1,0 +1,14 @@
+version: '2'
+services:
+    node_ts3bot:
+        build: .
+        container_name: "node_ts3bot"
+        image: debian/latest
+        restart: on-failure
+        environment:
+            - VIRTUAL_HOST=bot.hexxon.me
+            - VIRTUAL_PROTO=https
+            - NODE_ENV=development
+        volumes:
+            - ./data:/app/data
+        network_mode: bridge

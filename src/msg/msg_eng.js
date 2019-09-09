@@ -77,9 +77,9 @@ const myObject = {
         + 'The bots needs following TS3 permissions to work properly:\r\n'
         + ' - b_virtualserver_info_view\r\n - b_virtualserver_connectioninfo_view\r\n - b_virtualserver_channel_list\r\n'
         + ' - b_virtualserver_client_list\r\n - b_virtualserver_notify_register\r\n - b_virtualserver_notify_unregister\r\n'
-        + 'The information in the /users command gets updated every 2 minutes to prevent spam.'
-        + 'The bot is written in nodejs.\r\nUsed packages:\r\n'
-        + ' - node-telegram-bot-api\r\n - crypto\r\n - alfred-teamspeak\r\n - hashmap\r\nSLOC: <sloc>',
+        + 'The username and channel information gets only updated every 2 minutes.\r\n'
+        + 'This bot is written in nodejs.\r\n'
+        + 'Lines of Code: <sloc>',
     helpText: 'TS3Bot Help:\r\nThis bot provides an interface for linking a TeamSpeak 3 Server'
         + ' to Telegram (specific Groups) for cross-chatting and seeing online users.\r\nThe TS3-Connection is established'
         + ' using the official Query API and therefore requires an account.Before using the Bot, please accept the /tos. You can add a new Server using: /add\r\n'
@@ -120,7 +120,6 @@ const myObject = {
 	setServerFirst: ' Now please tell me the account details in the following format:\r\n\'<query_user>|<query_password>\'.',
 	linkingNotFound: 'Linking doesn\'t exist.',
 	groupAlreadyLinked: 'This group is already linked to a server.',
-	rateBot: '\r\nYou can rate this bot here:\r\nhttps://telegram.me/storebot?start=ts3bot',
 	groupLinked: 'TS3 server was successfully linked to this group',
 	invalidLink: 'Error: deeplinking key invalid.',
 	startChat: 'Hi! This bot can link your TeamSpeak3 Server to one or more Telegram group(s).',

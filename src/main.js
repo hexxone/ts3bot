@@ -43,7 +43,6 @@ const self = this;
 
 // Load required Libaries
 const Path = require("path");
-const HashMap = require('hashmap');
 const TelegramBot = require('node-telegram-bot-api');
 // Load other Classes 
 const AntiSpam = require('./class/antispam.js');
@@ -133,9 +132,9 @@ self.linkings = [];
 // Create array objects
 self.fileMappings = {};
 self.announces = {};
-// Create HashMaps
-self.deeplinking = new HashMap();
-self.groupnames = new HashMap();
+// Create Hash-Maps
+self.deeplinking = new Map();
+self.groupnames = new Map();
 
 // should not close instantly
 process.stdin.resume();

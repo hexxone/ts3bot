@@ -82,6 +82,7 @@ module.exports = function (self, cq) {
             let cmdo = Utils.getCmdByDesc('lang');
             cmdo.callback(self, ctx);
         }
+        // execute action
     }
 
     self.bot.answerCallbackQuery(cq.id, {});

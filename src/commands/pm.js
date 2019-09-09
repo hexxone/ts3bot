@@ -23,11 +23,11 @@ module.exports = {
             if (ctx.args.length == 2) {
                 switch (ctx.args[1].toLowerCase()) {
                     case '0': case 'aus': case 'off': case 'false': case 'disable':
-                        ctx.groupBinding.whisper = false;
+                        ctx.groupBinding.pm = false;
                         ctx.respondChat(ctx.groupMessages.pmDisabled, ctx.opt);
                         break;
                     case '1': case 'an': case 'on': case 'true': case 'enable':
-                        ctx.groupBinding.whisper = true;
+                        ctx.groupBinding.pm = true;
                         ctx.respondChat(ctx.groupMessages.pmEnabled, ctx.opt);
                         break;
                     default:
