@@ -8,6 +8,14 @@ Completely rewritten by me
 4. edit bot_token & developer_id
 5. npm start
 
+# How do I ..?
+
+If you want to understand and improve or extend the bot I recommend first reading the config comments.
+Next you could take a look at the 'src/commands/aaa_sample.js' file which should explain how commands work.
+Going on, the code is mostly commented but you'll have to work yourself through it.
+I won't be accepting any issues regarding setup or installation at this point.
+
+
 
 List of features (not in particular order):
 - Multilanguage Support (Eng, Ger)
