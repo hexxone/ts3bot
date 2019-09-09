@@ -8,7 +8,6 @@
 
 const FS = require('fs');
 const Crypto = require('crypto');
-const HashMap = require('hashmap');
 const CircularJSON = require('circular-json');
 
 const Algorithm = 'aes-256-cbc';
@@ -93,7 +92,7 @@ const utils = {
                 let lnkk = this.createLinkingFromData(instt, lnk);
                 this.Parent.linkings.push(lnkk);
             });
-            this.Parent.deeplinking = new HashMap();
+            this.Parent.deeplinking = new Map();
             objj.deeplinking.forEach((keyset) => {
                 let v = keyset.v;
                 let instts = Utils.getUserInstances(v.instance.id);
@@ -101,7 +100,7 @@ const utils = {
                 let lnkk = this.createLinkingFromData(instt, v);
                 this.Parent.deeplinking.set(keyset.k, lnkk);
             });
-            this.Parent.groupnames = new HashMap();
+            this.Parent.groupnames = new Map();
             objj.groupnames.forEach((keyset) => {
                 this.Parent.groupnames.set(keyset.k, keyset.v);
             });

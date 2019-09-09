@@ -29,9 +29,9 @@ module.exports = {
                 if (ctx.groupBinding !== null)
                     ctx.respondChat(msgs.groupAlreadyLinked, ctx.opt);
                 else if (main.deeplinking.has(ctx.args[1])) {
-                    // get linking object & remove from hashmap
+                    // get linking object & remove from hash-map
                     let inst = main.deeplinking.get(ctx.args[1]);
-                    main.deeplinking.remove(ctx.args[1]);
+                    main.deeplinking.delete(ctx.args[1]);
                     // set groupid and add to linkings
                     inst.Link(ctx.chatId);
                     main.linkings.push(inst);
@@ -43,7 +43,7 @@ module.exports = {
                 else ctx.respondChat(msgs.invalidLink, ctx.opt);
             }
             else ctx.respondChat(
-                (ctx.groupBinding === null ? msgs.groupNotLinked : msgs.groupAlreadyLinked) + msgs.rateBot,
+                (ctx.groupBinding === null ? msgs.groupNotLinked : msgs.groupAlreadyLinked),
                 ctx.opt);
         }
         else {
@@ -51,7 +51,7 @@ module.exports = {
                 [Utils.getCmdBtn('menu', msgs), Utils.getCmdBtn('stats', msgs)],
                 [Utils.getCmdBtn('lang', msgs), Utils.getCmdBtn('help', msgs)]
             ];
-            ctx.respondChat(msgs.startChat + msgs.rateBot, ctx.opt);
+            ctx.respondChat(msgs.startChat, ctx.opt);
         }
     }
 };

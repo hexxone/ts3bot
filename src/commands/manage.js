@@ -6,7 +6,6 @@
 // See LICENSE file in the project root for full license information.  
 //  
 
-const HashMap = require('hashmap');
 const Utils = require('../class/utils.js').Get();
 
 module.exports = {

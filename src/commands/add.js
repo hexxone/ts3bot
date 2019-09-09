@@ -22,7 +22,7 @@ module.exports = {
             ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('tos', ctx.senderMessages), ] ];
             ctx.respondChat(ctx.senderMessages.noAgreement, ctx.opt);
         }
-        else if (ctx.senderInstances.length < 5) {
+        else if (ctx.senderInstances.length < 3) {
             ctx.sender.menu = 'add_instance';
             ctx.opt.parse_mode = "html";
             ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('cancel', ctx.senderMessages), ] ];

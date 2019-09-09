@@ -62,3 +62,6 @@ typings/
 
 # main configuration
 src/config.js
+
+# data files
+*.stor
