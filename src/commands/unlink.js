@@ -35,7 +35,7 @@ module.exports = {
                 if (val.name == ctx.args[1]) del = key;
             });
             if (del) {
-                main.deeplinking.remove(del);
+                main.deeplinking.delete(del);
                 ctx.sender.menu = '';
                 ctx.respondChat(msgs.linkDestroyed.replace('<link>', ctx.args[1]), ctx.opt);
             }
