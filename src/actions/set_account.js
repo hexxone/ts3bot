@@ -9,7 +9,7 @@
 const Utils = require('../class/utils.js').Get();
 
 module.exports = {
-    id: 7,
+    id: 10,
     action: ["set_account", "set_account_first"],
     callback: function (main, ctx) {
         let msgs = ctx.senderMessages;

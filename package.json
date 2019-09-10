@@ -4,20 +4,17 @@
   "description": "A Telegram to TS3 bridge",
   "main": "main.js",
   "scripts": {
-    "test": "node src/main.js",
-    "start": "screen -dmSL ts3bot node src/main.js > stdout.txt 2> stderr.txt &",
-    "stop": "screen -X -S ts3bot quit"
+    "start": "node src/main.js"
   },
   "author": "Hexxon",
-  "license": "GNU",
+  "license": "GPLv3",
   "dependencies": {
     "alfred-teamspeak": "^4.0.1",
     "circular-json": "^0.3.3",
     "crypto": "0.0.3",
     "https-proxy-agent": "^2.2.2",
-    "node-telegram-bot-api": "github:yagop/node-telegram-bot-api#experimental",
+    "node-telegram-bot-api": "^0.30.0",
     "proxysocket": "^1.2.0",
-    "request": "^2.88.0",
     "shortid": "^2.2.13",
     "sloc": "^0.2.0",
     "url-regex": "^4.1.0"
