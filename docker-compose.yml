@@ -5,6 +5,9 @@ services:
         container_name: "node_ts3bot"
         image: debian/latest
         restart: on-failure
+        ports:
+            - 8080:8080
+            - 8443:8443
         environment:
             - VIRTUAL_HOST=bot.hexxon.me
             - VIRTUAL_PROTO=https

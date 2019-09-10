@@ -9,18 +9,19 @@
 const Utils = require('../class/utils.js').Get();
 
 module.exports = {
-    id: 9,
+    id: 12,
     action: ["set_name", "set_name_first"],
     callback: function (main, ctx) {
+        let msgs = ctx.senderMessages;
         if (ctx.senderSelectedInstance != null) {
             if (ctx.args.length == 1 && Utils.testName(ctx.args[0])) {
                 ctx.senderSelectedInstance.clientname = ctx.args[0];
                 // Output / Next
-                let msg = ctx.senderMessages.setName;
+                let msg = msgs.setName;
                 if (Utils.endsWith(ctx.sender.menu, "_first")) {
                     ctx.sender.menu = 'set_channel_first';
-                    msg += ctx.senderMessages.setNameFirst;
-                    ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('cancel', ctx.senderMessages)]];
+                    msg += msgs.setNameFirst;
+                    ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('cancel', msgs)]];
                 }
                 else {
                 	ctx.sender.menu = '';
@@ -32,8 +33,8 @@ module.exports = {
                 }
                 ctx.respondChat(msg, ctx.opt);
             }
-            else ctx.respondChat(ctx.senderMessages.nameError, ctx.opt);
+            else ctx.respondChat(msgs.nameError, ctx.opt);
         }
-        else ctx.respondChat(ctx.senderMessages.noInstSelected, ctx.opt);
+        else ctx.respondChat(msgs.noInstSelected, ctx.opt);
     }
 };

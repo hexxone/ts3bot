@@ -8,7 +8,7 @@
 
 module.exports = {
     id: 123,
-    hidden: true,
+    hidden: false,
     available: 1, 
     groupperm: false,
     needslinking: false,

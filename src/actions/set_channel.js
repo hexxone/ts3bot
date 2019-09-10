@@ -9,7 +9,7 @@
 const Utils = require('../class/utils.js').Get();
 
 module.exports = {
-    id: 8,
+    id: 11,
     action: ["set_channel", "set_channel_first"],
     callback: function (main, ctx) {
         let msgs = ctx.senderMessages;

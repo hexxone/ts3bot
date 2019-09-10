@@ -9,8 +9,8 @@
 const Utils = require('../class/utils.js').Get();
 
 module.exports = {
-    id: 6,
-    action: ["select"],
+    id: 8,
+    action: ["pm_send"],
     callback: function (main, ctx) {
         Utils.fixRemoveKeyboard(main, ctx);
         ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('menu', ctx.senderMessages),]];

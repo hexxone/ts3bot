@@ -23,10 +23,11 @@ I won't be accepting any issues regarding setup or installation at this point.
 - Easy to use Inline Menu navigation
 - Every user can add up to five TS3 Servers being watched
 - Customize the Bot Display name and channel to join
-- There can only be one TS3 Server linked to a group but you can link multiple groups to a server
+- Link a group to a server, and a server to multiple groups!
 - Each group will have its own notification and language settings (e.g. have a "User" and "Admin" Group)
 - Get fully customizable Join, Leave, & Channel Switch notifications
 - Bots can be ignored when listing users or showing Notifications
+- Livetree will show the channels & clients like the ts3 client as live updated message (NEW)
 - List all online users per channel
 - Cross Chat in both directions can be set to Server, Channel or Off
 - Group or Server names can be displayed in front of messages

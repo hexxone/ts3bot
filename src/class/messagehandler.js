@@ -26,7 +26,6 @@ module.exports = function (self, msg) {
         chatId: msg.chat.id,
         sender: Utils.getUser(msg.from),
         opt: {
-            //reply_to_message_id: msg.message_id,
             reply_markup: {
                 keyboard: [],
                 resize_keyboard: true,
@@ -56,6 +55,8 @@ module.exports = function (self, msg) {
     groupcheck: if (ctx.isGroup) {
         // Set/Update the current group name
         self.groupnames.set(ctx.chatId, msg.chat.title);
+        // reply to messages in groups
+        ctx.reply_to_message_id = msg.message_id;
         // get the group Binding (if exists)
         ctx.groupBinding = Utils.getGroupLinking(ctx.chatId);
         if (!ctx.groupBinding) break groupcheck; // no linked server = abort

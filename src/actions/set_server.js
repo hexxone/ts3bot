@@ -9,7 +9,7 @@
 const Utils = require('../class/utils.js').Get();
 
 module.exports = {
-    id: 10,
+    id: 13,
     action: ["set_server", "set_server_first"],
     callback: function (main, ctx) {
         let msgs = ctx.senderMessages;
