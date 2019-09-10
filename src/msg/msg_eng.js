@@ -153,6 +153,9 @@ const myObject = {
     joinedServer: 'joined the server.',
 	botConnected: '</b> is now connected.\r\n<b><users> User(s)</b> and <b><bots> Bot(s)</b> online.',
     botChannelMsg: '',
+    liveTreeFormat: 'LiveTree\r\n<code><tree></code>\r\nLast Update: <time>',
+    liveTreeError: 'Error ⚠️',
+    liveTreeStop: 'LiveTree stopped and removed.',
 
     menu00: 'TS3Bot menu:',
     menu01: '\r\nGroup is linked.',
@@ -249,6 +252,7 @@ const myObject = {
     cmd_ignorebots: 'Ignore other bots',
     cmd_lang: '🇺🇸 / 🇩🇪',
     cmd_link: 'Link to a group',
+    cmd_livetree: 'Server live view',
     cmd_manage: 'Manage',
     cmd_menu: 'Menu',
     cmd_notifyjoin: 'Notify on TS3 join',

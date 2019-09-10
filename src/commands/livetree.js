@@ -9,30 +9,28 @@
 let Utils = require('../class/utils.js').Get();
 
 module.exports = {
-    id: 141,
-    available: 3, 
-    groupperm: false,
+    id: 189,
+    available: 3,
+    groupperm: true,
     needslinking: true,
     needsselected: true,
-    usage: '/users',
-    description: 'users',
-    command: ["/users"],
-    callback: function(main, ctx) {
+    usage: '/livetree',
+    description: 'livetree',
+    command: ["/livetree"],
+    callback: function (main, ctx) {
         ctx.opt.parse_mode = "html";
-        let showBots = (ctx.args.length == 2 && ctx.args[1] == "-a");
-        if (ctx.isGroup) {
-            ctx.groupBinding.instance.GetUserString(
-                ctx.groupBinding.language,
-                !showBots && ctx.groupBinding.ignorebots,
-                res => ctx.respondChat(res, ctx.opt)
-            );
-        } else {
-            ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('menu', ctx.senderMessages)]];
-            ctx.senderSelectedInstance.GetUserString(
-                ctx.sender.language,
-                !showBots,
-                res => ctx.respondChat(res, ctx.opt)
-            );
+        if (ctx.args.length == 2 && ctx.args[1] == "stop") {
+            if (ctx.isGroup)
+                ctx.groupBinding.instance.RemoveLiveTree(ctx.chatId);
+            else
+                ctx.senderSelectedInstance.RemoveLiveTree(ctx.chatId);
         }
+        else {
+            if (ctx.isGroup)
+                ctx.groupBinding.instance.AddLiveTree(ctx.chatId);
+            else
+                ctx.senderSelectedInstance.AddLiveTree(ctx.chatId);
+        }
+
     }
 };

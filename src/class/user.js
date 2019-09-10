@@ -28,12 +28,12 @@ class User {
         this.last_msg_id = null;
         this.last_bot_msg_id = null;
 
-        // last server and user you received a msg from
-        this.pm_last_recv_srv = '';
-        this.pm_last_recv_usr = '';
-        // last selected server and user
+        // last server and user you received a msg from or selected
         this.pm_selected_srv = '';
         this.pm_selected_usr = '';
+
+        // live tree
+        this.livetree = null;
 
         // dont export
 

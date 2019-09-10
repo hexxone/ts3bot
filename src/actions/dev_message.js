@@ -12,7 +12,7 @@ module.exports = {
     callback: function (main, ctx) {
         if (ctx.text.length >= 10 && ctx.text.length <= 500) {
             // SEND MESSAGE TO DEV
-            main.bot.sendNewMessage(ctx.developer_id, 'DevMessage\r\nFrom:' + JSON.stringify(ctx.msg.from) + "\r\n\r\nText:\r\n" + ctx.text + "\r\n\r\nDont forget: '/rstdev " + ctx.sender.id + "'");
+            main.bot.sendNewMessage(ctx.developer_id, 'DevMessage\r\nFrom:' + JSON.stringify(ctx.msg.from) + "\r\n\r\nText:\r\n" + ctx.text + "\r\n\r\nDont forget: '/rstdev " + ctx.sender.id + "'", true);
             // then send message to user
             ctx.sender.sentdev = true;
             ctx.sender.menu = '';

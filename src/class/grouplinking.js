@@ -30,6 +30,7 @@ class GroupLinking {
         this.pm = false;
         this.language = 'Eng';
         this.sharemedia = true;
+        this.livetree = null;
         
         // dont export
 
@@ -58,6 +59,7 @@ class GroupLinking {
             pm: this.pm,
             language: this.language,
             sharemedia: this.sharemedia,
+            livetree: this.livetree,
             userids: userids,
         };
     }

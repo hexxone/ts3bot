@@ -5,6 +5,7 @@
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.  
 //  
+
 const Utils = require('../class/utils.js').Get();
 
 module.exports = {
