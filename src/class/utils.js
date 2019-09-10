@@ -162,12 +162,12 @@ const utils = {
             });
         },
         // removes the keyboard and overwrites the response function 
-        fixRemoveKeyboard: function(main, ctx) {
+        fixRemoveKeyboard: function (main, ctx) {
             let cid = ctx.chatId;
-            main.bot.sendMessage(cid, "🕐...", {reply_markup: {remove_keyboard: true}})
-                    .then(data => main.bot.deleteMessage(cid, data.message_id));
+            main.bot.sendMessage(cid, "🕐...", { reply_markup: { remove_keyboard: true } })
+                .then(data => main.bot.deleteMessage(cid, data.message_id));
         },
-        // returns a command by its id or null
+        // returns a command by its description name
         getCmdByDesc: function (desc) {
             let objs = this.Parent.commands.filter(function (obj) {
                 return obj.description == desc;
@@ -183,13 +183,13 @@ const utils = {
             };
             let obj = this.getCmdByDesc(desc);
             if (obj) return {
-                    text: msgs['cmd_' + desc],
-                    callback_data: 'c' + obj.id
-                }
+                text: msgs['cmd_' + desc],
+                callback_data: 'c' + obj.id
+            }
             else return {
-                    text: 'Error: ' + desc,
-                    callback_data: 'e'
-                }
+                text: 'Error: ' + desc,
+                callback_data: 'e'
+            }
         },
         // Returns a Random string of desired length
         randomString: function (length) {
@@ -278,28 +278,20 @@ const utils = {
             }
             return res;
         },
-        // replaces the text bundles with the given language strings
-        fillTextMsgs: function (text, lang) {
-            let msgs = this.getLanguageMessages(lang);
-            for (let k of msgs) {
-                text = text.replace("??{" + k + "}??", msgs[k]);
-            }
-            return text;
-        },
-        // returns
-        getUserAvailableServers: function(user) {
+        // returns available ts3 server for user
+        getUserAvailableServers: function (user) {
             let servers = {};
             this.Parent.linkings.forEach(lnk => {
-                if(lnk.pm && lnk.HasUser(user)) {
+                if (lnk.pm && lnk.HasUser(user)) {
                     let key = lnk.instance.id + "_" + lnk.instance.name;
-                    if(!servers[key]) servers[key] = lnk.instance;
+                    if (!servers[key]) servers[key] = lnk.instance;
                 }
             });
             return servers;
         },
         // returns users of a ts3 server
-        getServerAvailableUsers: function(instance) {
-            
+        getServerAvailableUsers: function (instance) {
+
         }
     }
 };
