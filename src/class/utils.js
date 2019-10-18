@@ -1,10 +1,10 @@
 'use strict';
 
-//  
+//
 // Copyright (c) 2019 D.Thiele All rights reserved.  
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.  
-//  
+//
 
 const Process = require('process');
 
@@ -203,6 +203,14 @@ const utils = {
         isInt: function (value) {
             let x;
             return isNaN(value) ? !1 : (x = parseFloat(value), (0 | x) === x);
+        },
+        // returns whether the value indicates a positive meaning string
+        isYes: function (value) {
+            return value.toLowerCase() in ['1', 'an', 'jo', 'ein', 'einschalten', 'aktivieren', 'aktiviert', 'aktiv', 'on', 'yes', 'yep', 'true', 'enable', 'enabled', 'amk', 'fly'];
+        },
+        // returns whether the value indicates a negative meaning string
+        isNo: function (value) {
+            return value.toLowerCase() in ['0', 'aus', 'ausschalten', 'nö', 'deaktivieren', 'deaktiviert', 'inaktiv', 'off', 'no', 'nope', 'false', 'disable', 'disabled', 'meh', 'lame'];
         },
         // Doesnt need a comment, but OCD
         endsWith: function (hay, s) {
