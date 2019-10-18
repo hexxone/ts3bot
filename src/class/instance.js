@@ -228,7 +228,7 @@ class Instance {
         }));
 
         // Start the login Process
-        // @TODO: Check Permissions
+        // TODO: Check Permissions
         // 23	b_virtualserver_info_view	        Retrieve virtual server information
         // 24	b_virtualserver_connectioninfo_view	Retrieve virtual server connection information
         // 25	b_virtualserver_channel_list	    List channels on a virtual server

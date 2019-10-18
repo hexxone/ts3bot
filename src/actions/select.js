@@ -23,7 +23,7 @@ module.exports = {
 
                 // call menu command
                 let cmdo = Utils.getCmdByDesc('menu');
-                cmdo.callback(self, ctx);
+                cmdo.callback(main, ctx);
             }
             else ctx.respondChat(ctx.senderMessages.serverNotFound, ctx.opt);
         }
