@@ -1,10 +1,10 @@
 'use strict';
 
-//  
+//
 // Copyright (c) 2019 D.Thiele All rights reserved.  
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.  
-//  
+//
 
 const Alfred = require('alfred-teamspeak');
 const CONNECT_TRIES = 1;
@@ -194,7 +194,7 @@ class Instance {
                             case 1:
                                 // user left our channel
                                 if (this.channelid == oldChannel)
-                                    lnk.NotifyTelegram(srvname, bName + bFlag + msgs.channelLeave + ' [' + this.GetChannelUser(this.channelid, lnk.ignorebots).length + '']');
+                                    lnk.NotifyTelegram(srvname, bName + bFlag + msgs.channelLeave + ' [' + this.GetChannelUser(this.channelid, lnk.ignorebots).length + ']');
                                 // user joined our channel
                                 else if (this.channelid == data.ctid)
                                     lnk.NotifyTelegram(srvname, bName + bFlag + msgs.channelJoin + ' [' + this.GetChannelUser(this.channelid, lnk.ignorebots).length + ']');
@@ -396,7 +396,6 @@ class Instance {
             for (let cid of Object.keys(userStruct)) {
                 // get channel
                 let channel = this.GetChannelById(cid);
-                //console.log('CID: " + cid + " Channel: ' + JSON.stringify(channel));
                 if (!channel) continue;
                 // Add channelname and users
                 let chres = '\r\n( ' + this.fixSpacer(channel.channel_name) + ' ) [' + userStruct[cid].length + ']';

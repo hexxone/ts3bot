@@ -1,6 +1,6 @@
 'use strict';
 
-//  
+//
 // Copyright (c) 2019 D.Thiele All rights reserved.  
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // 
@@ -18,7 +18,7 @@
 // along with this program. See 'LICENSE.txt' file in project root. 
 // 
 // If not, visit <https://www.gnu.org/licenses/> for full license information.
-//  
+//
 
 /*
     @TODO-LIST

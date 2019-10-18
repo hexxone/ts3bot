@@ -1,10 +1,10 @@
 'use strict';
 
-//  
+//
 // Copyright (c) 2019 D.Thiele All rights reserved.  
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.  
-//  
+//
 
 // represents a binding of a ts3 server to a Telegram group.
 class GroupLinking {
@@ -108,7 +108,7 @@ class GroupLinking {
     // Sends a mesage to the relating telegram group respecting the
     // .. 'show server name'- and notification-settings
     NotifyTelegram(server, msg) {
-        if (this.showservername && server) msg = '(" + server + ") ' + msg;
+        if (this.showservername && server) msg = '('+ server + ') ' + msg;
         let oobj = { 'parse_mode': 'html' };
         if (this.silent) Object.assign(oobj, { 'disable_notification': true });
         this.main.bot.sendNewMessage(this.groupid, msg, oobj).catch((a,b,c) => {

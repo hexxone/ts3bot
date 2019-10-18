@@ -1,10 +1,10 @@
 'use strict';
 
-//  
+//
 // Copyright (c) 2019 D.Thiele All rights reserved.  
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.  
-//  
+//
 
 const FS = require('fs');
 const Crypto = require('crypto');
@@ -158,7 +158,7 @@ const utils = {
             FS.readdirSync(folder).forEach((file, i, arr) => {
                 let mod, fp = folder + '/' + file;
                 if (mod = self.loadModule(array, fp))
-                    console.log('Loaded: " + mod.id + " | ' + fp);
+                    console.log('Loaded: ' + mod.id + ' | ' + fp);
                 if (++cnt == arr.length)
                     console.log('Done loading ' + cnt + strAppend);
             });
@@ -171,12 +171,12 @@ const utils = {
         },
         // temporarily blocked filenames for change
         blocked: [],
-        // wrapper for only triggering an event for a file once in 25 ms
+        // wrapper for only triggering an event for a file once in 250 ms
         wch: function (self, fn) {
             return (event, path) => {
                 if (!path || path in self.blocked) return;
                 self.blocked[path] = true;
-                setTimeout(() => delete self.blocked[path], 100);
+                setTimeout(() => delete self.blocked[path], 250);
                 fn(event, path);
             }
         },
@@ -201,6 +201,7 @@ const utils = {
             try {
                 // require & find module
                 let mod = require(file);
+                if (!mod || !mod.id) throw new Exception("reload did not include id: " + file);
                 let ix = -1;
                 array.forEach(function (obj, i, arr) {
                     if (obj.id === mod.id) ix = i;
