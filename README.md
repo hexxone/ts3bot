@@ -1,22 +1,28 @@
-# ts3bot
-Telegram to TS3 Bot
+# @TS3Bot
 
-Author: Hexxon
+**Telegram to TeamSpeak3 Bot**
 
-1. git clone https://github.com/Hexxonite/ts3bot.git
-2. npm install
-3. copy sample.config.js => config.js
-4. edit bot_token & developer_id
-5. npm start
+*Author: Hexxon*
 
-# How do I ..?
+## Setup
+
+1. `git clone https://github.com/Hexxonite/ts3bot.git`
+2. `cd ts3bot && npm install`
+3. `cp src/sample.config.js src/config.js`
+4. edit **bot_token** & **developer_id** in new config.js
+5. `npm start`
+
+## How do I ..?
 
 If you want to understand and improve or extend the bot I recommend first reading the config comments.
-Next you could take a look at the 'src/commands/aaa_sample.js' file which should explain how commands work.
+Next you could take a look at this file which should explain how commands work:
+
+    src/commands/aaa_sample.js
+
 Going on, the code is mostly commented but you'll have to work yourself through it.
 I won't be accepting any issues regarding setup or installation at this point.
 
-# Features
+## Features
 
 (not in particular order):
 - Multilanguage Support (Eng, Ger)
