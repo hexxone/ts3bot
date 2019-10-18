@@ -199,14 +199,14 @@ bot.on('polling_error', self.telegramErrorHandler);
 bot.on('webhook_error', self.telegramErrorHandler);
 
 // wrapper for storing the last sent bot message and deleting the previous one
-bot.sendNewMessage = function(cid, text, opt, noDel) {
+bot.sendNewMessage = function (cid, text, opt, noDel) {
     let sendr = cid > 0 ? Utils.getUser({ id: cid }) : null;
-    if(!noDel && sendr && sendr.last_bot_msg_id) {
+    if (!noDel && sendr && sendr.last_bot_msg_id) {
         this.deleteMessage(cid, sendr.last_bot_msg_id);
         sendr.last_bot_msg_id = null;
     }
     return this.sendMessage(cid, text, opt).then(msg => {
-        if(sendr) sendr.last_bot_msg_id = msg.message_id;
+        if (sendr) sendr.last_bot_msg_id = msg.message_id;
     });
 };
 
@@ -228,7 +228,7 @@ else {
 self.antispam = new AntiSpam(20);
 
 // init file proxy
-if(self.useFileProxy) {
+if (self.useFileProxy) {
     self.fileProxyServer.init(bot, self.fileProxyAddr, self.fileProxyPort);
 }
 

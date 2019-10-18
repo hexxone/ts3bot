@@ -19,14 +19,14 @@ module.exports = {
                 // Output / Next
                 let msg = msgs.channelSet;
                 let kb = [];
-                if (Utils.endsWith(ctx.sender.menu, '_first')){
-                	kb.push(Utils.getCmdBtn('link', msgs));
+                if (Utils.endsWith(ctx.sender.menu, '_first')) {
+                    kb.push(Utils.getCmdBtn('link', msgs));
                     msg += '\r\n' + msgs.channelComplete;
                 }
                 let conSt = ctx.senderSelectedInstance.connectionState;
-                if(conSt == 2) kb.push(Utils.getCmdBtn('reconnect', msgs));
-                else if(conSt != 1) kb.push(Utils.getCmdBtn('connect', msgs));
-                ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('menu', msgs) ], kb ];
+                if (conSt == 2) kb.push(Utils.getCmdBtn('reconnect', msgs));
+                else if (conSt != 1) kb.push(Utils.getCmdBtn('connect', msgs));
+                ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('menu', msgs)], kb];
                 ctx.sender.menu = '';
                 ctx.respondChat(msg, ctx.opt);
             }

@@ -10,14 +10,14 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 143,
-    available: 3, 
+    available: 3,
     groupperm: false,
     needslinking: true,
     needsselected: true,
     usage: '/users',
     description: 'users',
     command: ['/users'],
-    callback: function(main, ctx) {
+    callback: function (main, ctx) {
         ctx.opt.parse_mode = 'html';
         let showBots = (ctx.args.length == 2 && ctx.args[1] == '-a');
         if (ctx.isGroup) {

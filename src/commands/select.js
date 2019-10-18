@@ -9,7 +9,7 @@
 module.exports = {
     id: 125,
     hidden: false,
-    available: 1, 
+    available: 1,
     groupperm: false,
     needslinking: false,
     needsselected: false,
@@ -17,23 +17,23 @@ module.exports = {
     description: 'select',
     command: ['/select'],
     callback: function (main, ctx) {
-        if(ctx.senderInstances.length > 0) {
+        if (ctx.senderInstances.length > 0) {
             ctx.sender.menu = 'select';
             let keyboardTop = [['/cancel']];
             let keyboardArr = [];
             for (let instance of ctx.senderInstances) {
                 keyboardArr.push(instance.name);
-                if(keyboardArr.length > 1) {
+                if (keyboardArr.length > 1) {
                     keyboardTop.push(keyboardArr.slice(0));
                     keyboardArr = [];
                 }
             }
-            if(keyboardArr.length > 0) keyboardTop.push(keyboardArr.slice(0));
+            if (keyboardArr.length > 0) keyboardTop.push(keyboardArr.slice(0));
             ctx.opt.reply_markup.keyboard = keyboardTop;
             ctx.opt.reply_markup.resize_keyboard = true;
             ctx.opt.reply_markup.one_time_keyboard = true;
             main.bot.sendNewMessage(ctx.chatId, ctx.senderMessages.selectServer, ctx.opt);
         }
-        else  main.bot.sendNewMessage(ctx.chatId, ctx.senderMessages.commandNoAdded, ctx.opt);
+        else main.bot.sendNewMessage(ctx.chatId, ctx.senderMessages.commandNoAdded, ctx.opt);
     }
 };

@@ -8,7 +8,7 @@
 
 module.exports = {
     id: 141,
-    available: 1, 
+    available: 1,
     groupperm: false,
     needslinking: false,
     needsselected: false,
@@ -16,11 +16,11 @@ module.exports = {
     description: 'tos',
     command: ['/tos'],
     callback: function (main, ctx) {
-    	let agree = '\r\n\r\n' + ctx.senderMessages.tosAgree.replace('<tos_string>', ctx.senderMessages.tosString);
-    	
+        let agree = '\r\n\r\n' + ctx.senderMessages.tosAgree.replace('<tos_string>', ctx.senderMessages.tosString);
+
         ctx.respondChat(ctx.senderMessages.tosText +
-        	(ctx.sender.agreement ? '' : agree ), ctx.opt);
-        	
+            (ctx.sender.agreement ? '' : agree), ctx.opt);
+
         if (!ctx.sender.agreement)
             ctx.sender.menu = 'accept_tos';
     }

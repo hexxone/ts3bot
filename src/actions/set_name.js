@@ -24,12 +24,12 @@ module.exports = {
                     ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('cancel', msgs)]];
                 }
                 else {
-                	ctx.sender.menu = '';
-                	let kb = [];
-	                let conSt = ctx.senderSelectedInstance.connectionState;
-                    if(conSt == 2) kb.push(Utils.getCmdBtn('reconnect', msgs));
-                    else if(conSt != 1) kb.push(Utils.getCmdBtn('connect', msgs));
-                    ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('menu', msgs) ], kb ];
+                    ctx.sender.menu = '';
+                    let kb = [];
+                    let conSt = ctx.senderSelectedInstance.connectionState;
+                    if (conSt == 2) kb.push(Utils.getCmdBtn('reconnect', msgs));
+                    else if (conSt != 1) kb.push(Utils.getCmdBtn('connect', msgs));
+                    ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('menu', msgs)], kb];
                 }
                 ctx.respondChat(msg, ctx.opt);
             }

@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 120,
-    available: 2, 
+    available: 2,
     groupperm: true,
     needslinking: true,
     needsselected: false,
@@ -25,7 +25,7 @@ module.exports = {
                 if (ctx.groupBinding.instance.id == ctx.sender.id || ctx.groupBinding.alladmin) {
                     if (ctx.args.length == 2) {
                         switch (ctx.args[1].toLowerCase()) {
-                            case 'false': case 'aus': case '0': case 'off': case 'meh': case 'lame': 
+                            case 'false': case 'aus': case '0': case 'off': case 'meh': case 'lame':
                                 ctx.groupBinding.notifymove = 0;
                                 break;
                             case 'channel': case '1':

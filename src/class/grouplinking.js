@@ -31,7 +31,7 @@ class GroupLinking {
         this.language = 'Eng';
         this.sharemedia = true;
         this.livetree = null;
-        
+
         // dont export
 
         this.users = [];
@@ -78,13 +78,13 @@ class GroupLinking {
     // add user to virtual group when he sends a message in it
     CheckAddUser(userObj) {
         //console.log('CheckAddUser: ' + userObj.id);
-        if(!this.HasUser(userObj)) this.users.push(userObj);
+        if (!this.HasUser(userObj)) this.users.push(userObj);
     }
 
     // check if group contains a user
     HasUser(userObj) {
-        for(let usr in this.users) {
-            if(usr.id == userObj.id) return true;
+        for (let usr in this.users) {
+            if (usr.id == userObj.id) return true;
         }
         return false;
     }
@@ -99,20 +99,20 @@ class GroupLinking {
     NotifyTS3(group, msg) {
         if (this.showgroupname)
             msg = group + ' | ' + msg;
-        if(this.chatmode == 2)
-        	this.instance.SendChannelMessage(msg);
-        else if(this.chatmode == 2)
-        	this.instance.SendGlobalMessage(msg);
+        if (this.chatmode == 2)
+            this.instance.SendChannelMessage(msg);
+        else if (this.chatmode == 2)
+            this.instance.SendGlobalMessage(msg);
     }
 
     // Sends a mesage to the relating telegram group respecting the
     // .. 'show server name'- and notification-settings
     NotifyTelegram(server, msg) {
-        if (this.showservername && server) msg = '('+ server + ') ' + msg;
+        if (this.showservername && server) msg = '(' + server + ') ' + msg;
         let oobj = { 'parse_mode': 'html' };
         if (this.silent) Object.assign(oobj, { 'disable_notification': true });
-        this.main.bot.sendNewMessage(this.groupid, msg, oobj).catch((a,b,c) => {
-            console.log('Error group send message: ' + JSON.stringify([a.message,b,c]));
+        this.main.bot.sendNewMessage(this.groupid, msg, oobj).catch((a, b, c) => {
+            console.log('Error group send message: ' + JSON.stringify([a.message, b, c]));
         });
     }
 }

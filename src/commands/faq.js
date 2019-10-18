@@ -10,16 +10,16 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 109,
-    available: 1, 
+    available: 1,
     groupperm: false,
     needslinking: false,
     needsselected: false,
     usage: '/faq',
     description: 'faq',
-    command: [ '/faq' ],
-    callback: function(main, ctx) {
+    command: ['/faq'],
+    callback: function (main, ctx) {
         let msgs = (ctx.isGroup && ctx.groupBinding !== null) ?
-        ctx.groupMessages : ctx.senderMessages;
+            ctx.groupMessages : ctx.senderMessages;
         let txtt = msgs.faqText;
         txtt = txtt.replace('<sloc>', main.slocCount);
         ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('help', msgs)]];

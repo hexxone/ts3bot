@@ -9,7 +9,7 @@
 module.exports = {
     id: 107,
     hidden: true,
-    available: 1, 
+    available: 1,
     groupperm: false,
     needslinking: false,
     needsselected: false,

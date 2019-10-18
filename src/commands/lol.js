@@ -12,14 +12,14 @@ module.exports = {
     id: 116,
     hidden: true,
     command: ['/lol'],
-    available: 3, 
+    available: 3,
     groupperm: false,
     needslinking: false,
     needsselected: false,
     usage: '/lol',
     description: 'lol',
     callback: function (main, ctx) {
-        let ix = parseInt( Math.random() * (main.lolcurses.length - 1) );
+        let ix = parseInt(Math.random() * (main.lolcurses.length - 1));
         ctx.respondChat('League of ' + main.lolcurses[ix], ctx.opt);
     }
 };

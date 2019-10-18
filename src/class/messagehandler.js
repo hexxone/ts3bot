@@ -46,7 +46,7 @@ module.exports = function (self, msg) {
     ctx.sender.last_msg_id = msg.message_id;
 
     // announcement check
-    if(self.run && (!self.announces[ctx.chatId] || self.announces[ctx.chatId] < self.announceID)) {
+    if (self.run && (!self.announces[ctx.chatId] || self.announces[ctx.chatId] < self.announceID)) {
         self.announces[ctx.chatId] = self.announceID;
         bot.sendMessage(ctx.chatId, self.announceText);
     }
@@ -143,8 +143,8 @@ module.exports = function (self, msg) {
             console.log('runtoggle: ' + self.run);
             return;
         }
-        
-        if(!self.run) {
+
+        if (!self.run) {
             console.log('no run, return.');
             return;
         }
@@ -177,7 +177,7 @@ module.exports = function (self, msg) {
             ** MENU ACTION HANDLER AREA
             */
             return self.actions.reduce(function (cont, obj) {
-                if(!cont) return false;
+                if (!cont) return false;
                 return obj.action.reduce(function (cont2, action) {
                     if (cont2 && action.toLowerCase() === ctx.sender.menu.toLowerCase()) {
                         console.log('ACTION: ' + action + ' by: ' + msg.from.id);
@@ -193,7 +193,7 @@ module.exports = function (self, msg) {
         /*
         ** COMMAND HANDLER AREA
         */
-        if(ctx.cmd != '') {
+        if (ctx.cmd != '') {
             return CommandHandler.handle(self, ctx, 0, ctx.cmd);
         }
     }

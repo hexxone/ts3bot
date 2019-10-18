@@ -11,7 +11,7 @@ const Utils = require('../class/utils.js').Get();
 module.exports = {
     id: 129,
     hidden: true,
-    available: 2, 
+    available: 2,
     groupperm: true,
     needslinking: true,
     needsselected: false,
@@ -19,7 +19,7 @@ module.exports = {
     description: 'setchatmode',
     command: ['/setchatmode'],
     callback: function (main, ctx) {
-    	let usage = ctx.groupMessages.usage + this.usage;
+        let usage = ctx.groupMessages.usage + this.usage;
         if (ctx.args.length == 2) {
             switch (ctx.args[1].toLowerCase()) {
                 case '0': case 'aus': case 'off': case 'false': case 'disable':
@@ -37,7 +37,7 @@ module.exports = {
             }
             // build message
             let msg = ctx.groupMessages.setChatMode
-                    + Utils.cmToStr(ctx.groupBinding.language, ctx.groupBinding.chatmode);
+                + Utils.cmToStr(ctx.groupBinding.language, ctx.groupBinding.chatmode);
             ctx.respondChat(msg, ctx.opt);
             ctx.groupBinding.NotifyTS3(ctx.msg.chat.title, msg);
         }

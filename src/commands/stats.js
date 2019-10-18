@@ -9,7 +9,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 139,
-    available: 3, 
+    available: 3,
     groupperm: false,
     needslinking: false,
     needsselected: false,
@@ -19,10 +19,10 @@ module.exports = {
     callback: function (main, ctx) {
         ctx.opt.parse_mode = 'html';
         let s = ctx.isGroup && ctx.groupLinking ?
-                ctx.groupMessages : ctx.senderMessages;
+            ctx.groupMessages : ctx.senderMessages;
 
         let msg = 'Stats:<code>' + Utils.getStats(s) + '</code>';
-        if(!ctx.isGroup)
+        if (!ctx.isGroup)
             ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('start', s)]];
         ctx.respondChat(msg, ctx.opt);
     }

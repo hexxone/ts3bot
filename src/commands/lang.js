@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 112,
-    available: 3, 
+    available: 3,
     groupperm: true,
     needslinking: true,
     needsselected: false,
@@ -20,7 +20,7 @@ module.exports = {
     callback: function (main, ctx) {
         let kb = [];
         let msg = ctx.isGroup ? ctx.groupMessages.langCurrent : ctx.senderMessages.langCurrent;
-        if(!ctx.isGroup) {
+        if (!ctx.isGroup) {
             kb.push([Utils.getCmdBtn('start', ctx.senderMessages)]);
             ctx.opt.reply_markup.inline_keyboard = kb;
         }
@@ -39,21 +39,21 @@ module.exports = {
             }
             msg = ctx.senderMessages.langNotFound;
         }
-        if(ctx.isGroup) {
+        if (ctx.isGroup) {
             kb.push(['/menu']);
             msg = '<a href=\'tg://user?id=' + ctx.sender.id + '\'>@</a> ' + msg;
             ctx.opt.reply_markup.keyboard = kb;
             ctx.opt.parse_mode = 'html';
         }
-        for(let lng of main.languages) {
-            if(lng.langCode == ctx.sender.language)
+        for (let lng of main.languages) {
+            if (lng.langCode == ctx.sender.language)
                 continue;
-            if(ctx.isGroup)
+            if (ctx.isGroup)
                 kb.push(['/lang ' + lng.langFlag]);
             else
                 kb.push([{
                     text: lng.langFlag,
-                    callback_data: 'l'+lng.langFlag
+                    callback_data: 'l' + lng.langFlag
                 }]);
         }
         ctx.respondChat(msg, ctx.opt);
