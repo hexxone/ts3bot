@@ -92,16 +92,16 @@ class Instance {
         console.log("Connecting...");
 
         // Bot was Disconnected
-        this.bot.on('close', () => {
+        this.bot.on('close', () => this.main.handleEx(() => {
             console.log(this.name + " | Disconnected.");
             let msgs = Utils.getLanguageMessages(this.owner.language);
             this.main.bot.sendNewMessage(this.id, msgs.botDisconnected + this.name);
             this.connectionErr = 'Connection closed by host.';
             this.Disconnect(this.autoconnect);
-        });
+        }));
 
         // Client joined the server
-        this.bot.on('cliententerview', data => {
+        this.bot.on('cliententerview', data => this.main.handleEx(() => {
             //console.log("Join data: " + JSON.stringify(data));
             for (let usr of this.users)
                 if (usr.clid === data.clid)
@@ -130,10 +130,10 @@ class Instance {
             }
             // trigger tree update
             this.UpdateLiveTrees();
-        });
+        }));
 
         // Client left the server
-        this.bot.on('clientleftview', data => {
+        this.bot.on('clientleftview', data => this.main.handleEx(() => {
             //console.log("Left data: " + JSON.stringify(data));
             for (let i = 0; i < this.users.length; i++) {
                 let usr = this.users[i];
@@ -161,10 +161,10 @@ class Instance {
             }
             // trigger tree update
             this.UpdateLiveTrees();
-        });
+        }));
 
         // Client switched a channel, get user info and update in this.users
-        this.bot.on('clientmoved', data => {
+        this.bot.on('clientmoved', data => this.main.handleEx(() => {
             // loop all clients
             this.users.forEach((usr) => {
                 if (usr.clid !== data.clid) return; // wrong client
@@ -209,13 +209,10 @@ class Instance {
                 // trigger tree update
                 this.UpdateLiveTrees();
             });
-        });
-
-        // TODO: Channel was renamed, added or deleted | get channel info and update in this.channels
-        //this.bot.on('', data => { });
+        }));
 
         // Message received
-        this.bot.on('textmessage', data => {
+        this.bot.on('textmessage', data => this.main.handleEx(() => {
             // ignore messages by the bot itself
             if (this.clid != null && data.invokerid == this.clid) return;
             // Get message
@@ -228,7 +225,7 @@ class Instance {
             }
             // Notify groups
             else this.NotifyGroups(data.targetmode, "<b>" + this.fixNameToTelegram(data.invokername) + "</b> : " + this.fixUrlToTelegram(msgText));
-        });
+        }));
 
         // Start the login Process
         // @TODO: Check Permissions
@@ -331,6 +328,7 @@ class Instance {
         this.KillPing(this);
         if (stayconnected) setTimeout(() => this.Connect(), CONNECT_WAIT);
         else if (onerror) {
+            this.UpdateLiveTrees(true);
             this.connectionState = 3;
             let msgs = Utils.getLanguageMessages(this.owner().language);
             this.main.bot.sendNewMessage(this.id, msgs.connectError.replace('<attempts>', this.connectTry) + this.connectionErr);
@@ -555,6 +553,9 @@ class Instance {
     }
 
     GetChannelTree(root, ignorebots, recursive) {
+
+        // todo: user muted symbol? mic? afk?
+
         let childr = this.GetChannelsBymain(root);
         let userr = this.GetChannelUser(root, ignorebots);
         let chres = "";
@@ -609,6 +610,10 @@ class Instance {
 
     UpdateLiveTree(tree, error) {
         let cobj = tree > 0 ? Utils.getUser({ id: tree }) : Utils.getGroupLinking(tree);
+        if(!cobj || !cobj.language) {
+            console.log("Critical: cant find chat object for live tree: " + JSON.stringify([tree,cobj]));
+            return;
+        }
         this.GetServerTree(cobj.language, cobj.ignorebots, text => {
             //console.log("tree: " + text);
             let opt = {
@@ -629,10 +634,10 @@ class Instance {
         }, error);
     }
 
-    UpdateLiveTrees() {
+    UpdateLiveTrees(error) {
         for (let lt in this.trees) {
             let tree = this.trees[lt];
-            this.UpdateLiveTree(tree);
+            this.UpdateLiveTree(tree, error);
         }
     }
 
@@ -663,7 +668,7 @@ class Instance {
             //console.log(self.name + " | Updating Channels & Users...");
             let errfunc = function (err) {
                 self.connectionErr = JSON.stringify(err);
-                console.log("Ping Err: " + this.connectionErr);
+                console.log("Ping Err: " + self.connectionErr);
                 if (self.autoconnect) {
                     self.connectTry = 0;
                     self.Disconnect(true);

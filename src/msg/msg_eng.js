@@ -258,6 +258,7 @@ const myObject = {
     cmd_notifyjoin: 'Notify on TS3 join',
     cmd_pm: 'Personal message',
     cmd_reconnect: 'Reconnect',
+    cmd_sample: 'sample',
     cmd_select: 'Select a server',
     cmd_setaccount: 'query account details',
     cmd_setchannel: 'TS3 channel name',

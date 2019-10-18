@@ -10,6 +10,13 @@
 // For a command to work it just needs to be a .js file like this and be located in the "commands" folder.
 // It will then be automatically loaded and reloaded on runtime.
 
+// I'm using this pattern for various reasons: you can check the commands conditions
+// before calling it and save a lot of duplicate code regarding responses.
+// Hence, you also know when you could call each command and you can get
+// a translated description and usage string for it.
+
+// I've also though about using regex as command condition, but I figured argument checking
+// would include far too much variety and conditions to really make it worth.
 // Regarding the attributes just read on.
 
 module.exports = {
@@ -21,7 +28,7 @@ module.exports = {
     needslinking: false, // the command requires the group to have a linked instance (available 2|3)
     needsselected: false, // the command requires the sender to have an instance selected (available 1|3)
     usage: '/sample', // command usage (including arguments)
-    description: 'addServer', // language bundle description
+    description: 'sample', // language bundle description has to be unique aswell to be found by the inline keyboard
     callback: function (main, ctx) {
 
         // This code will be called when a command is run and the specified requirements are met.
