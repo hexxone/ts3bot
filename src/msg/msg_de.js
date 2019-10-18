@@ -77,7 +77,7 @@ const myObject = {
         + 'Der Bot braucht folgende Berechtigungen um Ordnungsgemäß zu funktionieren:\r\n'
         + ' - b_virtualserver_info_view\r\n - b_virtualserver_connectioninfo_view\r\n - b_virtualserver_channel_list\r\n'
         + ' - b_virtualserver_client_list\r\n - b_virtualserver_notify_register\r\n - b_virtualserver_notify_unregister\r\n'
-        + 'Die User Namen & Channel werden nur alle 2 Minuten aktualisiert.'
+        + 'Die User Namen & Channel werden nur alle 2 Minuten aktualisiert.\r\n'
         + 'Dieser Bot wurde mit NodeJS realisiert.\r\n'
         + 'Codezeilen: <sloc>',
     helpText: 'TS3Bot Hilfe:\r\nDieser Bot bietet ein Interface um TS3 Server'
@@ -259,6 +259,7 @@ const myObject = {
     cmd_notifyjoin: 'Join Nachricht',
     cmd_pm: 'Persönliche Mitteilung',
     cmd_reconnect: 'Neu Verbinden',
+    cmd_sample: 'sample',
     cmd_select: 'Auswählen',
     cmd_setaccount: 'Query Account Details',
     cmd_setchannel: 'Channel Name',
