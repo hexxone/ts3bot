@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -10,9 +10,9 @@ let Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 1,
-    action: ["accept_tos"],
+    action: ['accept_tos'],
     callback: function (main, ctx) {
-        ctx.sender.menu = "";
+        ctx.sender.menu = '';
         let msgs = ctx.senderMessages;
         if (ctx.text == msgs.tosString) {
             ctx.sender.agreement = true;

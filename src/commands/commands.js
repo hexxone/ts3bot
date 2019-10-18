@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: false,
     usage: '/commands',
     description: 'commands',
-    command: ["/commands"],
+    command: ['/commands'],
     callback: function (main, ctx) {
         let isDev = (ctx.sender.id == ctx.developer_id);
         let cmsgs = ctx.senderMessages;
@@ -35,34 +35,34 @@ module.exports = {
                     if (searchString.includes(ctx.args[1])) {
                         resCnt++;
                         let cmdmsg = cmsgs.commandCommand;
-                        let extramsg = "";
-                        if (obj.needslinking) extramsg += "needs: linked server";
+                        let extramsg = '';
+                        if (obj.needslinking) extramsg += 'needs: linked server';
                         if (obj.groupperm) {
-                            extramsg += (extramsg !== "") ? " &" : "needs:";
-                            extramsg += " admin";
+                            extramsg += (extramsg !== '') ? ' &' : 'needs:';
+                            extramsg += ' admin';
                         }
                         if (obj.needsselected) {
-                            extramsg += (extramsg !== "") ? " or:" : "needs:";
-                            extramsg += " selected server";
+                            extramsg += (extramsg !== '') ? ' or:' : 'needs:';
+                            extramsg += ' selected server';
                         }
                         // build available string
                         let avail = Utils.avToStr(cmsgs.langCode, obj.available);
-                        if (extramsg !== "") avail += " (" + extramsg + ")";
+                        if (extramsg !== '') avail += ' (' + extramsg + ')';
                         // build command string
-                        cmdmsg = cmdmsg.replace("[usage]", obj.usage);
-                        cmdmsg = cmdmsg.replace("[desc]", cmsgs["cmd_" + obj.description]);
-                        cmdmsg = cmdmsg.replace("[available]", avail);
-                        if(resCnt > 1) ifomsg += "\r\n--- --- --- --- --- --- --- ---";
+                        cmdmsg = cmdmsg.replace('[usage]', obj.usage);
+                        cmdmsg = cmdmsg.replace('[desc]', cmsgs['cmd_' + obj.description]);
+                        cmdmsg = cmdmsg.replace('[available]', avail);
+                        if(resCnt > 1) ifomsg += '\r\n--- --- --- --- --- --- --- ---';
                         ifomsg += cmdmsg;
                     }
                     if(resCnt > 4) {
-                        ifomsg += "\r\n--- --- --- --- --- --- --- ---\r\n" + cmsgs.commandMax;
+                        ifomsg += '\r\n--- --- --- --- --- --- --- ---\r\n' + cmsgs.commandMax;
                         return true;
                     }
                 }
                 return false;
             });
-            ctx.opt.parse_mode = "html";
+            ctx.opt.parse_mode = 'html';
             if(resCnt == 0) {
                 ifomsg = cmsgs.commandNotFound;
             }
@@ -71,8 +71,8 @@ module.exports = {
             return;
         }
         let info = (ctx.args.length > 1 && ctx.args[1] == '-i');
-        let msgtxt = cmsgs.availableCommands + "\r\n";
-        let msgtxt2 = "";
+        let msgtxt = cmsgs.availableCommands + '\r\n';
+        let msgtxt2 = '';
         let isBinding = (ctx.groupBinding) ? true : false;
         let isAdmin = isBinding && (ctx.groupBinding.instance.id == ctx.sender.id || ctx.groupBinding.alladmin);
         let isSelected = (ctx.senderSelectedInstance) ? true : false;
@@ -93,27 +93,27 @@ module.exports = {
             else isAvailable = false;
 
             if (isAvailable) {
-                let between = ctx.senderMessages['cmd_' + obj.description] || "empty";
+                let between = ctx.senderMessages['cmd_' + obj.description] || 'empty';
                 let overlen = obj.usage.length + between.length - (info ? 37 : 39);
-                if (overlen > 0) between = between.substring(0, between.length - overlen - 2) + "..";
+                if (overlen > 0) between = between.substring(0, between.length - overlen - 2) + '..';
                 //
-                let ifo = "";
+                let ifo = '';
                 if(info) {
-                    if (ctx.isGroup) ifo += (obj.groupperm) ? "*" : " " + (obj.needslinking) ? "#" : " ";
-                    else ifo += (obj.needsselected) ? "~" : " ";
+                    if (ctx.isGroup) ifo += (obj.groupperm) ? '*' : ' ' + (obj.needslinking) ? '#' : ' ';
+                    else ifo += (obj.needsselected) ? '~' : ' ';
                 }
                 // if argument required, put in code brackets
                 if(obj.usage.indexOf(' ') < 0) 
-                	msgtxt += obj.usage + " (" + between + ") " + ifo + "\r\n";
+                	msgtxt += obj.usage + ' (' + between + ') ' + ifo + '\r\n';
                 else 
-                	msgtxt2 += "<code>" + obj.usage + "</code> (" + between + ") " + ifo + "\r\n";
+                	msgtxt2 += '<code>' + obj.usage + '</code> (' + between + ') ' + ifo + '\r\n';
             }
             return false;
         });
         msgtxt += msgtxt2;
         if(info) msgtxt += (ctx.isGroup) ? + cmsgs.commandsGroup : cmsgs.commandsChat;
         msgtxt += cmsgs.commandsDetail;
-        ctx.opt.parse_mode = "html";
+        ctx.opt.parse_mode = 'html';
         if(!ctx.isGroup)
             ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('help', ctx.senderMessages)]];
         ctx.respondChat(msgtxt, ctx.opt);

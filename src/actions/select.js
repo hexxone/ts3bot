@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 9,
-    action: ["select"],
+    action: ['select'],
     callback: function (main, ctx) {
         if (ctx.args.length == 1 && Utils.testName(ctx.args[0])) {
             let inst = Utils.getArrayObjectByName(ctx.senderInstances, ctx.args[0]);

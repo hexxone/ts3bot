@@ -15,7 +15,7 @@
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with this program. See "LICENSE.txt" file in project root. 
+// along with this program. See 'LICENSE.txt' file in project root. 
 // 
 // If not, visit <https://www.gnu.org/licenses/> for full license information.
 //  
@@ -40,9 +40,9 @@
 // / / / / / / / / / / / / / / / / / / / / / / //
 // / / / / / / / / / / / / / / / / / / / / / / //
 
-let l = "\r\n / / / / / / / / / / / / / / / / / / / / / / / / / /\r\n";
-console.log(l + " /   TS3TelegramBot Copyright (c) 2019 D.Thiele    /\r\n / This program comes with ABSOLUTELY NO WARRANTY; /\r\n /  This is free software, and you are welcome to  /");
-console.log(" /    redistribute it under certain conditions;    /\r\n /          See LICENSE file for details.          /" + l);
+let l = '\r\n / / / / / / / / / / / / / / / / / / / / / / / / / /\r\n';
+console.log(l + ' /   TS3TelegramBot Copyright (c) 2019 D.Thiele    /\r\n / This program comes with ABSOLUTELY NO WARRANTY; /\r\n /  This is free software, and you are welcome to  /');
+console.log(' /    redistribute it under certain conditions;    /\r\n /          See LICENSE file for details.          /' + l);
 
 const wait = new Date(Date.now() + 5000);
 while (Date.now() < wait) { }
@@ -51,7 +51,7 @@ while (Date.now() < wait) { }
 const self = this;
 
 // Load required Libaries
-const Path = require("path");
+const Path = require('path');
 const TelegramBot = require('node-telegram-bot-api');
 // Load other Classes 
 const AntiSpam = require('./class/antispam.js');
@@ -62,7 +62,7 @@ const MessageHandler = require('./class/messagehandler.js');
 const ReplyHandler = require('./class/replyhandler.js');
 
 // load config into ctx
-require("./config.js")(self);
+require('./config.js')(self);
 
 // load special classes => they store a reference to the main ctx by passing 'self'
 // if you require these classes from another one, it will keep the reference when passing 'null'.
@@ -72,7 +72,7 @@ const Loader = require('./class/loader.js').Get(self);
 // hook console.log to always include time
 const log = console.log;
 console.log = function () {
-    log.apply(console, ["[" + Utils.getTime() + "]"].concat(arguments.length > 1 ? arguments : arguments[0]));
+    log.apply(console, ['[' + Utils.getTime() + ']'].concat(arguments.length > 1 ? arguments : arguments[0]));
 }
 
 // set our start time, cuz why not
@@ -97,19 +97,19 @@ self.handleEx = (callback) => {
         ex = self.parseExStr(ex);
         if (self.debug) {
             try {
-                self.bot.sendMessage(self.developer_id, "Bot Exception:\r\n" + ex);
+                self.bot.sendMessage(self.developer_id, 'Bot Exception:\r\n' + ex);
             } catch (ex2) {
                 ex2 = self.parseExStr(ex2);
-                console.log("Fatal Exception: " + ex + ex2);
+                console.log('Fatal Exception: ' + ex + ex2);
             }
         }
-        else console.log("Exception: " + ex);
+        else console.log('Exception: ' + ex);
     }
 };
 
 // handles bot errors
 self.telegramErrorHandler = function (err) {
-    console.error("Telegram Exception", JSON.stringify(err).substring(0, 100));
+    console.error('Telegram Exception', JSON.stringify(err).substring(0, 100));
 };
 
 // handles any closing of the program
@@ -119,7 +119,7 @@ self.exitHandler = function (opt, err) {
         for (let instance of self.instances)
             instance.Disconnect(false, false);
         Loader.saveData();
-        console.log("[TS3Bot|Exit]");
+        console.log('[TS3Bot|Exit]');
         process.exit(0);
     }
 };
@@ -127,9 +127,9 @@ self.exitHandler = function (opt, err) {
 // INIT DYNAMIC RESOURCES
 
 // Get module paths
-self.actionsPath = Path.join(__dirname, "actions");
-self.commandsPath = Path.join(__dirname, "commands");
-self.languagesPath = Path.join(__dirname, "msg");
+self.actionsPath = Path.join(__dirname, 'actions');
+self.commandsPath = Path.join(__dirname, 'commands');
+self.languagesPath = Path.join(__dirname, 'msg');
 // Create module arrays
 self.actions = [];
 self.commands = [];
@@ -158,7 +158,7 @@ process.on('SIGINT', self.exitHandler.bind(null, { exit: true }));
 
 SLOCCount((arg) => {
     self.slocCount = arg;
-    console.log("SLOC result : " + arg);
+    console.log('SLOC result : ' + arg);
 });
 
 // create Fileproxy?
@@ -172,7 +172,7 @@ Loader.watchModules();
 Loader.loadData();
 
 // load curses
-self.lolcurses = require('fs').readFileSync('./data/curses.txt').toString().split("\r\n");
+self.lolcurses = require('fs').readFileSync('./data/curses.txt').toString().split('\r\n');
 
 // save data every 5 minutes
 self.autoSave = setInterval(() => {
@@ -219,9 +219,9 @@ else {
     let setAddr = 'https://' + self.webHookAddr + ':' + self.webHookPort + '/' + self.telegram_bot_token;
     console.log('setting up WebHook: ' + setAddr);
     if (self.webHookCustomCertificate)
-        bot.setWebHook(setAddr, self.webCert).then(e => console.log("Webhook result: " + e));
+        bot.setWebHook(setAddr, self.webCert).then(e => console.log('Webhook result: ' + e));
     else
-        bot.setWebHook(setAddr).then(e => console.log("WebHook result: " + e));
+        bot.setWebHook(setAddr).then(e => console.log('WebHook result: ' + e));
 }
 
 // Spam protection wrapper

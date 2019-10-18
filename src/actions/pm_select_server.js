@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 6,
-    action: ["pm_select_server"],
+    action: ['pm_select_server'],
     callback: function (main, ctx) {
         Utils.fixRemoveKeyboard(main, ctx);
         ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('menu', ctx.senderMessages),]];

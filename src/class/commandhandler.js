@@ -63,7 +63,7 @@ const myClass = {
                         // if nothing was required, we can execute.
                         exec = exec || (!obj.groupperm && !obj.needslinking);
                     }
-                    else if (obj.available !== 0) // > dev commands "do not exist" => dont respond
+                    else if (obj.available !== 0) // > dev commands 'do not exist' => dont respond
                         self.bot.sendNewMessage(ctx.chatId, msgs.commandErrChat1, ctx.opt);
                 }
                 else {
@@ -86,7 +86,7 @@ const myClass = {
                 }
                 // only execute if conditions were met.
                 if (exec) {
-                    console.log("COMMAND: " + command + " by: " + ctx.sender.id);
+                    console.log('COMMAND: ' + command + ' by: ' + ctx.sender.id);
                     if(!ctx.isGroup && !ctx.isReply) self.bot.deleteMessage(ctx.chatId, ctx.msg.message_id);
                     obj.callback(self, ctx);
                 }

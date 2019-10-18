@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -10,7 +10,7 @@ let Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 100,
-    command: ["/add"],
+    command: ['/add'],
     available: 1, 
     groupperm: false,
     needslinking: false,
@@ -24,7 +24,7 @@ module.exports = {
         }
         else if (ctx.senderInstances.length < 3) {
             ctx.sender.menu = 'add_instance';
-            ctx.opt.parse_mode = "html";
+            ctx.opt.parse_mode = 'html';
             ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('cancel', ctx.senderMessages), ] ];
             ctx.respondChat(ctx.senderMessages.addInfo, ctx.opt);
         }
