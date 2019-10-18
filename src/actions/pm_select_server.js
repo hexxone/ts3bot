@@ -14,7 +14,7 @@ module.exports = {
     callback: function (main, ctx) {
         Utils.fixRemoveKeyboard(main, ctx);
         ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('menu', ctx.senderMessages),]];
-        
+
         // TODO
     }
 };

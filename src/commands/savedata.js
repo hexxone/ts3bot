@@ -10,7 +10,7 @@ const Loader = require('../class/loader.js').Get();
 
 module.exports = {
     id: 124,
-    available: 0, 
+    available: 0,
     groupperm: false,
     needslinking: false,
     needsselected: false,
@@ -20,7 +20,7 @@ module.exports = {
     callback: function (main, ctx) {
         if (ctx.sender.id == ctx.developer_id) {
             if (ctx.args.length == 1) {
-            	Loader.saveData();
+                Loader.saveData();
                 // Notify
                 ctx.respondChat('Data saved.', ctx.opt);
             }

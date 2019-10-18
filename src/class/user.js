@@ -19,7 +19,7 @@ class User {
         this.menu = menu;
         this.selected = selected;
         this.agreement = agreement;
-        
+
         this.sentdev = false;
         this.spams = 0;
         this.banneduntil = null;

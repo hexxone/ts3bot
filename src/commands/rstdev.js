@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 123,
-    available: 0, 
+    available: 0,
     groupperm: false,
     needslinking: false,
     needsselected: false,

@@ -8,14 +8,14 @@
 
 module.exports = {
     id: 140,
-    available: 3, 
+    available: 3,
     groupperm: false,
     needslinking: true,
     needsselected: true,
     usage: '/susers',
     description: 'susers',
     command: ['/susers'],
-    callback: function(main, ctx) {
+    callback: function (main, ctx) {
         ctx.opt.parse_mode = 'html';
         if (ctx.isGroup) {
             ctx.groupBinding.instance.GetSimpleUserString(
