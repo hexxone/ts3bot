@@ -22,10 +22,11 @@
 
 /*
     @TODO
-    - livetree
+    x livetree
     - fix command id's
     - add pm select server/user/send commands
-    
+    - channel & username notifications -> premium?
+    - fix docker
 */
 
 // / / / / / / / / / / / / / / / / / / / / / / //
@@ -89,14 +90,14 @@ self.parseExStr = (ex) => JSON.stringify({
 }, null, 4);
 
 // custom Exception Handler
-self.handleEx = (callback, id) => {
+self.handleEx = (callback) => {
     try {
         callback();
     } catch (ex) {
         ex = self.parseExStr(ex);
         if (self.debug) {
             try {
-                self.bot.sendMessage(id, "Bot Exception:\r\n" + ex);
+                self.bot.sendMessage(self.developer_id, "Bot Exception:\r\n" + ex);
             } catch (ex2) {
                 ex2 = self.parseExStr(ex2);
                 console.log("Fatal Exception: " + ex + ex2);
@@ -173,6 +174,11 @@ Loader.loadData();
 // load curses
 self.lolcurses = require('fs').readFileSync('./data/curses.txt').toString().split("\r\n");
 
+// save data every 5 minutes
+self.autoSave = setInterval(() => {
+    Loader.saveData();
+}, 300000);
+
 // CREATE BOT
 
 // Create the Telegram Bot either with webhook or polling
@@ -244,16 +250,12 @@ bot.getMe()
 
         // listen for messages
         bot.on('message', (msg) => {
-            self.handleEx(
-                () => MessageHandler(self, msg),
-                self.developer_id)
+            self.handleEx(() => MessageHandler(self, msg))
         });
 
         // listen for inline Button responses
         bot.on('callback_query', (msg) => {
             if (!self.run) return;
-            self.handleEx(
-                () => ReplyHandler(self, msg),
-                self.developer_id)
+            self.handleEx(() => ReplyHandler(self, msg))
         });
     });
