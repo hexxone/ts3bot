@@ -9,7 +9,7 @@
 const Utils = require('../class/utils.js').Get();
 
 module.exports = {
-    id: 124,
+    id: 126,
     hidden: true,
     available: 1, 
     groupperm: false,
