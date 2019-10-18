@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -14,7 +14,7 @@ module.exports = {
     needsselected: true,
     usage: '/reconnect',
     description: 'reconnect',
-    command: ["/reconnect"],
+    command: ['/reconnect'],
     callback: function (main, ctx) {
         let msgs = ctx.senderMessages;
         if (ctx.isGroup) {

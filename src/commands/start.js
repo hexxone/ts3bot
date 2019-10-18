@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -17,7 +17,7 @@ module.exports = {
     needsselected: false,
     usage: '/start',
     description: 'start',
-    command: ["/start"],
+    command: ['/start'],
     callback: function (main, ctx) {
         ctx.opt.disable_web_page_preview = true;
         let msgs = ctx.senderMessages;
@@ -37,8 +37,8 @@ module.exports = {
                     main.linkings.push(inst);
                     // Notify
                     let lnked = msgs.groupLinked;
-                    ctx.respondChat(lnked + ".", ctx.opt);
-                    main.bot.sendNewMessage(inst.instance.id, lnked + ": " + ctx.msg.chat.title, {reply_markup: {inline_keyboard: [[Utils.getCmdBtn('menu', msgs)]] }});
+                    ctx.respondChat(lnked + '.', ctx.opt);
+                    main.bot.sendNewMessage(inst.instance.id, lnked + ': ' + ctx.msg.chat.title, {reply_markup: {inline_keyboard: [[Utils.getCmdBtn('menu', msgs)]] }});
                 }
                 else ctx.respondChat(msgs.invalidLink, ctx.opt);
             }

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -17,7 +17,7 @@ module.exports = {
     needsselected: true,
     usage: '/setaccount',
     description: 'setaccount',
-    command: ["/setaccount"],
+    command: ['/setaccount'],
     callback: function (main, ctx) {
         Utils.fixRemoveKeyboard(main, ctx);
         ctx.sender.menu = 'set_account';

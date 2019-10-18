@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: false,
     usage: '/pm [on|off]',
     description: 'pm',
-    command: ["/pm"],
+    command: ['/pm'],
     callback: function (main, ctx) {
         if (ctx.isGroup) {
             let usage = ctx.groupMessages.usage + this.usage;

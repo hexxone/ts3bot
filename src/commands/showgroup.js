@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -14,7 +14,7 @@ module.exports = {
     needsselected: false,
     usage: '/showgroup [on|off]',
     description: 'showgroup',
-    command: ["/showgroup"],
+    command: ['/showgroup'],
     callback: function (main, ctx) {
     	let usage = ctx.groupMessages.usage + this.usage;
         if (ctx.args.length == 2) {

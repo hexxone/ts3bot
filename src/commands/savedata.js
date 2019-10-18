@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: false,
     usage: '/savedata',
     description: 'savedata',
-    command: ["/savedata"],
+    command: ['/savedata'],
     callback: function (main, ctx) {
         if (ctx.sender.id == ctx.developer_id) {
             if (ctx.args.length == 1) {

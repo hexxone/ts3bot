@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: true,
     usage: '/delete',
     description: 'delete',
-    command: ["/delete"],
+    command: ['/delete'],
     callback: function (main, ctx) {
         ctx.sender.menu = 'delete_instance';
         ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('cancel', ctx.senderMessages), ] ];
