@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 106,
-    available: 1, 
+    available: 1,
     groupperm: false,
     needslinking: false,
     needsselected: true,
@@ -19,9 +19,9 @@ module.exports = {
     command: ['/delete'],
     callback: function (main, ctx) {
         ctx.sender.menu = 'delete_instance';
-        ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('cancel', ctx.senderMessages), ] ];
+        ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('cancel', ctx.senderMessages),]];
         ctx.respondChat(ctx.senderMessages.delConfirm
-                                        + ctx.senderMessages.delConfirmStr
-                                        + ctx.sender.selected, ctx.opt);
+            + ctx.senderMessages.delConfirmStr
+            + ctx.sender.selected, ctx.opt);
     }
 };
