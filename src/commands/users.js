@@ -6,10 +6,10 @@
 // See LICENSE file in the project root for full license information.  
 //  
 
-let Utils = require('../class/utils.js').Get();
+const Utils = require('../class/utils.js').Get();
 
 module.exports = {
-    id: 141,
+    id: 143,
     available: 3, 
     groupperm: false,
     needslinking: true,

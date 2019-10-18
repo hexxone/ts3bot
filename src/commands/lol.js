@@ -9,7 +9,7 @@
 let Utils = require('../class/utils.js').Get();
 
 module.exports = {
-    id: 199,
+    id: 116,
     hidden: true,
     command: ["/lol"],
     available: 3, 
