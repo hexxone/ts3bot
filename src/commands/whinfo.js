@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -14,7 +14,7 @@ module.exports = {
     needsselected: false,
     usage: '/whinfo',
     description: 'whinfo',
-    command: ["/whinfo"],
+    command: ['/whinfo'],
     callback: function (main, ctx) {
         if (ctx.sender.id == ctx.developer_id) {
             let whi = main.bot._request('getWebhookInfo');

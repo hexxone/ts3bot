@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 11,
-    action: ["set_channel", "set_channel_first"],
+    action: ['set_channel', 'set_channel_first'],
     callback: function (main, ctx) {
         let msgs = ctx.senderMessages;
         if (ctx.senderSelectedInstance != null) {
@@ -19,7 +19,7 @@ module.exports = {
                 // Output / Next
                 let msg = msgs.channelSet;
                 let kb = [];
-                if (Utils.endsWith(ctx.sender.menu, "_first")){
+                if (Utils.endsWith(ctx.sender.menu, '_first')){
                 	kb.push(Utils.getCmdBtn('link', msgs));
                     msg += '\r\n' + msgs.channelComplete;
                 }

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 12,
-    action: ["set_name", "set_name_first"],
+    action: ['set_name', 'set_name_first'],
     callback: function (main, ctx) {
         let msgs = ctx.senderMessages;
         if (ctx.senderSelectedInstance != null) {
@@ -18,7 +18,7 @@ module.exports = {
                 ctx.senderSelectedInstance.clientname = ctx.args[0];
                 // Output / Next
                 let msg = msgs.setName;
-                if (Utils.endsWith(ctx.sender.menu, "_first")) {
+                if (Utils.endsWith(ctx.sender.menu, '_first')) {
                     ctx.sender.menu = 'set_channel_first';
                     msg += msgs.setNameFirst;
                     ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('cancel', msgs)]];

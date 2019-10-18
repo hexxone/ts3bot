@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -15,7 +15,7 @@ module.exports = {
     needsselected: false,
     usage: '/select',
     description: 'select',
-    command: ["/select"],
+    command: ['/select'],
     callback: function (main, ctx) {
         if(ctx.senderInstances.length > 0) {
             ctx.sender.menu = 'select';

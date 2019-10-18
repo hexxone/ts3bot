@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -11,7 +11,7 @@ class AntiSpam {
         // always initialize all instance properties
         this.maxper20 = maxper20;
         this.register = [];
-        console.log("AntiSpam active! Max rate: " + maxper20 + " msg / 10 sec");
+        console.log('AntiSpam active! Max rate: ' + maxper20 + ' msg / 10 sec');
     }
 
     // will add an timestamp with the user per sent message

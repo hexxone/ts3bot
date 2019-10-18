@@ -13,7 +13,7 @@ const CommandHandler = require('./commandhandler.js');
 
 module.exports = function (self, cq) {
     // debug print
-    // console.log("callback_query: " + JSON.stringify(cq));
+    // console.log('callback_query: ' + JSON.stringify(cq));
     let msg = cq.message;
     if (!msg || !cq.data || !cq.from) return;
     self.receivedMessages++;
@@ -37,7 +37,7 @@ module.exports = function (self, cq) {
                 inline_keyboard: []
             }
         },
-        isGroup: msg.chat.type !== "private",
+        isGroup: msg.chat.type !== 'private',
     };
     // gather some objects
     ctx.senderInstances = Utils.getUserInstances(sender.id);
@@ -77,7 +77,7 @@ module.exports = function (self, cq) {
         if (cq.data.startsWith('l')) {
             // prepare fake ctx
             let flag = cq.data.substring(1);
-            ctx = CommandHandler.prepare(ctx, { text: "/lang " + flag });
+            ctx = CommandHandler.prepare(ctx, { text: '/lang ' + flag });
             // call lang command
             let cmdo = Utils.getCmdByDesc('lang');
             cmdo.callback(self, ctx);

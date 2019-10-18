@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -77,7 +77,7 @@ class GroupLinking {
 
     // add user to virtual group when he sends a message in it
     CheckAddUser(userObj) {
-        //console.log("CheckAddUser: " + userObj.id);
+        //console.log('CheckAddUser: ' + userObj.id);
         if(!this.HasUser(userObj)) this.users.push(userObj);
     }
 
@@ -94,11 +94,11 @@ class GroupLinking {
         this.users = this.users.filter((val) => userObj.id != val.id);
     }
 
-    // Sends a message to the server respecting chat mode and "show group name"-option
+    // Sends a message to the server respecting chat mode and 'show group name'-option
     // URLS need to be fixed beforehand using Utils.fixUrlToTS3
     NotifyTS3(group, msg) {
         if (this.showgroupname)
-            msg = group + " | " + msg;
+            msg = group + ' | ' + msg;
         if(this.chatmode == 2)
         	this.instance.SendChannelMessage(msg);
         else if(this.chatmode == 2)
@@ -106,13 +106,13 @@ class GroupLinking {
     }
 
     // Sends a mesage to the relating telegram group respecting the
-    // .. "show server name"- and notification-settings
+    // .. 'show server name'- and notification-settings
     NotifyTelegram(server, msg) {
-        if (this.showservername && server) msg = "(" + server + ") " + msg;
+        if (this.showservername && server) msg = '(" + server + ") ' + msg;
         let oobj = { 'parse_mode': 'html' };
         if (this.silent) Object.assign(oobj, { 'disable_notification': true });
         this.main.bot.sendNewMessage(this.groupid, msg, oobj).catch((a,b,c) => {
-            console.log("Error group send message: " + JSON.stringify([a.message,b,c]));
+            console.log('Error group send message: ' + JSON.stringify([a.message,b,c]));
         });
     }
 }

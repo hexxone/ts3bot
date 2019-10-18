@@ -26,11 +26,11 @@ const utils = {
         loadData: function (t) {
             // set or get telegram api key
             let s = this.Parent.telegram_bot_token.split(':');
-            // file name is "bot id" of api key
+            // file name is 'bot id' of api key
             let filePath = './data/bot_' + s[0] + '.stor';
             // File exists?
             if (!FS.existsSync(filePath)) {
-                console.log("DataFile doesnt exist... Cant load");
+                console.log('DataFile doesnt exist... Cant load');
                 return;
             }
             let objj = {};
@@ -38,7 +38,7 @@ const utils = {
                 // generate hash of api key part
                 let hash = Crypto.createHash('md5').update(s[1], 'utf8').digest('hex').toUpperCase();
                 // read file content
-                let crypted = FS.readFileSync(filePath).toString().split("|");
+                let crypted = FS.readFileSync(filePath).toString().split('|');
                 // first part is hex'd IV
                 let iv = Buffer.from(crypted[0], 'hex');
                 // create Decipher with Hash & IV
@@ -48,9 +48,9 @@ const utils = {
                 // parse to object
                 objj = CircularJSON.parse(data);
                 // debug print
-                //console.log("Data: " + data);
+                //console.log('Data: ' + data);
             } catch (err) {
-                console.log("loadData Error: " + JSON.stringify(err));
+                console.log('loadData Error: ' + JSON.stringify(err));
                 return;
             }
             // Apply values
@@ -105,7 +105,7 @@ const utils = {
             objj.groupnames.forEach((keyset) => {
                 this.Parent.groupnames.set(keyset.k, keyset.v);
             });
-            console.log("Data successfully decrypted & loaded.");
+            console.log('Data successfully decrypted & loaded.');
         },
         // store bot data in json
         saveData: function () {
@@ -141,14 +141,14 @@ const utils = {
             // file path = bot id of api key string
             let filePath = './data/bot_' + s[0] + '.stor';
             // save
-            FS.writeFileSync(filePath, iv.toString('hex') + "|" + crypted);
-            console.log("Data successfully encrypted & stored.");
+            FS.writeFileSync(filePath, iv.toString('hex') + '|' + crypted);
+            console.log('Data successfully encrypted & stored.');
         },
         // loads user actions, commands and language modules
         loadModules: function () {
-            this.loadFolder(this.Parent.actionsPath, this.Parent.actions, " actions.");
-            this.loadFolder(this.Parent.commandsPath, this.Parent.commands, " commands.");
-            this.loadFolder(this.Parent.languagesPath, this.Parent.languages, " languages.");
+            this.loadFolder(this.Parent.actionsPath, this.Parent.actions, ' actions.');
+            this.loadFolder(this.Parent.commandsPath, this.Parent.commands, ' commands.');
+            this.loadFolder(this.Parent.languagesPath, this.Parent.languages, ' languages.');
         },
         // loads a folder's modules
         loadFolder: function (folder, array, strAppend) {
@@ -156,11 +156,11 @@ const utils = {
             let cnt = 0;
             array.length = 0; // reset array, but keep reference
             FS.readdirSync(folder).forEach((file, i, arr) => {
-                let mod, fp = folder + "/" + file;
+                let mod, fp = folder + '/' + file;
                 if (mod = self.loadModule(array, fp))
-                    console.log("Loaded: " + mod.id + " | " + fp);
+                    console.log('Loaded: " + mod.id + " | ' + fp);
                 if (++cnt == arr.length)
-                    console.log("Done loading " + cnt + strAppend);
+                    console.log('Done loading ' + cnt + strAppend);
             });
         },
         // auto reload modules
@@ -184,10 +184,10 @@ const utils = {
         watchFolder: function (folder, array) {
             let self = this;
             FS.watch(folder, this.wch(self, (event, filename) => {
-                if (filename && filename != "undefined") {
-                    let mod, fp = folder + "/" + filename;
+                if (filename && filename != 'undefined') {
+                    let mod, fp = folder + '/' + filename;
                     if (mod = self.loadModule(array, fp))
-                        console.log("Reloaded: " + mod.id + " | " + fp);
+                        console.log('Reloaded: ' + mod.id + ' | ' + fp);
                 }
             }));
         },
@@ -196,7 +196,7 @@ const utils = {
             try {
                 delete require.cache[require.resolve(file)];
             } catch (ex) {
-                console.log("Couldnt remove from require cache (new file?): " + ex);
+                console.log('Couldnt remove from require cache (new file?): ' + ex);
             }
             try {
                 // require & find module
@@ -210,7 +210,7 @@ const utils = {
                 else array.push(mod);
                 return mod;
             } catch (ex) {
-                console.log("Couldnt load module: " + ex);
+                console.log('Couldnt load module: ' + ex);
             }
             return null;
         },

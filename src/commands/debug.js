@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,18 +16,18 @@ module.exports = {
     needsselected: false,
     usage: '/debug [on|off]',
     description: 'debug',
-    command: ["/debug"],
+    command: ['/debug'],
     callback: function (main, ctx) {
     	let usage = ctx.senderMessages.usage + this.usage;
         if (ctx.args.length == 2) {
             switch (ctx.args[1].toLowerCase()) {
                 case '0': case 'aus': case 'off': case 'false': case 'disable':
                     main.debug = false;
-                    ctx.respondChat("Debug: false", ctx.opt);
+                    ctx.respondChat('Debug: false', ctx.opt);
                     break;
                 case '1': case 'an': case 'on': case 'true': case 'enable':
                     main.debug = true;
-                    ctx.respondChat("Debug: true", ctx.opt);
+                    ctx.respondChat('Debug: true', ctx.opt);
                     break;
                 default:
                     ctx.respondChat(usage, ctx.opt);

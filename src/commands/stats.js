@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
@@ -15,9 +15,9 @@ module.exports = {
     needsselected: false,
     usage: '/stats',
     description: 'stats',
-    command: ["/stats"],
+    command: ['/stats'],
     callback: function (main, ctx) {
-        ctx.opt.parse_mode = "html";
+        ctx.opt.parse_mode = 'html';
         let s = ctx.isGroup && ctx.groupLinking ?
                 ctx.groupMessages : ctx.senderMessages;
 

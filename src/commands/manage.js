@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: false,
     usage: '/manage',
     description: 'manage',
-    command: ["/manage"],
+    command: ['/manage'],
     callback: function (main, ctx) {
         Utils.fixRemoveKeyboard(main, ctx);
         let msgs = ctx.senderMessages;
@@ -48,16 +48,16 @@ module.exports = {
         if (lnks > 0)
             msg += '\r\n' + msgs.manageFooter;
         let kbarr = [[Utils.getCmdBtn('addServer', msgs)]];
-        // could select other? => add "select"
+        // could select other? => add 'select'
         if (ctx.senderInstances.length > 1)
             kbarr[0].push(Utils.getCmdBtn('select', msgs));
-        // add "link" 
+        // add 'link' 
         if (ctx.senderSelectedInstance)
             kbarr.push([Utils.getCmdBtn('link', msgs)]);
-        // add "menu"
+        // add 'menu'
         kbarr.push([Utils.getCmdBtn('menu', msgs)]);
         ctx.opt.reply_markup.inline_keyboard = kbarr;
-        ctx.opt.parse_mode = "html";
+        ctx.opt.parse_mode = 'html';
         ctx.respondChat(msg, ctx.opt);
     }
 };
