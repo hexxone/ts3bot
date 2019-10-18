@@ -9,7 +9,7 @@
 const Loader = require('../class/loader.js').Get();
 
 module.exports = {
-    id: 122,
+    id: 124,
     available: 0, 
     groupperm: false,
     needslinking: false,

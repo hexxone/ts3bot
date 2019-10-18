@@ -21,7 +21,7 @@
 //  
 
 /*
-    @TODO
+    @TODO-LIST
     x livetree
     - fix command id's
     - add pm select server/user/send commands
@@ -200,7 +200,7 @@ bot.on('webhook_error', self.telegramErrorHandler);
 
 // wrapper for storing the last sent bot message and deleting the previous one
 bot.sendNewMessage = function(cid, text, opt, noDel) {
-    var sendr = cid > 0 ? Utils.getUser({ id: cid }) : null;
+    let sendr = cid > 0 ? Utils.getUser({ id: cid }) : null;
     if(!noDel && sendr && sendr.last_bot_msg_id) {
         this.deleteMessage(cid, sendr.last_bot_msg_id);
         sendr.last_bot_msg_id = null;
