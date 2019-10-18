@@ -609,8 +609,8 @@ class Instance {
 
     UpdateLiveTree(tree, error) {
         let cobj = tree > 0 ? Utils.getUser({ id: tree }) : Utils.getGroupLinking(tree);
-        if(!cobj || !cobj.language) {
-            console.log('Critical: cant find chat object for live tree: ' + JSON.stringify([tree,cobj]));
+        if (!cobj || !cobj.language) {
+            console.log('Critical: cant find chat object for live tree: ' + JSON.stringify([tree, cobj]));
             return;
         }
         this.GetServerTree(cobj.language, cobj.ignorebots, text => {
@@ -650,7 +650,7 @@ class Instance {
         let index = this.trees.indexOf(chatId);
         if (index > -1) this.trees.splice(index, 1);
         let cobj = chatId > 0 ? Utils.getUser({ id: chatId }) : Utils.getGroupLinking(chatId);
-        if (cobj.livetree) { 
+        if (cobj.livetree) {
             this.main.bot.deleteMessage(chatId, cobj.livetree);
             cobj.livetree = null;
             this.main.bot.sendMessage(chatId, Utils.getLanguageMessages(cobj.language).liveTreeStop);

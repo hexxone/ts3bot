@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 104,
-    available: 3, 
+    available: 3,
     groupperm: true,
     needslinking: true,
     needsselected: true,
@@ -41,12 +41,12 @@ module.exports = {
             switch (ctx.senderSelectedInstance.connectionState) {
                 case 0:
                 case 3:
-                    ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('disconnect', ctx.senderMessages), ] ];
+                    ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('disconnect', ctx.senderMessages),]];
                     ctx.respondChat(ctx.senderMessages.conConnect, ctx.opt);
                     try {
                         ctx.senderSelectedInstance.Connect(false, null, ctx.respondChat);
                     } catch (e) {
-                        ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('disconnect', ctx.senderMessages), ] ];
+                        ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('disconnect', ctx.senderMessages),]];
                         ctx.respondChat(ctx.senderMessages.errorPrefix + JSON.stringify(e), ctx.opt);
                     }
                     break;

@@ -24,15 +24,15 @@ module.exports = {
                     if (Utils.endsWith(ctx.sender.menu, '_first')) {
                         msg += msgs.accBotName;
                         ctx.sender.menu = 'set_name_first';
-                        ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('cancel', msgs) ] ];
+                        ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('cancel', msgs)]];
                     }
                     else {
-                    	ctx.sender.menu = '';
-                    	let conSt = ctx.senderSelectedInstance.connectionState;
-                    	let kb = [];
-                    	if(conSt == 2) kb.push(Utils.getCmdBtn('reconnect', msgs));
-                    	else if(conSt != 1) kb.push(Utils.getCmdBtn('connect', msgs));
-                        ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('menu', msgs) ], kb ];
+                        ctx.sender.menu = '';
+                        let conSt = ctx.senderSelectedInstance.connectionState;
+                        let kb = [];
+                        if (conSt == 2) kb.push(Utils.getCmdBtn('reconnect', msgs));
+                        else if (conSt != 1) kb.push(Utils.getCmdBtn('connect', msgs));
+                        ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('menu', msgs)], kb];
                     }
                     ctx.respondChat(msg, ctx.opt);
                 }

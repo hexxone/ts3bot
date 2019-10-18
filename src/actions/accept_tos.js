@@ -16,7 +16,7 @@ module.exports = {
         let msgs = ctx.senderMessages;
         if (ctx.text == msgs.tosString) {
             ctx.sender.agreement = true;
-            ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('addServer', msgs) ] ];
+            ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('addServer', msgs)]];
             ctx.respondChat(msgs.tosAccept, ctx.opt);
         }
         else ctx.respondChat(msgs.tosReject, ctx.opt);

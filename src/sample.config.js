@@ -10,7 +10,7 @@ module.exports = self => {
     // self is the main self of the app to apply settings to.
 
     // bot token from @BotFather in Telegram
-	// will be used to encrypt & store the individual bot data
+    // will be used to encrypt & store the individual bot data
     self.telegram_bot_token = '12345678:AAAAAAAAAAAAAAAAAAAAAAAAAA';
 
 
@@ -37,9 +37,9 @@ module.exports = self => {
     // Either generate a Cert in Cloudflare and save it locallly or
     // generate a cert locally as above and set the file paths.
     // private key
-    self.webKey = __dirname + '/../res/cf_key.pem'; 
+    self.webKey = __dirname + '/../res/cf_key.pem';
     // public key
-    self.webCert = __dirname + '/../res/cf_crt.pem';  
+    self.webCert = __dirname + '/../res/cf_crt.pem';
     // When using self signed certificate (not Cloudflare), set to true
     self.webHookCustomCertificate = false;
 
@@ -64,7 +64,7 @@ module.exports = self => {
     self.defaultLanguage = 'Eng';
 
     // Bot per chat announcement
-	// Can only be changed every restart
+    // Can only be changed every restart
     self.announceID = 1;
     self.announceText = 'TS3Bot Announcement (this will only appear once):\r\nThe bot has gone through alot of change and is now back online as you can read :)\r\nSadly you need to reconfigure the servers if you wish to use the bot again - sorry for the inconvenience.\r\nIf you find a bug, please report it using /devmessage.\r\nThanks for reading!';
 };

@@ -11,7 +11,7 @@ let Utils = require('../class/utils.js').Get();
 module.exports = {
     id: 138,
     hidden: true,
-    available: 3, 
+    available: 3,
     groupperm: false,
     needslinking: false,
     needsselected: false,
@@ -38,7 +38,7 @@ module.exports = {
                     // Notify
                     let lnked = msgs.groupLinked;
                     ctx.respondChat(lnked + '.', ctx.opt);
-                    main.bot.sendNewMessage(inst.instance.id, lnked + ': ' + ctx.msg.chat.title, {reply_markup: {inline_keyboard: [[Utils.getCmdBtn('menu', msgs)]] }});
+                    main.bot.sendNewMessage(inst.instance.id, lnked + ': ' + ctx.msg.chat.title, { reply_markup: { inline_keyboard: [[Utils.getCmdBtn('menu', msgs)]] } });
                 }
                 else ctx.respondChat(msgs.invalidLink, ctx.opt);
             }
