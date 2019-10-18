@@ -32,7 +32,7 @@ module.exports = function (self, msg) {
                 one_time_keyboard: true,
             }
         },
-        isGroup: msg.chat.type !== "private",
+        isGroup: msg.chat.type !== 'private',
     };
     // get the sending user's instances
     ctx.senderInstances = Utils.getUserInstances(ctx.sender.id);
@@ -91,7 +91,7 @@ module.exports = function (self, msg) {
             return;
         }
         // someone sent a message?
-        else if (self.run && msg.text && msg.text.substring(0, 1) !== "/") {
+        else if (self.run && msg.text && msg.text.substring(0, 1) !== '/') {
             // check for spam
             if (ctx.groupBinding.spamcheck) {
                 // Check if user is ignored due to spam
@@ -101,20 +101,20 @@ module.exports = function (self, msg) {
                         // user is no longer ignored.
                         ctx.sender.banneduntil = null;
                         try {
-                            bot.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamEnd.replace("<time>", (ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5));
+                            bot.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamEnd.replace('<time>', (ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5));
                         }
                         catch (err) {
-                            bot.sendNewMessage(ctx.chatId, ctx.senderMessages.spamEnd.replace("<time>", (ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5));
+                            bot.sendNewMessage(ctx.chatId, ctx.senderMessages.spamEnd.replace('<time>', (ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5));
                         }
                     }
                 }
                 else if (self.antispam.CheckRegisterSpam(ctx.sender)) {
                     // Spam detected
                     try {
-                        bot.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamStart1.replace("<time>", (ctx.sender.spams * ctx.sender.spams * 5)));
+                        bot.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamStart1.replace('<time>', (ctx.sender.spams * ctx.sender.spams * 5)));
                     }
                     catch (err) {
-                        bot.sendNewMessage(ctx.chatId, ctx.senderMessages.spamStart2.replace("<time>", (ctx.sender.spams * ctx.sender.spams * 5)));
+                        bot.sendNewMessage(ctx.chatId, ctx.senderMessages.spamStart2.replace('<time>', (ctx.sender.spams * ctx.sender.spams * 5)));
                     }
                     return;
                 }
@@ -127,7 +127,7 @@ module.exports = function (self, msg) {
             let mft = Utils.getMsgFileType(msg);
             if (mft !== null) {
                 let proxiedFileUrl = self.fileProxyServer.getURL(msg, mft);
-                console.log("Proxy URL: " + proxiedFileUrl);
+                console.log('Proxy URL: ' + proxiedFileUrl);
                 ctx.groupBinding.NotifyTS3(msg.chat.title, tsname + ' (' + mft + '): ' + Utils.fixUrlToTS3(proxiedFileUrl));
             }
         }
@@ -140,19 +140,19 @@ module.exports = function (self, msg) {
 
         if (msg.from.id == self.developer_id && ctx.cmd.toLocaleLowerCase() == '/runtoggle') {
             self.run = !self.run;
-            console.log("runtoggle: " + self.run);
+            console.log('runtoggle: ' + self.run);
             return;
         }
         
         if(!self.run) {
-            console.log("no run, return.");
+            console.log('no run, return.');
             return;
         }
 
-        // ""developer bot shell"" (for unnecessary stuff like calculating something)
+        // '"developer bot shell"' (for unnecessary stuff like calculating something)
         if (msg.from.id == self.developer_id && ctx.cmd.toLocaleLowerCase() == '/xd') {
             let myeval = msg.text.substring(4, msg.text.length);
-            console.log("/xd eval: " + myeval);
+            console.log('/xd eval: ' + myeval);
             ctx.respondChat(eval(myeval), ctx.opt);
             return;
         }
@@ -164,10 +164,10 @@ module.exports = function (self, msg) {
         }
 
         // check for menu
-        if (!ctx.isGroup && ctx.sender.menu !== "") {
-            if (ctx.cmd !== "") {
+        if (!ctx.isGroup && ctx.sender.menu !== '') {
+            if (ctx.cmd !== '') {
                 ctx.opt.reply_markup = {
-                    keyboard: [["/cancel"]],
+                    keyboard: [['/cancel']],
                     resize_keyboard: true,
                 };
                 ctx.respondChat(ctx.senderMessages.actionCommand, ctx.opt);
@@ -180,7 +180,7 @@ module.exports = function (self, msg) {
                 if(!cont) return false;
                 return obj.action.reduce(function (cont2, action) {
                     if (cont2 && action.toLowerCase() === ctx.sender.menu.toLowerCase()) {
-                        console.log("ACTION: " + action + " by: " + msg.from.id);
+                        console.log('ACTION: ' + action + ' by: ' + msg.from.id);
                         obj.callback(self, ctx);
                         bot.deleteMessage(msg.chat.id, msg.message_id);
                         return false;

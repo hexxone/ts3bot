@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -17,7 +17,7 @@ module.exports = {
     needsselected: true,
     usage: '/setchanneldepth [0-5]',
     description: 'setchanneldepth',
-    command: ["/setchanneldepth"],
+    command: ['/setchanneldepth'],
     callback: function (main, ctx) {
         Utils.fixRemoveKeyboard(main, ctx);
         let usage = ctx.senderMessages.usage + this.usage;

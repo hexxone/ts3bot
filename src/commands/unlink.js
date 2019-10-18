@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: false,
     usage: '/unlink (link_name)',
     description: 'unlink',
-    command: ["/unlink"],
+    command: ['/unlink'],
     callback: function (main, ctx) {
         let o;
         if (ctx.isGroup) {

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -10,11 +10,11 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 3,
-    action: ["delete_instance"],
+    action: ['delete_instance'],
     callback: function (main, ctx) {
         if (ctx.senderSelectedInstance != null) {
             if (ctx.text == ctx.senderMessages.delConfirmStr + ctx.sender.selected) {
-                ctx.sender.menu = "";
+                ctx.sender.menu = '';
                 // Remove all Linkings with this Instance
                 main.linkings = main.linkings.filter(function (linking) {
                     // Check if is senderLinking and linking is affected

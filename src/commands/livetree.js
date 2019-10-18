@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,10 +16,10 @@ module.exports = {
     needsselected: true,
     usage: '/livetree',
     description: 'livetree',
-    command: ["/livetree"],
+    command: ['/livetree'],
     callback: function (main, ctx) {
-        ctx.opt.parse_mode = "html";
-        if (ctx.args.length == 2 && ctx.args[1] == "stop") {
+        ctx.opt.parse_mode = 'html';
+        if (ctx.args.length == 2 && ctx.args[1] == 'stop') {
             if (ctx.isGroup)
                 ctx.groupBinding.instance.RemoveLiveTree(ctx.chatId);
             else

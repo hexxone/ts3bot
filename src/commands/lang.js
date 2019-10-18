@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: false,
     usage: '/lang',
     description: 'lang',
-    command: ["/lang"],
+    command: ['/lang'],
     callback: function (main, ctx) {
         let kb = [];
         let msg = ctx.isGroup ? ctx.groupMessages.langCurrent : ctx.senderMessages.langCurrent;
@@ -40,16 +40,16 @@ module.exports = {
             msg = ctx.senderMessages.langNotFound;
         }
         if(ctx.isGroup) {
-            kb.push(["/menu"]);
-            msg = "<a href='tg://user?id=" + ctx.sender.id + "'>@</a> " + msg;
+            kb.push(['/menu']);
+            msg = '<a href=\'tg://user?id=' + ctx.sender.id + '\'>@</a> ' + msg;
             ctx.opt.reply_markup.keyboard = kb;
-            ctx.opt.parse_mode = "html";
+            ctx.opt.parse_mode = 'html';
         }
         for(let lng of main.languages) {
             if(lng.langCode == ctx.sender.language)
                 continue;
             if(ctx.isGroup)
-                kb.push(["/lang " + lng.langFlag]);
+                kb.push(['/lang ' + lng.langFlag]);
             else
                 kb.push([{
                     text: lng.langFlag,

@@ -13,7 +13,7 @@ const sloc = require('sloc');
 // Counts siginificant lines of code for all files in src.
 // if other files than .js are added, the params need to be adjusted.
 module.exports = (callme) => {
-    console.log("asynchronously counting significant lines of code (SLOC)...");
+    console.log('asynchronously counting significant lines of code (SLOC)...');
     let slocc = 0;
     let walk = function (dir, done) {
         let results = [];
@@ -40,10 +40,10 @@ module.exports = (callme) => {
     };
     let fcount = function (file, done) {
         let cnt = 0;
-        fs.readFile(file, "utf8", function (err, code) {
+        fs.readFile(file, 'utf8', function (err, code) {
             if (err) { console.error(err); }
             else {
-                let stats = sloc(code, "js");
+                let stats = sloc(code, 'js');
                 slocc += stats.source;
                 done();
             }
@@ -60,7 +60,7 @@ module.exports = (callme) => {
         }
         else callme(slocc);
     }
-    walk("./src/", function (err, results) {
+    walk('./src/', function (err, results) {
         if (err) throw err;
         sloop(results);
     });

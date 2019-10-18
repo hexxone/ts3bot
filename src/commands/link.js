@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: true,
     usage: '/link',
     description: 'link',
-    command: ["/link"],
+    command: ['/link'],
     callback: function (main, ctx) {
         if(ctx.senderLinkings.length < 5) {
             ctx.sender.menu = 'link_name';

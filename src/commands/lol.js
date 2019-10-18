@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -11,7 +11,7 @@ let Utils = require('../class/utils.js').Get();
 module.exports = {
     id: 116,
     hidden: true,
-    command: ["/lol"],
+    command: ['/lol'],
     available: 3, 
     groupperm: false,
     needslinking: false,

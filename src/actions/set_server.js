@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 13,
-    action: ["set_server", "set_server_first"],
+    action: ['set_server', 'set_server_first'],
     callback: function (main, ctx) {
         let msgs = ctx.senderMessages;
         if (ctx.senderSelectedInstance != null) {
@@ -24,7 +24,7 @@ module.exports = {
                         ctx.senderSelectedInstance.sid = splits[2];
                         // Output / Next
                         let msg = ctx.senderMessages.setServer;
-                        if (Utils.endsWith(ctx.sender.menu, "_first")) {
+                        if (Utils.endsWith(ctx.sender.menu, '_first')) {
                             msg += ctx.senderMessages.setServerFirst;
                             ctx.sender.menu = 'set_account_first';
                             ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('cancel', ctx.senderMessages)]];

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -14,15 +14,15 @@ module.exports = {
     needsselected: true,
     usage: '/susers',
     description: 'susers',
-    command: ["/susers"],
+    command: ['/susers'],
     callback: function(main, ctx) {
-        ctx.opt.parse_mode = "html";
+        ctx.opt.parse_mode = 'html';
         if (ctx.isGroup) {
             ctx.groupBinding.instance.GetSimpleUserString(
                 ctx.groupBinding.language,
                 ctx.groupBinding.ignorebots,
                 res => {
-                    let mymsg = "<code>" + res + "</code>";
+                    let mymsg = '<code>' + res + '</code>';
                     ctx.respondChat(res, ctx.opt);
                 }
             );

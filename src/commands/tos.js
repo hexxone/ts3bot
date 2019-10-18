@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -14,14 +14,14 @@ module.exports = {
     needsselected: false,
     usage: '/tos',
     description: 'tos',
-    command: ["/tos"],
+    command: ['/tos'],
     callback: function (main, ctx) {
-    	let agree = '\r\n\r\n' + ctx.senderMessages.tosAgree.replace("<tos_string>", ctx.senderMessages.tosString);
+    	let agree = '\r\n\r\n' + ctx.senderMessages.tosAgree.replace('<tos_string>', ctx.senderMessages.tosString);
     	
         ctx.respondChat(ctx.senderMessages.tosText +
         	(ctx.sender.agreement ? '' : agree ), ctx.opt);
         	
         if (!ctx.sender.agreement)
-            ctx.sender.menu = "accept_tos";
+            ctx.sender.menu = 'accept_tos';
     }
 };

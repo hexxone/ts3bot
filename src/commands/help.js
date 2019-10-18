@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: false,
     usage: '/help',
     description: 'help',
-    command: [ "/help" ],
+    command: [ '/help' ],
     callback: function(main, ctx) {
         if(!ctx.isGroup)
             ctx.opt.reply_markup.inline_keyboard = [ 

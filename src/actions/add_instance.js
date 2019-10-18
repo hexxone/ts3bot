@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -11,7 +11,7 @@ const Instance = require('../class/instance.js');
 
 module.exports = {
     id: 2,
-    action: ["add_instance"],
+    action: ['add_instance'],
     callback: function (main, ctx) {
         if (ctx.args.length == 1 && Utils.testName(ctx.args[0])) {
             if (Utils.getArrayObjectByName(ctx.senderInstances, ctx.args[0]) == null) {

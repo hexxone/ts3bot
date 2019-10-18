@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -73,7 +73,7 @@ const myObject = {
     devWait: 'Bitte warte zuerst auf eine Antwort.',
     devSend: 'In Ordnung :) Hinterlass jetzt deine Nachricht.',
     disconnect: 'Verbindung wird getrennt...',
-    faqText: 'TS3Bot FAQ (Häufig gestellte Fragen):\r\nDu kannst einen Query Acount erstellen indem du ich zu deinem Server verbindest und dann in der Toolbar "Extras > ServerQuery Login" auswählst.\r\n'
+    faqText: 'TS3Bot FAQ (Häufig gestellte Fragen):\r\nDu kannst einen Query Acount erstellen indem du ich zu deinem Server verbindest und dann in der Toolbar 'Extras > ServerQuery Login' auswählst.\r\n'
         + 'Der Bot braucht folgende Berechtigungen um Ordnungsgemäß zu funktionieren:\r\n'
         + ' - b_virtualserver_info_view\r\n - b_virtualserver_connectioninfo_view\r\n - b_virtualserver_channel_list\r\n'
         + ' - b_virtualserver_client_list\r\n - b_virtualserver_notify_register\r\n - b_virtualserver_notify_unregister\r\n'
@@ -87,7 +87,7 @@ const myObject = {
     tosText: 'TS3Bot TOS (Nutzungsbedingungen):\r\nDer Bot ist ein kostenloses, Hobbyprojekt und ich (der Entwickler) übernehme keine Haftung'
         + ' für eventuelle Schäden am Nutzer oder anderen Parteien. Da dies ein kostenloser Service ist, besteht keine Garantie dafür dass er'
         + ' immer online oder verfügbar ist. Es ist desweiteren verboten den Bot oder zugehörige Systeme sogenannten Stress-, Performance oder'
-        + ' "Sicherheits"-Tests zu unterziehen. Gegebenenfalls werden diese als DDoS gewertet und vom Provider verfolgt. Der Bot speichert gewisse Nutzerdaten verschlüsselt ab (zwischen neustarts).',
+        + ' 'Sicherheits'-Tests zu unterziehen. Gegebenenfalls werden diese als DDoS gewertet und vom Provider verfolgt. Der Bot speichert gewisse Nutzerdaten verschlüsselt ab (zwischen neustarts).',
     tosAgree: 'Um zuzustimmen, tippe bitte folgendes: \'<tos_string>\'',
     tosString: 'Ich stimme zu',
     ignorebots: 'Andere TS3 query clients werden ignoriert',

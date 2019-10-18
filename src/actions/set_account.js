@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -10,7 +10,7 @@ const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 10,
-    action: ["set_account", "set_account_first"],
+    action: ['set_account', 'set_account_first'],
     callback: function (main, ctx) {
         let msgs = ctx.senderMessages;
         if (ctx.senderSelectedInstance != null) {
@@ -21,7 +21,7 @@ module.exports = {
                     ctx.senderSelectedInstance.qpass = splits[1];
                     // Output / Next
                     let msg = msgs.accountSet;
-                    if (Utils.endsWith(ctx.sender.menu, "_first")) {
+                    if (Utils.endsWith(ctx.sender.menu, '_first')) {
                         msg += msgs.accBotName;
                         ctx.sender.menu = 'set_name_first';
                         ctx.opt.reply_markup.inline_keyboard = [ [ Utils.getCmdBtn('cancel', msgs) ] ];

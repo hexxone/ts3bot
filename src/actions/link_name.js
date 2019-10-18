@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -11,7 +11,7 @@ const GroupLinking = require('../class/grouplinking.js');
 
 module.exports = {
     id: 5,
-    action: ["link_name"],
+    action: ['link_name'],
     callback: function (main, ctx) {
         //ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('manage', ctx.senderMessages),]];
         if (ctx.senderSelectedInstance !== null) {

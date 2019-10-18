@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: true,
     usage: '/disconnect',
     description: 'disconnect',
-    command: ["/disconnect"],
+    command: ['/disconnect'],
     callback: function (main, ctx) {
         if (ctx.isGroup) {
             ctx.respondChat(ctx.groupMessages.disconnect, ctx.opt);

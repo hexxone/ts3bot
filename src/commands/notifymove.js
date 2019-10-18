@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: false,
     usage: '/notifymove [global|channel|off]',
     description: 'notifymove',
-    command: ["/notifymove"],
+    command: ['/notifymove'],
     callback: function (main, ctx) {
         let usage = 'Use: /notifymove [global|channel|false]';
         let msgs = ctx.senderMessages;

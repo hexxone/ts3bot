@@ -19,10 +19,10 @@ module.exports = self => {
     // If you already setup Cloudflare with SSL for your domain, you usually dont need to do anything.
     // Alternativce: Since August 29, 2015 Telegram supports self-signed certificates, here is how to generate one:
     // 
-    // # Our private certificate will be the following, exported as "key.pem" - dont share this file!
+    // # Our private certificate will be the following, exported as 'key.pem' - dont share this file!
     // on linux: $ openssl genrsa -out key.pem 2048
     // 
-    // # Our public certificate takes the "private" one as input and will be exported as "crt.pem"
+    // # Our public certificate takes the 'private" one as input and will be exported as "crt.pem'
     // on linux: $ openssl req -new -sha256 -key key.pem -out crt.pem
     //
     // Use Webhook? if set to false, polling is used

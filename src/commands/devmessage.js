@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -15,7 +15,7 @@ module.exports = {
     needsselected: false,
     usage: '/devmessage',
     description: 'devmessage',
-    command: ["/devmessage"],
+    command: ['/devmessage'],
     callback: function (main, ctx) {
         if (!ctx.sender.sentdev) {
             ctx.sender.menu = 'dev_message';

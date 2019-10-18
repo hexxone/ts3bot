@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,7 +16,7 @@ module.exports = {
     needsselected: false,
     usage: '/menu',
     description: 'menu',
-    command: ["/menu"],
+    command: ['/menu'],
     callback: function (main, ctx) {
         Utils.fixRemoveKeyboard(main, ctx);
         let msgs = ctx.senderMessages;
@@ -34,7 +34,7 @@ module.exports = {
                 msg = msgs.menu00 + '<code>'
                     + msgs.menu01
                     + '\r\n' + msgs.langCurrent
-                    + msgs.info01 + "</code><a href='tg://user?id=" + ins.id + "'>" + iusr.GetName() + "</a><code>"
+                    + msgs.info01 + '</code><a href=\'tg://user?id=' + ins.id + '\'>' + iusr.GetName() + '</a><code>'
                     + msgs.info02 + ins.channeldepth
                     + msgs.info03 + (ins.groups.length - 1);
             }
@@ -47,7 +47,7 @@ module.exports = {
             // no keyboard in group
             ctx.opt.reply_markup.inline_keyboard = kbarr;
             kbarr.push([Utils.getCmdBtn('manage', msgs)]);
-            // add "settings"
+            // add 'settings'
             // user has selected server
             if (ins = ctx.senderSelectedInstance) {
                 // build message
@@ -56,14 +56,14 @@ module.exports = {
                     + msgs.info12 + ins.groups.length;
             }
             else {
-                // print "not selected" info
+                // print 'not selected' info
                 msg += msgs.menu06;
-                // can "select server"?
+                // can 'select server'?
                 if (ctx.senderInstances.length > 0)
                     kbarr.push([Utils.getCmdBtn('select', msgs)]);
             }
         }
-        // "connected" command array
+        // 'connected' command array
         let conArr = [];
         // instance?
         if (ins) {
@@ -71,7 +71,7 @@ module.exports = {
             msg += msgs.info20 + Utils.stToStr(msgs.langCode, ins.connectionState);
             // connected?
             if (ins.connectionState == 2) {
-                // add "users" command
+                // add 'users' command
                 conArr.push(Utils.getCmdBtn('users', msgs));
                 // add server infos
                 msg += msgs.info21 + ins.serverinfo.virtualserver_name;
@@ -89,14 +89,14 @@ module.exports = {
                     default: conArr.push(Utils.getCmdBtn('connect', msgs));
                         break;
                 }
-                kbarr.push(conArr); // add "start"
+                kbarr.push(conArr); // add 'start'
             }
         }
         if (!ctx.isGroup)
             kbarr.push([Utils.getCmdBtn('start', msgs)]);
-        msg += "</code>";
+        msg += '</code>';
         // build message
-        ctx.opt.parse_mode = "html";
+        ctx.opt.parse_mode = 'html';
         ctx.respondChat(msg, ctx.opt);
     }
 };

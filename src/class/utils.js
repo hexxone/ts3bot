@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.  
 //  
 
-const Process = require("process");
+const Process = require('process');
 
 const urlRegex = require('url-regex');
 
@@ -22,7 +22,7 @@ const utils = {
         Parent: null,
         // returns a number with leading 0 if < 10
         get2Dig: function (num) {
-            return num == 0 ? "00" : (num && num < 10 ? "0" + num : num);
+            return num == 0 ? '00' : (num && num < 10 ? '0' + num : num);
         },
         // Time helper
         getTime: function () {
@@ -135,7 +135,7 @@ const utils = {
         // returns the file type string for a telegram message
         getMsgFileType: function (msg) {
             if (!msg) return null;
-            let fileTypeArr = ["file", "audio", "document", "photo", "sticker", "video", "voice"];
+            let fileTypeArr = ['file', 'audio', 'document', 'photo', 'sticker', 'video', 'voice'];
             for (let ft of fileTypeArr)
                 if (msg[ft])
                     return ft;
@@ -164,7 +164,7 @@ const utils = {
         // removes the keyboard and overwrites the response function 
         fixRemoveKeyboard: function (main, ctx) {
             let cid = ctx.chatId;
-            main.bot.sendMessage(cid, "🕐...", { reply_markup: { remove_keyboard: true } })
+            main.bot.sendMessage(cid, '🕐...', { reply_markup: { remove_keyboard: true } })
                 .then(data => main.bot.deleteMessage(cid, data.message_id));
         },
         // returns a command by its description name
@@ -212,8 +212,8 @@ const utils = {
         nmToStr: function (language, number) {
             let msgs = this.getLanguageMessages(language);
             switch (number) {
-                case 1: return "Channel";
-                case 2: return "Global";
+                case 1: return 'Channel';
+                case 2: return 'Global';
                 default: return msgs.optionOff;
             }
         },
@@ -221,8 +221,8 @@ const utils = {
         cmToStr: function (language, number) {
             let msgs = this.getLanguageMessages(language);
             switch (number) {
-                case 2: return "Channel";
-                case 3: return "Global";
+                case 2: return 'Channel';
+                case 3: return 'Global';
                 default: return msgs.optionOff;
             }
         },
@@ -251,7 +251,7 @@ const utils = {
             // make Telegram user clickable
             let tsname = userObj.GetName();
             if (tsname.startsWith('@'))
-                tsname = "[URL=https://t.me/" + tsname.substring(1, tsname.length) + "]" + tsname + "[/URL]";
+                tsname = '[URL=https://t.me/' + tsname.substring(1, tsname.length) + ']' + tsname + '[/URL]';
             return tsname;
         },
         // will surround urls with given TAG for being clickable TS3
@@ -261,15 +261,15 @@ const utils = {
             if (urll) {
                 if (typeof urll == typeof []) {
                     for (let i = 0; i < urll.length; i++)
-                        str = str.replace(urll[i], "[URL]" + urll[i] + "[/URL]");
+                        str = str.replace(urll[i], '[URL]' + urll[i] + '[/URL]');
                 }
-                else str = str.replace(urll, "[URL]" + urll + "[/URL]");
+                else str = str.replace(urll, '[URL]' + urll + '[/URL]');
             }
             return str;
         },
-        // converts an "int" to a string with lower cased numbers
+        // converts an 'int' to a string with lower cased numbers
         getNumberSmallASCII: function (num) {
-            let narr = "₀₁₂₃₄₅₆₇₈₉".split(""), res = "";
+            let narr = '₀₁₂₃₄₅₆₇₈₉'.split(''), res = '';
             let str = num.toString();
             for (let i = 0; i < str.length; i++) {
                 let a = str.charAt(i);
@@ -283,7 +283,7 @@ const utils = {
             let servers = {};
             this.Parent.linkings.forEach(lnk => {
                 if (lnk.pm && lnk.HasUser(user)) {
-                    let key = lnk.instance.id + "_" + lnk.instance.name;
+                    let key = lnk.instance.id + '_' + lnk.instance.name;
                     if (!servers[key]) servers[key] = lnk.instance;
                 }
             });

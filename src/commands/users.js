@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,10 +16,10 @@ module.exports = {
     needsselected: true,
     usage: '/users',
     description: 'users',
-    command: ["/users"],
+    command: ['/users'],
     callback: function(main, ctx) {
-        ctx.opt.parse_mode = "html";
-        let showBots = (ctx.args.length == 2 && ctx.args[1] == "-a");
+        ctx.opt.parse_mode = 'html';
+        let showBots = (ctx.args.length == 2 && ctx.args[1] == '-a');
         if (ctx.isGroup) {
             ctx.groupBinding.instance.GetUserString(
                 ctx.groupBinding.language,

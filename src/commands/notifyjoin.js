@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -14,12 +14,12 @@ module.exports = {
     needsselected: false,
     usage: '/notifyjoin [on|off]',
     description: 'notifyjoin',
-    command: ["/notifyjoin"],
+    command: ['/notifyjoin'],
     callback: function (main, ctx) {
         if (ctx.groupBinding.instance.id == ctx.sender.id || ctx.groupBinding.alladmin) {
             let usage = ctx.groupMessages.usage + this.usage;
             if (ctx.args.length == 2) {
-            	let opt = "";
+            	let opt = '';
                 switch (ctx.args[1].toLowerCase()) {
                     case '1': case 'an': case 'on': case 'true': case 'enable': case 'amk': case 'fly':
                         ctx.groupBinding.notifyjoin = true;

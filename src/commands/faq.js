@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -16,12 +16,12 @@ module.exports = {
     needsselected: false,
     usage: '/faq',
     description: 'faq',
-    command: [ "/faq" ],
+    command: [ '/faq' ],
     callback: function(main, ctx) {
         let msgs = (ctx.isGroup && ctx.groupBinding !== null) ?
         ctx.groupMessages : ctx.senderMessages;
         let txtt = msgs.faqText;
-        txtt = txtt.replace("<sloc>", main.slocCount);
+        txtt = txtt.replace('<sloc>', main.slocCount);
         ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('help', msgs)]];
         ctx.respondChat(txtt, ctx.opt);
     }

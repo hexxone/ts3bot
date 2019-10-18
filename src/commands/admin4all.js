@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -14,7 +14,7 @@ module.exports = {
     needsselected: false,
     usage: '/admin4all [on|off]',
     description: 'admin4all',
-    command: ["/admin4all"],
+    command: ['/admin4all'],
     callback: function (main, ctx) {
     	let usage = ctx.groupMessages.usage + this.usage;
         if (ctx.args.length == 2) {

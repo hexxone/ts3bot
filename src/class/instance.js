@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -37,13 +37,13 @@ class Instance {
         this.id = id;
         this.name = name;
 
-        this.qname = "";
-        this.qpass = "";
-        this.addr = "";
-        this.qport = "";
-        this.sid = "";
-        this.clientname = "";
-        this.channelname = "";
+        this.qname = '';
+        this.qpass = '';
+        this.addr = '';
+        this.qport = '';
+        this.sid = '';
+        this.clientname = '';
+        this.channelname = '';
         this.channeldepth = 0;
         this.autoconnect = false;
         this.greetmode = 0;
@@ -86,14 +86,14 @@ class Instance {
             'port': this.qport,
             'sid': this.sid
         };
-        //console.log("settings: " + JSON.stringify(settings));
+        //console.log('settings: ' + JSON.stringify(settings));
         this.bot = new Alfred(settings);
 
-        console.log("Connecting...");
+        console.log('Connecting...');
 
         // Bot was Disconnected
         this.bot.on('close', () => this.main.handleEx(() => {
-            console.log(this.name + " | Disconnected.");
+            console.log(this.name + ' | Disconnected.');
             let msgs = Utils.getLanguageMessages(this.owner.language);
             this.main.bot.sendNewMessage(this.id, msgs.botDisconnected + this.name);
             this.connectionErr = 'Connection closed by host.';
@@ -102,7 +102,7 @@ class Instance {
 
         // Client joined the server
         this.bot.on('cliententerview', data => this.main.handleEx(() => {
-            //console.log("Join data: " + JSON.stringify(data));
+            //console.log('Join data: ' + JSON.stringify(data));
             for (let usr of this.users)
                 if (usr.clid === data.clid)
                     return; // user already connected
@@ -111,8 +111,8 @@ class Instance {
             this.users.push(data);
             // if the client is of type server query, the client_type will be 1
             let isbot = data.client_type == 1;
-            //console.log("Is Bot: " + isbot);
-            //console.log(this.name + " | Join: " + data.client_nickname)
+            //console.log('Is Bot: ' + isbot);
+            //console.log(this.name + ' | Join: ' + data.client_nickname)
             // Notify groups by looping all
             for (let gid of this.groups) {
                 // get the linking for this group
@@ -122,8 +122,8 @@ class Instance {
                 // ignore query clients in this group ?
                 if (isbot && lnk.ignorebots) continue;
                 // build message
-                let bName = "<b>" + this.fixNameToTelegram(data.client_nickname) + "</b>";
-                let bFlag = ((isbot) ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(data.client_database_id) + "₎ ");
+                let bName = '<b>' + this.fixNameToTelegram(data.client_nickname) + '</b>';
+                let bFlag = ((isbot) ? ' (bot) ' : ' ₍' + Utils.getNumberSmallASCII(data.client_database_id) + '₎ ');
                 let msgs = Utils.getLanguageMessages(lnk.language);
                 // send Message
                 lnk.NotifyTelegram(this.serverinfo.virtualserver_name, bName + bFlag + msgs.joinedServer);
@@ -134,7 +134,7 @@ class Instance {
 
         // Client left the server
         this.bot.on('clientleftview', data => this.main.handleEx(() => {
-            //console.log("Left data: " + JSON.stringify(data));
+            //console.log('Left data: ' + JSON.stringify(data));
             for (let i = 0; i < this.users.length; i++) {
                 let usr = this.users[i];
                 if (usr.clid !== data.clid) continue;
@@ -142,7 +142,7 @@ class Instance {
                 this.users.splice(i, 1);
                 // if the client is of type server query, the client_type will be 1
                 let isbot = usr.client_type == 1;
-                //console.log(this.name + " | Left: " + usr.client_nickname);
+                //console.log(this.name + ' | Left: ' + usr.client_nickname);
                 // Notify groups by looping all
                 for (let gid of this.groups) {
                     // get the linking for this group
@@ -152,8 +152,8 @@ class Instance {
                     // ignore query clients in this group ?
                     if (isbot && lnk.ignorebots) continue;
                     // build message
-                    let bName = "<b>" + this.fixNameToTelegram(usr.client_nickname) + "</b>";
-                    let bFlag = ((isbot) ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(usr.client_database_id) + "₎ ");
+                    let bName = '<b>' + this.fixNameToTelegram(usr.client_nickname) + '</b>';
+                    let bFlag = ((isbot) ? ' (bot) ' : ' ₍' + Utils.getNumberSmallASCII(usr.client_database_id) + '₎ ');
                     let msgs = Utils.getLanguageMessages(lnk.language);
                     // send messages
                     lnk.NotifyTelegram(this.serverinfo.virtualserver_name, bName + bFlag + msgs.leftServer);
@@ -186,22 +186,22 @@ class Instance {
                         // build message
                         let msgs = Utils.getLanguageMessages(lnk.language);
                         let srvname = this.serverinfo.virtualserver_name;
-                        let bName = "<b>" + this.fixNameToTelegram(usr.client_nickname) + "</b>";
-                        let bFlag = ((isbot) ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(usr.client_database_id) + "₎ ");
+                        let bName = '<b>' + this.fixNameToTelegram(usr.client_nickname) + '</b>';
+                        let bFlag = ((isbot) ? ' (bot) ' : ' ₍' + Utils.getNumberSmallASCII(usr.client_database_id) + '₎ ');
                         // notify group
                         switch (lnk.notifymove) {
                             // notify channel
                             case 1:
                                 // user left our channel
                                 if (this.channelid == oldChannel)
-                                    lnk.NotifyTelegram(srvname, bName + bFlag + msgs.channelLeave + " [" + this.GetChannelUser(this.channelid, lnk.ignorebots).length + "]");
+                                    lnk.NotifyTelegram(srvname, bName + bFlag + msgs.channelLeave + ' [' + this.GetChannelUser(this.channelid, lnk.ignorebots).length + '']');
                                 // user joined our channel
                                 else if (this.channelid == data.ctid)
-                                    lnk.NotifyTelegram(srvname, bName + bFlag + msgs.channelJoin + " [" + this.GetChannelUser(this.channelid, lnk.ignorebots).length + "]");
+                                    lnk.NotifyTelegram(srvname, bName + bFlag + msgs.channelJoin + ' [' + this.GetChannelUser(this.channelid, lnk.ignorebots).length + ']');
                                 break;
                             // notify global
                             case 2:
-                                lnk.NotifyTelegram(srvname, bName + bFlag + msgs.channelSwitch + " <b>" + chan.channel_name + "</b> [" + this.GetChannelUser(data.ctid, lnk.ignorebots).length + "]");
+                                lnk.NotifyTelegram(srvname, bName + bFlag + msgs.channelSwitch + ' <b>' + chan.channel_name + '</b> [' + this.GetChannelUser(data.ctid, lnk.ignorebots).length + ']');
                                 break;
                         }
                     }
@@ -224,7 +224,7 @@ class Instance {
 
             }
             // Notify groups
-            else this.NotifyGroups(data.targetmode, "<b>" + this.fixNameToTelegram(data.invokername) + "</b> : " + this.fixUrlToTelegram(msgText));
+            else this.NotifyGroups(data.targetmode, '<b>' + this.fixNameToTelegram(data.invokername) + '</b> : ' + this.fixUrlToTelegram(msgText));
         }));
 
         // Start the login Process
@@ -255,13 +255,13 @@ class Instance {
             .then(() => this.bot.send('channellist'))
             .then(channeldata => {
                 this.channels = this.formatData(channeldata);
-                if (this.channels.length < 1) throw "No channels found (permission?).";
+                if (this.channels.length < 1) throw 'No channels found (permission?).';
                 // if a channel is set, try to find it & move to it
-                if (this.channelname !== "") {
+                if (this.channelname !== '') {
                     // search all channels for the one with our desired name and get its id
                     let myChannel = this.GetChannelByName(this.channelname);
-                    //console.log(this.name + " | Found Channel: " + myChannel);
-                    if (myChannel === null) throw "Target channel was not found (case sensitive).";
+                    //console.log(this.name + ' | Found Channel: ' + myChannel);
+                    if (myChannel === null) throw 'Target channel was not found (case sensitive).';
                     this.channelid = myChannel.cid;
                     // Move the bot to desired channel
                     this.bot.send('clientmove clid=' + this.clid + ' cid=' + this.channelid);
@@ -279,25 +279,25 @@ class Instance {
                 let bcnt = (this.users.length - tcnt);
                 let busr = this.main.me.username;
                 // send ts3 msg
-                this.SendChannelMessage("Hi! [URL=https://t.me/" + busr + "]" + busr + "[/URL] is now active.", true);
+                this.SendChannelMessage('Hi! [URL=https://t.me/' + busr + ']' + busr + '[/URL] is now active.', true);
                 // send message for each group & language seperately
                 for (let grp of this.groups) {
                     let lnk = Utils.getGroupLinking(grp);
                     if (!lnk) continue;
                     // build message
                     let msgs = Utils.getLanguageMessages(lnk.language);
-                    let tmpmsg = "<b>" + busr + msgs.botConnected.replace('<users>', tcnt).replace('<bots>', bcnt);
+                    let tmpmsg = '<b>' + busr + msgs.botConnected.replace('<users>', tcnt).replace('<bots>', bcnt);
                     lnk.NotifyTelegram(this.serverinfo.virtualserver_name, tmpmsg);
                 }
                 // send message to owner
                 let owner = Utils.getUser({ id: this.id });
                 let msgs = Utils.getLanguageMessages(owner.language);
-                let tmpmsg = "<b>" + busr + msgs.botConnected.replace('<users>', tcnt).replace('<bots>', bcnt);
+                let tmpmsg = '<b>' + busr + msgs.botConnected.replace('<users>', tcnt).replace('<bots>', bcnt);
                 let opt = {
-                    parse_mode: "html",
+                    parse_mode: 'html',
                     reply_markup: { inline_keyboard: [[Utils.getCmdBtn('menu', msgs)]] }
                 };
-                // "respond" if possible
+                // 'respond' if possible
                 if (respond) respond(tmpmsg, opt);
                 else this.main.bot.sendNewMessage(this.id, tmpmsg, opt);
                 // start ping to prevent timeout
@@ -370,7 +370,7 @@ class Instance {
             if (usr.cid != cid) continue;
             // if this is a query client, ignore him
             if (usr.client_type == 1 && ignorebots) continue;
-            // push user to respective "channel"-array
+            // push user to respective 'channel'-array
             userArr.push(usr);
         }
         return userArr;
@@ -387,16 +387,16 @@ class Instance {
                 if (usr.client_type == 1 && ignorebots) continue;
                 // if array not defined, do it
                 if (!userStruct[usr.cid]) userStruct[usr.cid] = [];
-                // push user to respective "channel"-array
+                // push user to respective 'channel'-array
                 userStruct[usr.cid].push(usr);
             }
-            //console.log(this.name + " | getting users: " + JSON.stringify(userStruct));
-            let result = this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserver_maxclients + msgs.userOnline + " <code>";
+            //console.log(this.name + ' | getting users: ' + JSON.stringify(userStruct));
+            let result = this.GetUserCount(ignorebots) + ' / ' + this.serverinfo.virtualserver_maxclients + msgs.userOnline + ' <code>';
             // Loop all channelIds
             for (let cid of Object.keys(userStruct)) {
                 // get channel
                 let channel = this.GetChannelById(cid);
-                //console.log("CID: " + cid + " Channel: " + JSON.stringify(channel));
+                //console.log('CID: " + cid + " Channel: ' + JSON.stringify(channel));
                 if (!channel) continue;
                 // Add channelname and users
                 let chres = '\r\n( ' + this.fixSpacer(channel.channel_name) + ' ) [' + userStruct[cid].length + ']';
@@ -405,7 +405,7 @@ class Instance {
                     let isbot = user.client_type == 1;
                     if (isbot && ignorebots) continue;
                     let bName = this.fixNameToTelegram(user.client_nickname);
-                    let bFlag = ((isbot) ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(user.client_database_id) + "₎ ");
+                    let bFlag = ((isbot) ? ' (bot) ' : ' ₍' + Utils.getNumberSmallASCII(user.client_database_id) + '₎ ');
                     chres += '\r\n - ' + bName + bFlag;
                 }
                 // channeldepth thingy
@@ -421,7 +421,7 @@ class Instance {
             if (Object.keys(userStruct).length === 0) {
                 result = msgs.noUsersOnline;
             }
-            else result += "</code>";
+            else result += '</code>';
             // send result
             callback(result);
         }
@@ -438,7 +438,7 @@ class Instance {
     GetSimpleUserString(language, ignorebots, callback) {
         let msgs = Utils.getLanguageMessages(language);
         if (this.connectionState == 2) {
-            let result = this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserver_maxclients + msgs.userOnline + " <code>";
+            let result = this.GetUserCount(ignorebots) + ' / ' + this.serverinfo.virtualserver_maxclients + msgs.userOnline + ' <code>';
             let userStruct = {};
             // Add users to array grouped by channel
             for (let usr of this.users) {
@@ -454,7 +454,7 @@ class Instance {
                 let channel = this.GetChannelById(cid);
                 result += '\r\n( ' + this.fixSpacer(channel.channel_name) + ' ) [' + userStruct[cid] + ']';
             }
-            callback(result + "</code>");
+            callback(result + '</code>');
         }
         // bot not connected, but autoconnect is active and callback is given
         else if (this.autoconnect) {
@@ -558,9 +558,9 @@ class Instance {
 
         let childr = this.GetChannelsBymain(root);
         let userr = this.GetChannelUser(root, ignorebots);
-        let chres = "";
+        let chres = '';
         if (root == 0) {
-            chres += this.serverinfo.virtualserver_name + " (" + this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserver_maxclients + ")";
+            chres += this.serverinfo.virtualserver_name + ' (' + this.GetUserCount(ignorebots) + ' / ' + this.serverinfo.virtualserver_maxclients + ')';
         }
         else {
             let rootc = this.GetChannelById(root);
@@ -573,7 +573,7 @@ class Instance {
                     let isbot = user.client_type == 1;
                     if (isbot && ignorebots) continue;
                     let bName = this.fixNameToTelegram(user.client_nickname);
-                    let bFlag = ((isbot) ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(user.client_database_id) + "₎ ");
+                    let bFlag = ((isbot) ? ' (bot) ' : ' ₍' + Utils.getNumberSmallASCII(user.client_database_id) + '₎ ');
                     chres += '\r\n - ' + bName + bFlag;
                 }
             }
@@ -584,7 +584,7 @@ class Instance {
             for (let chil in childr) {
                 let child = childr[chil];
                 let cmsg = this.GetChannelTree(child.cid, ignorebots, true);
-                chres += "\r\n" + cmsg.split('\r\n').join('\r\n  ');
+                chres += '\r\n' + cmsg.split('\r\n').join('\r\n  ');
             }
         }
         return chres;
@@ -611,16 +611,16 @@ class Instance {
     UpdateLiveTree(tree, error) {
         let cobj = tree > 0 ? Utils.getUser({ id: tree }) : Utils.getGroupLinking(tree);
         if(!cobj || !cobj.language) {
-            console.log("Critical: cant find chat object for live tree: " + JSON.stringify([tree,cobj]));
+            console.log('Critical: cant find chat object for live tree: ' + JSON.stringify([tree,cobj]));
             return;
         }
         this.GetServerTree(cobj.language, cobj.ignorebots, text => {
-            //console.log("tree: " + text);
+            //console.log('tree: ' + text);
             let opt = {
-                parse_mode: "html"
+                parse_mode: 'html'
             };
             if (cobj.livetree) {
-                console.log("Update tree: " + cobj.livetree);
+                console.log('Update tree: ' + cobj.livetree);
                 opt.chat_id = tree;
                 opt.message_id = cobj.livetree;
                 this.main.bot.editMessageText(text, opt);
@@ -628,7 +628,7 @@ class Instance {
             else {
                 this.main.bot.sendMessage(tree, text, opt).then(msg => {
                     cobj.livetree = msg.message_id;
-                    console.log("New tree: " + cobj.livetree);
+                    console.log('New tree: ' + cobj.livetree);
                 });
             }
         }, error);
@@ -665,10 +665,10 @@ class Instance {
     // Function for pinging the server to prevent timeouts
     RunPing(self) {
         if (self.connectionState == 2) {
-            //console.log(self.name + " | Updating Channels & Users...");
+            //console.log(self.name + ' | Updating Channels & Users...');
             let errfunc = function (err) {
                 self.connectionErr = JSON.stringify(err);
-                console.log("Ping Err: " + self.connectionErr);
+                console.log('Ping Err: ' + self.connectionErr);
                 if (self.autoconnect) {
                     self.connectTry = 0;
                     self.Disconnect(true);
@@ -684,7 +684,7 @@ class Instance {
                 self.users = self.formatData(clientdata);
             }).catch(err => errfunc(err));
 
-            //console.log("PING!");
+            //console.log('PING!');
         }
         else self.KillPing();
     }
@@ -692,7 +692,7 @@ class Instance {
     KillPing() {
         let self = this;
         if (self.pingInterval) {
-            //console.log(self.name + " | Instance not connected. Stopping updater...");
+            //console.log(self.name + ' | Instance not connected. Stopping updater...');
             clearInterval(self.pingInterval);
             self.pingInterval = null;
         }
@@ -709,9 +709,9 @@ class Instance {
         if (ip) {
             if (typeof ip == typeof []) {
                 for (let i = 0; i < length(ip); i++)
-                    str = str.replace(ip[i], "[IP]");
+                    str = str.replace(ip[i], '[IP]');
             }
-            else str = str.replace(ip, "[IP]");
+            else str = str.replace(ip, '[IP]');
         }
         return str;
     }
@@ -748,10 +748,10 @@ class Instance {
     }
 
     // teamspeak uses the parameter arrays, since all data fields
-    // are always sent per object and it uses a little bit less "bandwidth"
+    // are always sent per object and it uses a little bit less 'bandwidth'
     // so this function reformats the data to objects..
-    // from:  parameter arrays  {"a":["1","4"],"b":["2","5"],"c":["3","6"]}
-    // to:    object array      [{"a":"1","b":"2","c":"3"},{"a":"4","b":"5","c":"6"}]
+    // from:  parameter arrays  {'a":["1","4"],"b":["2","5"],"c":["3","6']}
+    // to:    object array      [{'a":"1","b":"2","c":"3"},{"a":"4","b":"5","c":"6'}]
     formatData(data) {
         return Object.keys(data).reduce((arr, key) => {
             if (data[key] instanceof Array) {

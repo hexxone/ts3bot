@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 //  
 // Copyright (c) 2019 D.Thiele All rights reserved.  
@@ -17,7 +17,7 @@ module.exports = {
     needsselected: false,
     usage: '/setchatmode [global|channel|off]',
     description: 'setchatmode',
-    command: ["/setchatmode"],
+    command: ['/setchatmode'],
     callback: function (main, ctx) {
     	let usage = ctx.groupMessages.usage + this.usage;
         if (ctx.args.length == 2) {
