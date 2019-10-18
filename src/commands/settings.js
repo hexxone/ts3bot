@@ -1,16 +1,16 @@
 'use strict';
 
-//  
+//
 // Copyright (c) 2019 D.Thiele All rights reserved.  
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.  
-//  
+//
 
 const Utils = require('../class/utils.js').Get();
 
 module.exports = {
     id: 132,
-    available: 3, 
+    available: 3,
     groupperm: false,
     needslinking: true,
     needsselected: true,
@@ -77,7 +77,7 @@ module.exports = {
             if (ncd > 5) ncd = 0;
             ctx.opt.reply_markup.keyboard = [
                 ['/menu'], ['/setserver', '/setaccount'], ['/setname', '/setchannel'],
-                ['/setchanneldepth " + ncd, "/autoconnect ' + !ssi.autoconnect]
+                ['/setchanneldepth ' + ncd, '/autoconnect ' + !ssi.autoconnect]
             ];
         }
         // send, dont reply/edit => telegram doesnt support that with default keyboard

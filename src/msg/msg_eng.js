@@ -1,10 +1,10 @@
 'use strict';
 
-//  
+//
 // Copyright (c) 2019 D.Thiele All rights reserved.  
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.  
-//  
+//
 
 // Every language-related string / user-message
 const myObject = {
@@ -73,7 +73,7 @@ const myObject = {
     devWait: 'You will have to wait for an answer before sending another message.',
     devSend: 'Alright :) tell me what you want to.',
     disconnect: 'Disconnecting...',
-    faqText: 'TS3Bot FAQ:\r\nYou can create a query account by connecting to your TS3 server, then click 'Toolbar > Extras > ServerQuery Login' and enter a name.\r\n'
+    faqText: 'TS3Bot FAQ:\r\nYou can create a query account by connecting to your TS3 server, then click \'Toolbar > Extras > ServerQuery Login\' and enter a name.\r\n'
         + 'The bots needs following TS3 permissions to work properly:\r\n'
         + ' - b_virtualserver_info_view\r\n - b_virtualserver_connectioninfo_view\r\n - b_virtualserver_channel_list\r\n'
         + ' - b_virtualserver_client_list\r\n - b_virtualserver_notify_register\r\n - b_virtualserver_notify_unregister\r\n'

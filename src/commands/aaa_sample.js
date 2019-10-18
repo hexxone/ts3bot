@@ -1,10 +1,10 @@
 'use strict';
 
-//  
+//
 // Copyright (c) 2019 D.Thiele All rights reserved.  
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.  
-//  
+//
 
 // This is a sample command which descibes the different attributes of a bot command.
 // For a command to work it just needs to be a .js file like this and be located in the 'commands' folder.
