@@ -6,17 +6,17 @@
 // See LICENSE file in the project root for full license information.  
 //
 
-// This is a sample command which descibes the different attributes of a bot command.
+// This is a sample command which descibes the different attributes of a Telegram-bot command.
 // For a command to work it just needs to be a .js file like this and be located in the 'commands' folder.
-// It will then be automatically loaded and reloaded on runtime.
+// It will then be automatically loaded and reloaded on runtime, which allows hotfixing.
 
-// I'm using this pattern for various reasons: you can check the commands conditions
+// I'm using the following pattern for various reasons: you can check the commands conditions
 // before calling it and save a lot of duplicate code regarding responses.
 // Hence, you also know when you could call each command and you can get
 // a translated description and usage string for it.
 
-// I've also though about using regex as command condition, but I figured argument checking
-// would include far too much variety and conditions to really make it worth.
+// I've also thought about using regex as command condition, but I figured argument checking
+// would include far too much variety and object conditions to really make it worth.
 // Regarding the attributes just read on.
 
 module.exports = {
@@ -31,8 +31,8 @@ module.exports = {
     description: 'sample', // language bundle description has to be unique aswell to be found by the inline keyboard
     callback: function (main, ctx) {
 
-        // This code will be called when a command is run and the specified requirements are met.
-        // The same arguments will be used when calling an 'action'
+        // This code will be called when the specified command is run and the required conditions are met.
+        // fyi: The following arguments will also be used when calling an 'action'
 
         // the 'main' object will basically contain all runtime-persistent data.
         // THIS INCLUDES ALL DEFINED VALUES FROM CONFIG.JS - THESE ARE NOT LISTED HERE.
@@ -65,6 +65,7 @@ module.exports = {
         // groupMessages = {}               | messages in group's language
 
         // Using all this stuff and some js-magic you should be up and running quick when creating a command.
-        // For some examples just look at other commands.
+
+        // For some more examples just look at other commands.
     }
 };

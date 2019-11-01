@@ -6,8 +6,6 @@
 // See LICENSE file in the project root for full license information.  
 //
 
-let Utils = require('../class/utils.js').Get();
-
 module.exports = {
     id: 114,
     available: 3,

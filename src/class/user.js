@@ -34,8 +34,7 @@ class User {
 
         // live tree
         this.livetree = null;
-
-        // dont export
+        this.lasttree = null;
 
         // helper for selecting user on a server
         this.pm_select_usr_site = 0;
@@ -55,7 +54,11 @@ class User {
             banneduntil: this.banneduntil,
             language: this.language,
             last_msg_id: this.last_msg_id,
-            last_bot_msg_id: this.last_bot_msg_id
+            last_bot_msg_id: this.last_bot_msg_id,
+            pm_selected_srv: this.pm_selected_srv,
+            pm_selected_usr: this.pm_selected_usr,
+            livetree: this.livetree,
+            lasttree: this.lasttree
         };
     }
 

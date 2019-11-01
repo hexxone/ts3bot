@@ -67,6 +67,7 @@ const utils = {
                 usrr.last_msg_id = usr.last_msg;
                 usrr.last_bot_msg_id = usr.last_bot_msg_id;
                 usrr.livetree = usr.livetree;
+                usrr.lasttree = usr.lasttree;
                 this.Parent.users.push(usrr);
             });
             this.Parent.instances = [];
@@ -232,6 +233,7 @@ const utils = {
             lnkk.language = lnk.language;
             lnkk.sharemedia = lnk.sharemedia;
             lnkk.livetree = lnk.livetree;
+            lnkk.lasttree = lnk.lasttree;
             lnkk.last_bot_msg_id = lnkk.last_bot_msg_id;
 
             for (let usrid of lnk.userids)
