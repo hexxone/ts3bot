@@ -74,6 +74,7 @@ const utils = {
             objj.instances.forEach((inst) => {
                 let instt = new Instance(this.Parent, inst.id, inst.name);
                 instt.groups = inst.groups;
+                instt.trees = inst.trees;
                 instt.qname = inst.qname;
                 instt.qpass = inst.qpass;
                 instt.addr = inst.addr;
