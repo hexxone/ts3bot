@@ -625,11 +625,11 @@ class Instance {
         }
         // final spacer processing
         if (l == 0) {
+            chres = this.fixSpacers(chres);
             let longest = this.longestRow(chres);
             if (longest > 38) {
                 chres = chres.replace('  ', ' ');
             }
-            chres = this.fixSpacers(chres);
         }
         // done with this level
         return chres;
