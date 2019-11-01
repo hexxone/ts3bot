@@ -8,7 +8,7 @@
 
 
 // if someone sends a bot a file, you cant easily share it. You have to usually down-and upload it again.
-// However, this is 'fileproxy" is a small application to "stream'  the Telegram downloads,
+// However, this is 'fileproxy' is a small application to 'stream'  the Telegram downloads,
 // without taking any space - just bandwidth :) I created this so you can easily access the file
 // after 1h of the time a Telegram link is valid and to hide the bot token from the URL.
 // it takes ?sid= parameter => shortid => file_id to request link for
@@ -43,7 +43,6 @@ class FileProxy {
 			} else {
 				console.log('proxying file with id: ' + file_id);
 				this.bot.getFile(file_id).then(lnk => {
-					//console.log('request lnk 4 fid: " + file_id + " result: ' + JSON.stringify(lnk));
 					let lpath = 'https://api.telegram.org/file/bot' + this.Parent.telegram_bot_token + '/' + lnk.file_path;
 					let options = {
 						method: 'GET',

@@ -153,7 +153,7 @@ const myObject = {
     joinedServer: 'joined the server.',
     botConnected: '</b> is now connected.\r\n<b><users> User(s)</b> and <b><bots> Bot(s)</b> online.',
     botChannelMsg: '',
-    liveTreeFormat: 'LiveTree\r\n<code><tree></code>\r\nLast Update: <time>',
+    liveTreeFormat: 'LiveTree\r\n<code><tree></code>\r\nChanged: <time>',
     liveTreeError: 'Error ⚠️',
     liveTreeStop: 'LiveTree stopped and removed.',
 
