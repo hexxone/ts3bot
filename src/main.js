@@ -23,7 +23,7 @@
 /*
     @TODO-LIST
     x livetree
-    - fix command id's
+    x fix command id's
     - add pm select server/user/send commands
     - channel & username notifications -> premium?
     - fix docker
