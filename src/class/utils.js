@@ -206,11 +206,11 @@ const utils = {
         },
         // returns whether the value indicates a positive meaning string
         isYes: function (value) {
-            return value.toLowerCase() in ['1', 'an', 'jo', 'ein', 'einschalten', 'aktivieren', 'aktiviert', 'aktiv', 'on', 'yes', 'yep', 'true', 'enable', 'enabled', 'amk', 'fly'];
+            return ['1', 'an', 'jo', 'ein', 'einschalten', 'aktivieren', 'aktiviert', 'aktiv', 'on', 'yes', 'yep', 'true', 'enable', 'enabled', 'amk', 'fly'].includes(value.toLowerCase());
         },
         // returns whether the value indicates a negative meaning string
         isNo: function (value) {
-            return value.toLowerCase() in ['0', 'aus', 'ausschalten', 'nö', 'deaktivieren', 'deaktiviert', 'inaktiv', 'off', 'no', 'nope', 'false', 'disable', 'disabled', 'meh', 'lame'];
+            return ['0', 'aus', 'ausschalten', 'nö', 'deaktivieren', 'deaktiviert', 'inaktiv', 'off', 'no', 'nope', 'false', 'disable', 'disabled', 'meh', 'lame'].includes(value.toLowerCase());
         },
         // Doesnt need a comment, but OCD
         endsWith: function (hay, s) {
