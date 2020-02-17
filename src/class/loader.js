@@ -68,7 +68,9 @@ const utils = {
                 usrr.last_bot_msg_id = usr.last_bot_msg_id;
                 usrr.livetree = usr.livetree;
                 usrr.lasttree = usr.lasttree;
+                usrr.lasterror = usr.lasterror;
                 this.Parent.users.push(usrr);
+                console.log("Loaded user: " + usrr.id);
             });
             this.Parent.instances = [];
             objj.instances.forEach((inst) => {
@@ -87,21 +89,38 @@ const utils = {
                 instt.greetmode = inst.greetmode;
                 instt.greetmsg = inst.greetmsg;
                 this.Parent.instances.push(instt);
+                console.log("Loaded instance: " + instt.id + " name: " + instt.name);
             });
             this.Parent.linkings = [];
             objj.linkings.forEach((lnk) => {
                 let instts = Utils.getUserInstances(lnk.instance.id);
                 let instt = Utils.getArrayObjectByName(instts, lnk.instance.name);
+                if(!instt) {
+                    console.log("Error loading linking! Debug: " + JSON.stringify({
+                        loadObject: lnk,
+                        userObject: instts
+                    }));
+                    return;
+                }
                 let lnkk = this.createLinkingFromData(instt, lnk);
                 this.Parent.linkings.push(lnkk);
+                console.log("Loaded linking: " + instt.id + " name: " + lnkk.name);
             });
             this.Parent.deeplinking = new Map();
             objj.deeplinking.forEach((keyset) => {
                 let v = keyset.v;
                 let instts = Utils.getUserInstances(v.instance.id);
                 let instt = Utils.getArrayObjectByName(instts, v.instance.name);
+                if(!instt) {
+                    console.log("Error loading deeplink! Debug: " + JSON.stringify({
+                        loadObject: keyset,
+                        userObject: instts
+                    }));
+                    return;
+                }
                 let lnkk = this.createLinkingFromData(instt, v);
                 this.Parent.deeplinking.set(keyset.k, lnkk);
+                console.log("Loaded deeplink: " + instt.id + " name: " + lnkk.name);
             });
             this.Parent.groupnames = new Map();
             objj.groupnames.forEach((keyset) => {
@@ -235,6 +254,7 @@ const utils = {
             lnkk.sharemedia = lnk.sharemedia;
             lnkk.livetree = lnk.livetree;
             lnkk.lasttree = lnk.lasttree;
+            lnkk.lasterror = lnk.lasterror;
             lnkk.last_bot_msg_id = lnkk.last_bot_msg_id;
 
             for (let usrid of lnk.userids)

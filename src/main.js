@@ -22,8 +22,10 @@
 
 /*
     @TODO-LIST
-    x livetree
-    x fix command id's
+    - add limit for grouplinkings & deeplinkings tohgether
+    - text reconnect issue fix
+    - catch all possible edit & delte message handlers?
+
     - add pm select server/user/send commands
     - channel & username notifications -> premium?
     - fix docker
@@ -117,7 +119,7 @@ self.exitHandler = function (opt, err) {
     if (err) console.log(err);
     if (opt && opt.exit) {
         for (let instance of self.instances)
-            instance.Disconnect(false, false);
+            instance.Disconnect();
         Loader.saveData();
         console.log('[TS3Bot|Exit]');
         process.exit(0);
@@ -225,7 +227,7 @@ else {
 }
 
 // Spam protection wrapper
-self.antispam = new AntiSpam(20);
+self.antispam = new AntiSpam(10);
 
 // init file proxy
 if (self.useFileProxy) {

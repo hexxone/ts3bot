@@ -24,6 +24,7 @@ module.exports = {
                 case 3:
                     ctx.respondChat(ctx.groupMessages.conConnect, ctx.opt);
                     try {
+                        ctx.groupBinding.instance.connectTry = 0;
                         ctx.groupBinding.instance.Connect();
                     } catch (e) {
                         ctx.respondChat(ctx.groupMessages.errorPrefix + JSON.stringify(e), ctx.opt);
@@ -44,7 +45,8 @@ module.exports = {
                     ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('disconnect', ctx.senderMessages),]];
                     ctx.respondChat(ctx.senderMessages.conConnect, ctx.opt);
                     try {
-                        ctx.senderSelectedInstance.Connect(false, null, ctx.respondChat);
+                        ctx.senderSelectedInstance.connectTry = 0;
+                        ctx.senderSelectedInstance.Connect(null, ctx.respondChat);
                     } catch (e) {
                         ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('disconnect', ctx.senderMessages),]];
                         ctx.respondChat(ctx.senderMessages.errorPrefix + JSON.stringify(e), ctx.opt);

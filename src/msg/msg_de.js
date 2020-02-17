@@ -153,7 +153,7 @@ const myObject = {
     botConnected: '</b> ist nun verbunden.\r\n<b><users> Benutzer</b> und <b><bots> Bot(s)</b> online.',
     botChannelMsg: ' halo I bims ein Nachrid vong Tesd',
     liveTreeFormat: 'LiveTree\r\n<code><tree></code>\r\nGeändert: <time>',
-    liveTreeError: 'Fehler ⚠️',
+    liveTreeError: ' ⚠️',
     liveTreeStop: 'LiveTree gestoppt und gelöscht.',
 
     menu00: 'TS3Bot Menü:',

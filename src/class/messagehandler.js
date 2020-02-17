@@ -17,8 +17,8 @@ module.exports = function (self, msg) {
     // user & data ctx for this received message
     // used for any data processing
     let ctx = {
-        respondChat: (txt, opt) => {
-            return self.bot.sendNewMessage(msg.chat.id, txt, opt);
+        respondChat: (txt, opt, noDel) => {
+            return self.bot.sendNewMessage(msg.chat.id, txt, opt, noDel);
         },
         developer_id: self.developer_id,
         msg: msg,

@@ -35,6 +35,7 @@ class User {
         // live tree
         this.livetree = null;
         this.lasttree = null;
+        this.lasterror = null;
 
         // helper for selecting user on a server
         this.pm_select_usr_site = 0;
@@ -58,7 +59,8 @@ class User {
             pm_selected_srv: this.pm_selected_srv,
             pm_selected_usr: this.pm_selected_usr,
             livetree: this.livetree,
-            lasttree: this.lasttree
+            lasttree: this.lasttree,
+            lasterror: this.lasterror
         };
     }
 

@@ -23,6 +23,7 @@ module.exports = {
                     if (ctx.groupBinding.instance.connectionState == 2) {
                         ctx.respondChat(ctx.groupMessages.serverReconnecting, ctx.opt);
                         try {
+                            ctx.groupBinding.instance.connectTry = 0;
                             ctx.groupBinding.instance.Disconnect(true);
                         } catch (e) {
                             ctx.respondChat(msgs.errorPrefix + JSON.stringify(e), ctx.opt);
@@ -38,6 +39,7 @@ module.exports = {
                 if (ctx.senderSelectedInstance.connectionState == 2) {
                     ctx.respondChat(ctx.senderMessages.serverReconnecting, ctx.opt);
                     try {
+                        ctx.senderSelectedInstance.connectTry = 0;
                         ctx.senderSelectedInstance.Disconnect(true);
                     } catch (e) {
                         ctx.respondChat(msgs.errorPrefix + JSON.stringify(e), ctx.opt);

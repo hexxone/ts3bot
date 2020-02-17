@@ -6,6 +6,8 @@
 // See LICENSE file in the project root for full license information.  
 //
 
+const Utils = require('utils.js').Get();
+
 // represents a binding of a ts3 server to a Telegram group.
 class GroupLinking {
 
@@ -34,6 +36,7 @@ class GroupLinking {
         // livetree
         this.livetree = null;
         this.lasttree = null;
+        this.lasterror = null;
 
         // dont export
 
@@ -64,6 +67,7 @@ class GroupLinking {
             sharemedia: this.sharemedia,
             livetree: this.livetree,
             lasttree: this.lasttree,
+            lasterror: this.lasterror,
             userids: userids,
         };
     }
@@ -115,8 +119,9 @@ class GroupLinking {
         if (this.showservername && server) msg = '(' + server + ') ' + msg;
         let oobj = { 'parse_mode': 'html' };
         if (this.silent) Object.assign(oobj, { 'disable_notification': true });
-        this.main.bot.sendNewMessage(this.groupid, msg, oobj).catch((a, b, c) => {
-            console.log('Error group send message: ' + JSON.stringify([a.message, b, c]));
+        this.main.bot.sendNewMessage(this.groupid, msg, oobj).catch(a => {
+            console.log('Error group send message: ' + a.message);
+            if(a.message.includes('chat not found')) Utils.destroyGroupLinking(this);
         });
     }
 }
