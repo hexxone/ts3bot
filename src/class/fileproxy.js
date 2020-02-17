@@ -32,12 +32,11 @@ class FileProxy {
 		this.port = port;
 
 		http.createServer((request, response) => {
-			console.log('incoming proxy request: ' + request);
 			let params = this.getParams(request);
 			let s_id = params['sid'] || null;
 			let file_id = shortid.isValid(s_id) ? this.Parent.fileMappings[s_id] || null : null;
 			if (s_id === null || file_id === null) {
-				console.log('fileproxy Error: sid not given: ' + request);
+				console.log('fileproxy Error: sid not given: ' + JSON.stringify(request));
 				response.write('No sid.');
 				response.end();
 			} else {

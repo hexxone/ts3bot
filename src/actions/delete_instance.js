@@ -29,7 +29,7 @@ module.exports = {
                     return false;
                 });
                 // Disconnect from the Server
-                ctx.senderSelectedInstance.Disconnect(false, false);
+                ctx.senderSelectedInstance.Disconnect();
                 // Remove Instance
                 main.instances = main.instances.filter(function (instance) {
                     return instance.id != ctx.senderSelectedInstance.id ||

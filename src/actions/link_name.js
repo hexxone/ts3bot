@@ -30,7 +30,7 @@ module.exports = {
                     let link = 'https://t.me/' + main.me.username + '?startgroup=' + hash;
                     ctx.sender.menu = '';
                     ctx.opt.disable_web_page_preview = true;
-                    ctx.respondChat(ctx.senderMessages.linkGroup + '\r\n' + link, ctx.opt);
+                    ctx.respondChat(ctx.senderMessages.linkGroup + '\r\n' + link, ctx.opt, true);
                 }
                 else ctx.respondChat(ctx.senderMessages.nameInUse, ctx.opt);
             }
