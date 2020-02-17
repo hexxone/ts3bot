@@ -21,7 +21,7 @@ module.exports = {
         if (ctx.isGroup) {
             ctx.respondChat(ctx.groupMessages.disconnect, ctx.opt);
             try {
-                ctx.groupBinding.instance.Disconnect(false, false);
+                ctx.groupBinding.instance.Disconnect();
             } catch (e) {
                 ctx.respondChat(ctx.groupMessages.errorPrefix + JSON.stringify(e), ctx.opt);
             }
@@ -30,7 +30,7 @@ module.exports = {
             ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('menu', ctx.senderMessages)]];
             ctx.respondChat(ctx.senderMessages.disconnect, ctx.opt);
             try {
-                ctx.senderSelectedInstance.Disconnect(false, false);
+                ctx.senderSelectedInstance.Disconnect();
             } catch (e) {
                 ctx.respondChat(ctx.senderMessages.errorPrefix + JSON.stringify(e), ctx.opt);
             }

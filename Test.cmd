@@ -1,4 +1,4 @@
 
-npm test
+npm start
 
 read
