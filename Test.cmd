@@ -1,4 +1,0 @@
-
-npm start
-
-read

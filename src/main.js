@@ -173,9 +173,6 @@ Loader.watchModules();
 // load data
 Loader.loadData();
 
-// load curses
-self.lolcurses = require('fs').readFileSync('./data/curses.txt').toString().split('\r\n');
-
 // save data every 5 minutes
 self.autoSave = setInterval(() => {
     Loader.saveData();

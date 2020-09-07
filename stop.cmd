@@ -1,3 +1,3 @@
-#!/bin/bash
+@echo off
 
 docker-compose stop

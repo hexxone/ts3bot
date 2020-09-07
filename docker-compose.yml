@@ -9,9 +9,21 @@ services:
             - 8080:8080
             - 8443:8443
         environment:
-            - VIRTUAL_HOST=bot.hexxon.me
-            - VIRTUAL_PROTO=https
             - NODE_ENV=development
+            - BOT_TOKEN=4242424242:XAXAXAXAXAXAXA
+            - WEBHOOK=false
+            - WEBHOOK_ADDR=bot.example.com
+            - WEBHOOK_PORT=443
+            - CUSTOM_CERT=false
+            - POLL_TIMEOUT=65
+            - POLL_INTERVAL=1000
+            - FILE_PROXY=false
+            - FILE_PROXY_PORT=8080
+            - FILE_PROXY_ADDR=bot.example.com
+            - DEVELOPER_ID=12345678
+            - DEBUG=false
+            - LANGUAGE=Eng
+            - MOTD_ID=1
+            - MOTD_TXT=Hi, thanks for still using the bot!
         volumes:
             - ./data:/app/data
-        network_mode: bridge
