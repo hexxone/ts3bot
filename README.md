@@ -1,28 +1,51 @@
 # @TS3Bot
 
-**Telegram to TeamSpeak3 Bot**
+**This bot can link your TeamSpeak3-server to Telegram-groups for customizable cross-chat & notifications.**
 
-*Author: Hexxon*
+Code is written in NodeJS and deployed using docker-compose.
 
-Requires at least Node v12.0
+*Author: hexxone*
+
+## Requirements
+
+- docker & compose
 
 ## Setup
 
-1. `git clone https://github.com/Hexxonite/ts3bot.git`
-2. `cd ts3bot && npm install`
-3. `cp src/sample.config.js src/config.js`
-4. edit **bot_token** & **developer_id** in new config.js
-5. `npm start`
+NOTE: at this point I won't help with any issues regarding setup or installation.
 
-## How do I ..?
+1. `git clone https://github.com/hexxone/ts3bot.git`
+2. `cd ts3bot && nano bot-variables.env`
+3. edit **bot_token** & **developer_id**, then save & quit
+4. `chmod +x *.sh && ./start.sh`
 
-If you want to understand and improve or extend the bot I recommend first reading the config comments.
-Next you could take a look at this file which should explain how commands work:
+## Language
 
-    src/commands/aaa_sample.js
+If you wish, You can create your own language file.
+Just copy: `src/msg/msg_en.js`  to e.g.:   `src/msg/msg_it.js` (for italian)
+and translate all the strings (using deepl or google?).
 
-Going on, the code is mostly commented but you'll have to work yourself through it.
-I won't be accepting any issues regarding setup or installation at this point.
+Feel free to open Pull-Requests with new and/or fixed translations :)
+
+## Customization
+
+If you want to understand and improve or extend the bot I recommend first reading the "config.js" comments and further digging your way through it.
+The code is mostly commented => Hence no documentation :)
+
+Here is the general structure:
+
+- COMMANDS
+create your own commands functions by placing a new *.js
+file into the /commands/ folder. Take a look at this file: `src/commands/aaa_sample.js`
+
+- ACTIONS
+are usually text-inputs, needed for account setup etc., which can't be done inline.
+You find them in `src/actions/`
+	
+- CLASSES
+if you think you need an additional static classes or functions,
+feel free to add a new class here: `src/class/ `
+and single functions could be put here: `src/class/utils.js`
 
 ## Features
 

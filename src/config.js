@@ -26,7 +26,7 @@ module.exports = self => {
     // on linux: $ openssl req -new -sha256 -key key.pem -out crt.pem
     //
     // Use Webhook? if set to false, polling is used
-    self.useWebHook = process.env.WEBHOOK || false;
+    self.useWebHook = process.env.WEBHOOK == "true" || false;
     // the address the webhook should use and where your server is reachable.
     // dont include the https:// part, as it is added automatically.
     self.webHookAddr = process.env.WEBHOOK_ADDR || 'bot.example.com';
@@ -41,7 +41,7 @@ module.exports = self => {
     // public key
     self.webCert = __dirname + '/app/data/crt.pem';
     // When using self signed certificate (not Cloudflare), set to true
-    self.webHookCustomCertificate = process.env.CUSTOM_CERT || false;
+    self.webHookCustomCertificate = process.env.CUSTOM_CERT == "true" || false;
 
 
     // Polling Config (only matters if not using webhook)
@@ -50,7 +50,7 @@ module.exports = self => {
 
 
     // File Proxy?
-    self.useFileProxy = process.env.FILE_PROXY || false;
+    self.useFileProxy = process.env.FILE_PROXY == "true" || false;
     self.fileProxyPort = process.env.FILE_PROXY_PORT || 8080;
     self.fileProxyAddr = process.env.FILE_PROXY_ADDR || self.webHookAddr;
 
@@ -58,7 +58,7 @@ module.exports = self => {
     // The Telegram User ID of the Developer (for special commands)
     self.developer_id = process.env.DEVELOPER_ID || 12345678;
     // will send occuring Exceptions to the Developer if possible.
-    self.debug = process.env.DEBUG || false;
+    self.debug = process.env.DEBUG == "true" || false;
 
     // the default language the bot will use for new users
     self.defaultLanguage = process.env.LANGUAGE || 'Eng';
