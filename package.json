@@ -1,12 +1,12 @@
 {
   "name": "ts3telegrambot",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A Telegram to TS3 bridge",
   "main": "main.js",
   "scripts": {
     "start": "node src/main.js"
   },
-  "author": "Hexxon",
+  "author": "hexxone",
   "license": "GPLv3",
   "dependencies": {
     "alfred-teamspeak": "^4.0.1",

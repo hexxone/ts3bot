@@ -2,28 +2,14 @@ version: '2'
 services:
     node_ts3bot:
         build: .
-        container_name: "node_ts3bot"
+        container_name: node_ts3bot
+        hostname: node_ts3bot
         image: debian/latest
-        restart: on-failure
+        restart: unless-stopped
         ports:
-            - 8080:8080
-            - 8443:8443
-        environment:
-            - NODE_ENV=development
-            - BOT_TOKEN=4242424242:XAXAXAXAXAXAXA
-            - WEBHOOK=false
-            - WEBHOOK_ADDR=bot.example.com
-            - WEBHOOK_PORT=443
-            - CUSTOM_CERT=false
-            - POLL_TIMEOUT=65
-            - POLL_INTERVAL=1000
-            - FILE_PROXY=false
-            - FILE_PROXY_PORT=8080
-            - FILE_PROXY_ADDR=bot.example.com
-            - DEVELOPER_ID=12345678
-            - DEBUG=false
-            - LANGUAGE=Eng
-            - MOTD_ID=1
-            - MOTD_TXT=Hi, thanks for still using the bot!
+            - 80:80 # can be removed if not using webhook
+            - 8080:8080 # can be removed if not using fileProxy
+        env_file:
+            - bot-variables.env # all possible environment variables (change BOT_TOKEN !)
         volumes:
-            - ./data:/app/data
+            - ./data:/app/data # bot settings storage directory
