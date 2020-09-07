@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.  
 //
 
-const Utils = require('utils.js').Get();
+const Utils = require('./utils.js').Get();
 
 // represents a binding of a ts3 server to a Telegram group.
 class GroupLinking {
