@@ -10,7 +10,7 @@
   "license": "GPLv3",
   "dependencies": {
     "bl": ">=2.2.1",
-    "lodash": ">=4.17.19",
+    "lodash": ">=4.17.21",
     "alfred-teamspeak": "^4.0.1",
     "circular-json": "^0.3.3",
     "crypto": "0.0.3",
