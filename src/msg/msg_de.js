@@ -146,7 +146,7 @@ const myObject = {
     manageFooter: '/unlink [link_name] zum löschen.',
     enableAutoConnect: 'Bot wird automatisch (neu) verbinden.',
     disableAutoConnect: 'Bot wird nicht automatisch (neu) verbinden.',
-    noUsersOnline: 'Niemand Online.. hier ein Keks 🍪',
+    noUsersOnline: 'Niemand online.',
     autoConnecting: 'Verbindet automatisch. Bitte etwas Geduld...',
     leftServer: 'hat den Server verlassen.',
     joinedServer: 'hat den Server betreten.',

@@ -3,7 +3,6 @@
 **This bot can link your TeamSpeak3-server to Telegram-groups for customizable cross-chat & notifications.**
 
 Code is written in NodeJS and deployed using docker-compose.
-
 *Author: hexxone*
 
 ## Requirements
@@ -15,7 +14,7 @@ Code is written in NodeJS and deployed using docker-compose.
 NOTE: at this point I won't help with any issues regarding setup or installation.
 
 1. `git clone https://github.com/hexxone/ts3bot.git`
-2. `cd ts3bot && nano bot-variables.env`
+2. `cd ts3bot && cp bot-variables.env .bot-variables.env && nano bot-variables.env`
 3. edit **bot_token** & **developer_id**, then save & quit
 4. `chmod +x *.sh && ./start.sh`
 
@@ -41,15 +40,16 @@ file into the /commands/ folder. Take a look at this file: `src/commands/aaa_sam
 - ACTIONS
 are usually text-inputs, needed for account setup etc., which can't be done inline.
 You find them in `src/actions/`
-	
+
 - CLASSES
 if you think you need an additional static classes or functions,
-feel free to add a new class here: `src/class/ `
+feel free to add a new class here: `src/class/`
 and single functions could be put here: `src/class/utils.js`
 
 ## Features
 
 (not in particular order):
+
 - Multilanguage Support (Eng, Ger)
 - Easy to use Inline Menu navigation
 - Every user can add up to five TS3 Servers being watched
