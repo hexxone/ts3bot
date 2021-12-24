@@ -7,9 +7,9 @@ services:
         image: debian/latest
         restart: unless-stopped
         ports:
-            - 80:80 # can be removed if not using webhook
+            - 8443:80 # can be removed if not using webhook
             - 8080:8080 # can be removed if not using fileProxy
         env_file:
-            - bot-variables.env # all possible environment variables (change BOT_TOKEN !)
+            - .bot-variables.env # all possible environment variables (change BOT_TOKEN !)
         volumes:
             - ./data:/app/data # bot settings storage directory

@@ -8,7 +8,7 @@
 
 const Process = require('process');
 
-const urlRegex = require('url-regex');
+const urlRegex = require('url-regex-safe');
 
 const utils = {
     // fills Mathods.Parent with a reference to main.js (users, groups, etc)

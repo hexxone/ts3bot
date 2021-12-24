@@ -9,16 +9,15 @@
   "author": "hexxone",
   "license": "GPLv3",
   "dependencies": {
-    "bl": ">=2.2.1",
-    "lodash": ">=4.17.19",
     "alfred-teamspeak": "^4.0.1",
+    "bl": ">=2.2.1",
     "circular-json": "^0.3.3",
     "crypto": "0.0.3",
     "https-proxy-agent": ">=2.2.3",
+    "lodash": ">=4.17.19",
     "node-telegram-bot-api": "^0.30.0",
-    "proxysocket": "^1.2.0",
     "shortid": "^2.2.13",
     "sloc": "^0.2.0",
-    "url-regex": "^4.1.0"
+    "url-regex-safe": "^2.1.0"
   }
 }
