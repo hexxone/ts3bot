@@ -28,17 +28,9 @@ const utils = {
 		getTime: function () {
 			let d = new Date();
 			return (
-				[
-					d.getFullYear(),
-					this.get2Dig(d.getMonth() + 1),
-					this.get2Dig(d.getDate()),
-				].join("-") +
+				[d.getFullYear(), this.get2Dig(d.getMonth() + 1), this.get2Dig(d.getDate())].join("-") +
 				" " +
-				[
-					this.get2Dig(d.getHours()),
-					this.get2Dig(d.getMinutes()),
-					this.get2Dig(d.getSeconds()),
-				].join(":")
+				[this.get2Dig(d.getHours()), this.get2Dig(d.getMinutes()), this.get2Dig(d.getSeconds())].join(":")
 			);
 		},
 		// Returns a User Object with the given id
@@ -51,32 +43,18 @@ const utils = {
 						console.log("Update username: " + tg_user.id);
 						user.username = tg_user.username;
 					}
-					if (
-						tg_user.first_name &&
-						user.first_name != tg_user.first_name
-					) {
+					if (tg_user.first_name && user.first_name != tg_user.first_name) {
 						console.log("Update first_name: " + tg_user.id);
 						user.first_name = tg_user.first_name;
 					}
-					if (
-						tg_user.last_name &&
-						user.last_name != tg_user.last_name
-					) {
+					if (tg_user.last_name && user.last_name != tg_user.last_name) {
 						console.log("Update last_name: " + tg_user.id);
 						user.last_name = tg_user.last_name;
 					}
 					return user;
 				}
 			console.log("New User: " + tg_user.id);
-			let newUser = new User(
-				tg_user.id,
-				tg_user.username,
-				tg_user.first_name,
-				tg_user.last_name,
-				"",
-				"",
-				false
-			);
+			let newUser = new User(tg_user.id, tg_user.username, tg_user.first_name, tg_user.last_name, "", "", false);
 			newUser.language = this.Parent.defaultLanguage;
 			this.Parent.users.push(newUser);
 			return newUser;
@@ -107,9 +85,7 @@ const utils = {
 		},
 		// Finds Instances and Linkings from Object Array by Name
 		getArrayObjectByName: function (arr, name) {
-			for (let instance of arr)
-				if (instance.name.toLowerCase() == name.toLowerCase())
-					return instance;
+			for (let instance of arr) if (instance.name.toLowerCase() == name.toLowerCase()) return instance;
 			return null;
 		},
 		// returns statistics string, param s is messages.
@@ -140,25 +116,15 @@ const utils = {
 		getLanguageMessages: function (lang) {
 			let deff = null;
 			for (let msgobj of this.Parent.languages) {
-				if (msgobj.langCode == lang || msgobj.langName == lang)
-					return msgobj;
-				if (msgobj.langCode == this.Parent.defaultLanguage)
-					deff = msgobj;
+				if (msgobj.langCode == lang || msgobj.langName == lang) return msgobj;
+				if (msgobj.langCode == this.Parent.defaultLanguage) deff = msgobj;
 			}
 			return deff;
 		},
 		// returns the file type string for a telegram message
 		getMsgFileType: function (msg) {
 			if (!msg) return null;
-			let fileTypeArr = [
-				"file",
-				"audio",
-				"document",
-				"photo",
-				"sticker",
-				"video",
-				"voice",
-			];
+			let fileTypeArr = ["file", "audio", "document", "photo", "sticker", "video", "voice"];
 			for (let ft of fileTypeArr) if (msg[ft]) return ft;
 			return null;
 		},
@@ -167,25 +133,15 @@ const utils = {
 			// Remove Linking
 			this.Parent.linkings = this.Parent.linkings.filter((linking) => {
 				// Check if is this is the linking we want to destroy
-				if (
-					linking.instance.id != lnk.instance.id ||
-					linking.name != lnk.name
-				)
-					return true;
+				if (linking.instance.id != lnk.instance.id || linking.name != lnk.name) return true;
 				// Notify, Unregister and remove it
 				let usr = this.getUser({ id: lnk.instance.id });
 				let msgs = this.getLanguageMessages(usr.language);
-				this.Parent.bot.sendNewMessage(
-					usr.id,
-					msgs.linkingDestroyed.replace("<linking>", linking.name)
-				);
+				this.Parent.bot.sendNewMessage(usr.id, msgs.linkingDestroyed.replace("<linking>", linking.name));
 				if (!noGroupMsg) {
 					let grp = this.getGroupLinking(linking.groupid);
 					let gmsgs = this.getLanguageMessages(grp.language);
-					this.Parent.bot.sendNewMessage(
-						linking.groupid,
-						gmsgs.serverUnlinked
-					);
+					this.Parent.bot.sendNewMessage(linking.groupid, gmsgs.serverUnlinked);
 				}
 				linking.Unlink();
 				return false;
@@ -230,12 +186,8 @@ const utils = {
 		// Returns a Random string of desired length
 		randomString: function (length) {
 			let text = "";
-			let possible =
-				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-			for (let i = 0; i < length; i++)
-				text += possible.charAt(
-					Math.floor(Math.random() * possible.length)
-				);
+			let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			for (let i = 0; i < length; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
 			return text;
 		},
 		// Returns a bool if the given value is type of integer.
@@ -245,50 +197,15 @@ const utils = {
 		},
 		// returns whether the value indicates a positive meaning string
 		isYes: function (value) {
-			return [
-				"1",
-				"an",
-				"jo",
-				"ein",
-				"einschalten",
-				"aktivieren",
-				"aktiviert",
-				"aktiv",
-				"on",
-				"yes",
-				"yep",
-				"true",
-				"enable",
-				"enabled",
-				"amk",
-				"fly",
-			].includes(value.toLowerCase());
+			return ["1", "an", "jo", "ein", "einschalten", "aktivieren", "aktiviert", "aktiv", "on", "yes", "yep", "true", "enable", "enabled", "amk", "fly"].includes(value.toLowerCase());
 		},
 		// returns whether the value indicates a negative meaning string
 		isNo: function (value) {
-			return [
-				"0",
-				"aus",
-				"ausschalten",
-				"nö",
-				"deaktivieren",
-				"deaktiviert",
-				"inaktiv",
-				"off",
-				"no",
-				"nope",
-				"false",
-				"disable",
-				"disabled",
-				"meh",
-				"lame",
-			].includes(value.toLowerCase());
+			return ["0", "aus", "ausschalten", "nö", "deaktivieren", "deaktiviert", "inaktiv", "off", "no", "nope", "false", "disable", "disabled", "meh", "lame"].includes(value.toLowerCase());
 		},
 		// Doesnt need a comment, but OCD
 		endsWith: function (hay, s) {
-			return (
-				hay.length >= s.length && hay.substr(hay.length - s.length) == s
-			);
+			return hay.length >= s.length && hay.substr(hay.length - s.length) == s;
 		},
 		// converts notify move mode (number) to string
 		nmToStr: function (language, number) {
@@ -346,13 +263,7 @@ const utils = {
 		tryNameClickable: function (userObj) {
 			// make Telegram user clickable
 			let tsname = userObj.GetName();
-			if (tsname.startsWith("@"))
-				tsname =
-					"[URL=https://t.me/" +
-					tsname.substring(1, tsname.length) +
-					"]" +
-					tsname +
-					"[/URL]";
+			if (tsname.startsWith("@")) tsname = "[URL=https://t.me/" + tsname.substring(1, tsname.length) + "]" + tsname + "[/URL]";
 			return tsname;
 		},
 		// will surround urls with given TAG for being clickable TS3
@@ -361,11 +272,7 @@ const utils = {
 			let urll = str.match(urlRegex());
 			if (urll) {
 				if (typeof urll == typeof []) {
-					for (let i = 0; i < urll.length; i++)
-						str = str.replace(
-							urll[i],
-							"[URL]" + urll[i] + "[/URL]"
-						);
+					for (let i = 0; i < urll.length; i++) str = str.replace(urll[i], "[URL]" + urll[i] + "[/URL]");
 				} else str = str.replace(urll, "[URL]" + urll + "[/URL]");
 			}
 			return str;
