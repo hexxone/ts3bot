@@ -177,9 +177,11 @@ class IUtils {
 	fixNameToTelegram(str) {
 		let ip = str.match(/([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})\:?([0-9]{1,5})?/);
 		if (ip) {
-			if (typeof ip == typeof []) {
-				for (let i = 0; i < length(ip); i++) str = str.replace(ip[i], "[IP]");
-			} else str = str.replace(ip, "[IP]");
+			if (ip instanceof Array) {
+				for (let i = 0; i < ip.length; i++) str = str.replace(ip[i], "[IP]");
+			} else {
+				str = str.replace(ip, "[IP]");
+			}
 		}
 		return str;
 	}
