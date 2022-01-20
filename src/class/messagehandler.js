@@ -37,13 +37,7 @@ module.exports = function (self, msg) {
 	// get the sending user's instances
 	ctx.senderInstances = Utils.getUserInstances(ctx.sender.id);
 	// get the sending user's selected instance
-	ctx.senderSelectedInstance =
-		ctx.sender.selected !== ""
-			? Utils.getArrayObjectByName(
-					ctx.senderInstances,
-					ctx.sender.selected
-			  )
-			: null;
+	ctx.senderSelectedInstance = ctx.sender.selected !== "" ? Utils.getArrayObjectByName(ctx.senderInstances, ctx.sender.selected) : null;
 	// Get users instance linkings
 	ctx.senderLinkings = Utils.getUserLinkings(ctx.sender.id);
 	// Get user language messages
@@ -52,11 +46,7 @@ module.exports = function (self, msg) {
 	ctx.sender.last_msg_id = msg.message_id;
 
 	// announcement check
-	if (
-		self.run &&
-		(!self.announces[ctx.chatId] ||
-			self.announces[ctx.chatId] < self.announceID)
-	) {
+	if (self.run && (!self.announces[ctx.chatId] || self.announces[ctx.chatId] < self.announceID)) {
 		self.announces[ctx.chatId] = self.announceID;
 		bot.sendMessage(ctx.chatId, self.announceText);
 	}
@@ -73,9 +63,7 @@ module.exports = function (self, msg) {
 		// add user
 		ctx.groupBinding.CheckAddUser(ctx.sender);
 		// get messages for group language
-		ctx.groupMessages = Utils.getLanguageMessages(
-			ctx.groupBinding.language
-		);
+		ctx.groupMessages = Utils.getLanguageMessages(ctx.groupBinding.language);
 		// make Telegram user clickable
 		let tsname = Utils.tryNameClickable(ctx.sender);
 
@@ -83,11 +71,7 @@ module.exports = function (self, msg) {
 		if (msg.new_chat_member) {
 			let newuser = Utils.getUser(msg.new_chat_member);
 			let nuname = Utils.tryNameClickable(newuser);
-			ctx.groupBinding.NotifyTS3(
-				msg.chat.title,
-				nuname + ctx.groupMessages.groupJoin,
-				true
-			);
+			ctx.groupBinding.NotifyTS3(msg.chat.title, nuname + ctx.groupMessages.groupJoin, true);
 			ctx.groupBinding.CheckAddUser(newuser);
 			return;
 		}
@@ -102,11 +86,7 @@ module.exports = function (self, msg) {
 			// remove user from mapping
 			let leftuser = Utils.getUser(msg.left_chat_member);
 			let luname = Utils.tryNameClickable(leftuser);
-			ctx.groupBinding.NotifyTS3(
-				msg.chat.title,
-				luname + ctx.groupMessages.groupLeave,
-				true
-			);
+			ctx.groupBinding.NotifyTS3(msg.chat.title, luname + ctx.groupMessages.groupLeave, true);
 			ctx.groupBinding.RemoveUser(leftuser);
 			return;
 		}
@@ -116,65 +96,29 @@ module.exports = function (self, msg) {
 			if (ctx.groupBinding.spamcheck) {
 				// Check if user is ignored due to spam
 				if (ctx.sender.banneduntil !== null) {
-					if (
-						new Date().getTime() -
-							new Date(ctx.sender.banneduntil).getTime() <
-						0
-					)
-						return;
+					if (new Date().getTime() - new Date(ctx.sender.banneduntil).getTime() < 0) return;
 					// still ignoring
 					else {
 						// user is no longer ignored.
 						ctx.sender.banneduntil = null;
 						try {
-							bot.sendNewMessage(
-								ctx.sender.id,
-								ctx.senderMessages.spamEnd.replace(
-									"<time>",
-									(ctx.sender.spams + 1) *
-										(ctx.sender.spams + 1) *
-										5
-								)
-							);
+							bot.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamEnd.replace("<time>", (ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5), ctx.opt);
 						} catch (err) {
-							bot.sendNewMessage(
-								ctx.chatId,
-								ctx.senderMessages.spamEnd.replace(
-									"<time>",
-									(ctx.sender.spams + 1) *
-										(ctx.sender.spams + 1) *
-										5
-								)
-							);
+							bot.sendNewMessage(ctx.chatId, ctx.senderMessages.spamEnd.replace("<time>", (ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5), ctx.opt);
 						}
 					}
 				} else if (self.antispam.CheckRegisterSpam(ctx.sender)) {
 					// Spam detected
 					try {
-						bot.sendNewMessage(
-							ctx.sender.id,
-							ctx.senderMessages.spamStart1.replace(
-								"<time>",
-								ctx.sender.spams * ctx.sender.spams * 5
-							)
-						);
+						bot.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamStart1.replace("<time>", ctx.sender.spams * ctx.sender.spams * 5));
 					} catch (err) {
-						bot.sendNewMessage(
-							ctx.chatId,
-							ctx.senderMessages.spamStart2.replace(
-								"<time>",
-								ctx.sender.spams * ctx.sender.spams * 5
-							)
-						);
+						bot.sendNewMessage(ctx.chatId, ctx.senderMessages.spamStart2.replace("<time>", ctx.sender.spams * ctx.sender.spams * 5));
 					}
 					return;
 				}
 			}
 			// send message
-			ctx.groupBinding.NotifyTS3(
-				msg.chat.title,
-				tsname + " : " + Utils.fixUrlToTS3(msg.text)
-			);
+			ctx.groupBinding.NotifyTS3(msg.chat.title, tsname + " : " + Utils.fixUrlToTS3(msg.text));
 		}
 		// someone shared a file?
 		else if (self.run && self.useFileProxy && ctx.groupBinding.sharemedia) {
@@ -182,14 +126,7 @@ module.exports = function (self, msg) {
 			if (mft !== null) {
 				let proxiedFileUrl = self.fileProxyServer.getURL(msg, mft);
 				console.log("Proxy URL: " + proxiedFileUrl);
-				ctx.groupBinding.NotifyTS3(
-					msg.chat.title,
-					tsname +
-						" (" +
-						mft +
-						"): " +
-						Utils.fixUrlToTS3(proxiedFileUrl)
-				);
+				ctx.groupBinding.NotifyTS3(msg.chat.title, tsname + " (" + mft + "): " + Utils.fixUrlToTS3(proxiedFileUrl));
 			}
 		}
 	}
@@ -199,10 +136,7 @@ module.exports = function (self, msg) {
 		// Check if the text contains args and split them
 		ctx = CommandHandler.prepare(ctx, msg);
 
-		if (
-			msg.from.id == self.developer_id &&
-			ctx.cmd.toLocaleLowerCase() == "/runtoggle"
-		) {
+		if (msg.from.id == self.developer_id && ctx.cmd.toLocaleLowerCase() == "/runtoggle") {
 			self.run = !self.run;
 			console.log("runtoggle: " + self.run);
 			return;
@@ -214,10 +148,7 @@ module.exports = function (self, msg) {
 		}
 
 		// '"developer bot shell"' (for unnecessary stuff like calculating something)
-		if (
-			msg.from.id == self.developer_id &&
-			ctx.cmd.toLocaleLowerCase() == "/xd"
-		) {
+		if (msg.from.id == self.developer_id && ctx.cmd.toLocaleLowerCase() == "/xd") {
 			let myeval = msg.text.substring(4, msg.text.length);
 			console.log("/xd eval: " + myeval);
 			ctx.respondChat(eval(myeval), ctx.opt);
@@ -246,13 +177,8 @@ module.exports = function (self, msg) {
 			return self.actions.reduce(function (cont, obj) {
 				if (!cont) return false;
 				return obj.action.reduce(function (cont2, action) {
-					if (
-						cont2 &&
-						action.toLowerCase() === ctx.sender.menu.toLowerCase()
-					) {
-						console.log(
-							"ACTION: " + action + " by: " + msg.from.id
-						);
+					if (cont2 && action.toLowerCase() === ctx.sender.menu.toLowerCase()) {
+						console.log("ACTION: " + action + " by: " + msg.from.id);
 						obj.callback(self, ctx);
 						bot.deleteMessage(msg.chat.id, msg.message_id);
 						return false;
