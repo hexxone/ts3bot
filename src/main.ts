@@ -43,20 +43,19 @@
 // / / / / / / / / / / / / / / / / / / / / / / //
 
 let l = "\r\n / / / / / / / / / / / / / / / / / / / / / / / / / /\r\n";
-console.log(
-	l +
-		" /   TS3TelegramBot Copyright (c) 2019 D.Thiele    /\r\n / This program comes with ABSOLUTELY NO WARRANTY; /\r\n /  This is free software, and you are welcome to  /"
-);
-console.log(
-	" /    redistribute it under certain conditions;    /\r\n /          See LICENSE file for details.          /" +
-		l
-);
+console.log(l);
+console.log(" /        TS3Bot Copyright (c) 2022 D.Thiele        /\r\n");
+console.log(" /  This program comes with ABSOLUTELY NO WARRANTY  /\r\n");
+console.log(" /   This is free software, and you are welcome to  /\r\n");
+console.log(" /     redistribute it under certain conditions;    /\r\n");
+console.log(" /           See LICENSE file for details.          /");
+console.log(l);
 
-const wait = new Date(Date.now() + 5000);
+const wait = Date.now() + 5000;
 while (Date.now() < wait) {}
 
 // ctx reference (important)
-const self = this;
+const customCtx = {} as any;
 
 // Load required Libaries
 const Path = require("path");
@@ -70,33 +69,28 @@ const MessageHandler = require("./class/messagehandler.js");
 const ReplyHandler = require("./class/replyhandler.js");
 
 // load config into ctx
-require("./config.js")(self);
+require("./config.js")(customCtx);
 
-// load special classes => they store a reference to the main ctx by passing 'self'
+// load special classes => they store a reference to the main ctx by passing 'customCtx'
 // if you require these classes from another one, it will keep the reference when passing 'null'.
-const Utils = require("./class/utils.js").Get(self);
-const Loader = require("./class/loader.js").Get(self);
+const Utils = require("./class/utils.js").Get(customCtx);
+const Loader = require("./class/loader.js").Get(customCtx);
 
 // hook console.log to always include time
 const log = console.log;
 console.log = function () {
-	log.apply(
-		console,
-		["[" + Utils.getTime() + "]"].concat(
-			arguments.length > 1 ? arguments : arguments[0]
-		)
-	);
+	log.apply(console, ["[" + Utils.getTime() + "]"].concat(arguments.length > 1 ? arguments : arguments[0]));
 };
 
 // set our start time, cuz why not
-self.startDate = Utils.getTime();
+customCtx.startDate = Utils.getTime();
 console.log("Bot running from directory: " + __dirname);
 console.log("Static classes loaded.");
 
 // SOME IMPORTANT HELPER FUNCTIONS
 
 // parses string for an exception (Result shall never be sent to a normal user!!!)
-self.parseExStr = (ex) =>
+customCtx.parseExStr = (ex) =>
 	JSON.stringify(
 		{
 			code: ex.code,
@@ -108,19 +102,16 @@ self.parseExStr = (ex) =>
 	);
 
 // custom Exception Handler
-self.handleEx = (callback) => {
+customCtx.handleEx = (callback) => {
 	try {
 		callback();
 	} catch (ex) {
-		ex = self.parseExStr(ex);
-		if (self.debug) {
+		ex = customCtx.parseExStr(ex);
+		if (customCtx.debug) {
 			try {
-				self.bot.sendMessage(
-					self.developer_id,
-					"Bot Exception:\r\n" + ex
-				);
+				customCtx.bot.sendMessage(customCtx.developer_id, "Bot Exception:\r\n" + ex);
 			} catch (ex2) {
-				ex2 = self.parseExStr(ex2);
+				ex2 = customCtx.parseExStr(ex2);
 				console.log("Fatal Exception: " + ex + ex2);
 			}
 		} else console.log("Exception: " + ex);
@@ -128,15 +119,15 @@ self.handleEx = (callback) => {
 };
 
 // handles bot errors
-self.telegramErrorHandler = function (err) {
+customCtx.telegramErrorHandler = function (err) {
 	console.error("Telegram Exception", JSON.stringify(err).substring(0, 100));
 };
 
 // handles any closing of the program
-self.exitHandler = function (opt, err) {
+customCtx.exitHandler = function (opt, err) {
 	if (err) console.log(err);
 	if (opt && opt.exit) {
-		for (let instance of self.instances) instance.Disconnect();
+		for (let instance of customCtx.instances) instance.Disconnect();
 		Loader.saveData();
 		console.log("[TS3Bot|Exit]");
 		process.exit(0);
@@ -146,42 +137,42 @@ self.exitHandler = function (opt, err) {
 // INIT DYNAMIC RESOURCES
 
 // Get module paths
-self.actionsPath = Path.join(__dirname, "actions");
-self.commandsPath = Path.join(__dirname, "commands");
-self.languagesPath = Path.join(__dirname, "msg");
+customCtx.actionsPath = Path.join(__dirname, "actions");
+customCtx.commandsPath = Path.join(__dirname, "commands");
+customCtx.languagesPath = Path.join(__dirname, "msg");
 // Create module arrays
-self.actions = [];
-self.commands = [];
-self.languages = [];
+customCtx.actions = [];
+customCtx.commands = [];
+customCtx.languages = [];
 // Create object arrays
-self.users = [];
-self.instances = [];
-self.linkings = [];
+customCtx.users = [];
+customCtx.instances = [];
+customCtx.linkings = [];
 // Create array objects
-self.fileMappings = {};
-self.announces = {};
+customCtx.fileMappings = {};
+customCtx.announces = {};
 // Create Hash-Maps
-self.deeplinking = new Map();
-self.groupnames = new Map();
+customCtx.deeplinking = new Map();
+customCtx.groupnames = new Map();
 
 // should not close instantly
 process.stdin.resume();
 // register app closing handler
-process.on("exit", self.exitHandler.bind(null, {}));
+process.on("exit", customCtx.exitHandler.bind(null, {}));
 // register uncaught exception handler
-process.on("uncaughtException", self.exitHandler.bind(null, {}));
+process.on("uncaughtException", customCtx.exitHandler.bind(null, {}));
 // register ctrl+c closing handler
-process.on("SIGINT", self.exitHandler.bind(null, { exit: true }));
+process.on("SIGINT", customCtx.exitHandler.bind(null, { exit: true }));
 
 // LOAD ACTIONS AND COMMANDS
 
 SLOCCount((arg) => {
-	self.slocCount = arg;
+	customCtx.slocCount = arg;
 	console.log("SLOC result : " + arg);
 });
 
 // create Fileproxy?
-self.fileProxyServer = new FileProxy(self);
+customCtx.fileProxyServer = new FileProxy(customCtx);
 
 // initial loading
 Loader.loadModules();
@@ -191,21 +182,21 @@ Loader.watchModules();
 Loader.loadData();
 
 // save data every 5 minutes
-self.autoSave = setInterval(() => {
+customCtx.autoSave = setInterval(() => {
 	Loader.saveData();
 }, 300000);
 
 // CREATE BOT
 
 // Create the Telegram Bot either with webhook or polling
-let bot = (self.bot = new TelegramBot(
-	self.telegram_bot_token,
-	self.useWebHook
+let bot = (customCtx.bot = new TelegramBot(
+	customCtx.telegram_bot_token,
+	customCtx.useWebHook
 		? {
 				webHook: {
-					port: self.webHookPort,
-					key: self.webHookCustomCertificate ? self.webKey : null,
-					cert: self.webHookCustomCertificate ? self.webCert : null,
+					port: customCtx.webHookPort,
+					key: customCtx.webHookCustomCertificate ? customCtx.webKey : null,
+					cert: customCtx.webHookCustomCertificate ? customCtx.webCert : null,
 					autoOpen: true,
 				},
 		  }
@@ -213,9 +204,9 @@ let bot = (self.bot = new TelegramBot(
 ));
 
 // beware of chair
-bot.on("error", self.telegramErrorHandler);
-bot.on("polling_error", self.telegramErrorHandler);
-bot.on("webhook_error", self.telegramErrorHandler);
+bot.on("error", customCtx.telegramErrorHandler);
+bot.on("polling_error", customCtx.telegramErrorHandler);
+bot.on("webhook_error", customCtx.telegramErrorHandler);
 
 // wrapper for storing the last sent bot message and deleting the previous one
 bot.sendNewMessage = function (cid, text, opt, noDel) {
@@ -230,59 +221,47 @@ bot.sendNewMessage = function (cid, text, opt, noDel) {
 };
 
 // clear or set webHook
-if (!self.useWebHook) {
+if (!customCtx.useWebHook) {
 	console.log("clearing WebHook... using data polling");
 	bot.setWebHook("");
 } else {
-	let setAddr =
-		"https://" +
-		self.webHookAddr +
-		":" +
-		self.webHookPort +
-		"/" +
-		self.telegram_bot_token;
+	let setAddr = "https://" + customCtx.webHookAddr + ":" + customCtx.webHookPort + "/" + customCtx.telegram_bot_token;
 	console.log("setting up WebHook: " + setAddr);
-	if (self.webHookCustomCertificate)
-		bot.setWebHook(setAddr, self.webCert).then((e) =>
-			console.log("Webhook result: " + e)
-		);
-	else
-		bot.setWebHook(setAddr).then((e) =>
-			console.log("WebHook result: " + e)
-		);
+	if (customCtx.webHookCustomCertificate) bot.setWebHook(setAddr, customCtx.webCert).then((e) => console.log("Webhook result: " + e));
+	else bot.setWebHook(setAddr).then((e) => console.log("WebHook result: " + e));
 }
 
 // Spam protection wrapper
-self.antispam = new AntiSpam(10);
+customCtx.antispam = new AntiSpam(10);
 
 // init file proxy
-if (self.useFileProxy) {
-	self.fileProxyServer.init(bot, self.fileProxyAddr, self.fileProxyPort);
+if (customCtx.useFileProxy) {
+	customCtx.fileProxyServer.init(bot, customCtx.fileProxyAddr, customCtx.fileProxyPort);
 }
 
 // print stats
-//console.log('Stats:' + Utils.getStats(Utils.getLanguageMessages(self.defaultLanguage)));
+//console.log('Stats:' + Utils.getStats(Utils.getLanguageMessages(self2.defaultLanguage)));
 
-self.run = false;
-self.me; // contains the bot's info object
-self.receivedMessages = 0;
+customCtx.run = false;
+customCtx.me; // contains the bot's info object
+customCtx.receivedMessages = 0;
 
 console.log("connecting to Telegram bot API...");
 
 // get telegram bot object
 bot.getMe().then((res) => {
-	self.me = res; // assign self telegram bot object
+	customCtx.me = res; // assign self telegram bot object
 	console.log("Success. Telegram bot info: " + JSON.stringify(res));
 	console.log("Callbacks active.\r\n");
 
 	// listen for messages
 	bot.on("message", (msg) => {
-		self.handleEx(() => MessageHandler(self, msg));
+		customCtx.handleEx(() => MessageHandler(customCtx, msg));
 	});
 
 	// listen for inline Button responses
 	bot.on("callback_query", (msg) => {
-		if (!self.run) return;
-		self.handleEx(() => ReplyHandler(self, msg));
+		if (!customCtx.run) return;
+		customCtx.handleEx(() => ReplyHandler(customCtx, msg));
 	});
 });
