@@ -4,14 +4,6 @@
 		"module": "commonjs",
 		"allowSyntheticDefaultImports": true
 	},
-	"exclude": [
-		"node_modules",
-		"bower_components",
-		"jspm_packages",
-		"tmp",
-		"temp"
-	],
-    "files": [
-        "./src/main.js"
-    ]
+	"exclude": ["node_modules", "bower_components", "jspm_packages", "tmp", "temp"],
+	"files": ["./src/main.ts"]
 }

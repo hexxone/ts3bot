@@ -1,23 +1,31 @@
 {
-  "name": "ts3telegrambot",
-  "version": "2.1.0",
-  "description": "A Telegram to TS3 bridge",
-  "main": "main.js",
-  "scripts": {
-    "start": "node src/main.js"
-  },
-  "author": "hexxone",
-  "license": "GPLv3",
-  "dependencies": {
-    "alfred-teamspeak": "^4.0.1",
-    "bl": ">=2.2.1",
-    "circular-json": "^0.3.3",
-    "crypto": "0.0.3",
-    "https-proxy-agent": ">=2.2.3",
-    "lodash": ">=4.17.19",
-    "node-telegram-bot-api": "^0.30.0",
-    "shortid": "^2.2.13",
-    "sloc": "^0.2.0",
-    "url-regex-safe": "^2.1.0"
-  }
+	"name": "ts3telegrambot",
+	"version": "3.0.0",
+	"description": "A Telegram to TS3 bridge",
+	"scripts": {
+		"start": "ts-node src/main.ts"
+	},
+	"author": "hexxone",
+	"license": "GPLv3",
+	"dependencies": {
+		"alfred-teamspeak": "^4.0.1",
+		"bl": ">=2.2.1",
+		"circular-json": "^0.3.3",
+		"crypto": "0.0.3",
+		"https-proxy-agent": ">=2.2.3",
+		"lodash": ">=4.17.19",
+		"node-telegram-bot-api": "^0.30.0",
+		"shortid": "^2.2.13",
+		"sloc": "^0.2.0",
+		"ts-node": "^10.4.0",
+		"typescript": "^4.5.5",
+		"url-regex-safe": "^2.1.0"
+	},
+	"devDependencies": {
+		"@types/node": "^17.0.10"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hexxone/ts3bot.git"
+	}
 }
