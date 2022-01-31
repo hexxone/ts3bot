@@ -227,10 +227,12 @@ if (customCtx.useWebHook) {
 }
 
 // wrapper for storing the last sent bot message and deleting the previous one
-customCtx.sendNewMessage = (cid: number, text: string, opt: ExtraReplyMessage, noDel: boolean) => {
+customCtx.sendNewMessage = async (cid: number, text: string, opt: ExtraReplyMessage, noDel: boolean) => {
 	let sendr = cid > 0 ? Utils.getUser({ id: cid }) : null;
 	if (!noDel && sendr && sendr.last_bot_msg_id > 0) {
-		bot.telegram.deleteMessage(cid, sendr.last_bot_msg_id);
+		await bot.telegram.deleteMessage(cid, sendr.last_bot_msg_id).catch((ex) => {
+			// @todo is bot only forbidden to delete messages, or is message too old, or did he get removed from chat?
+		});
 		sendr.last_bot_msg_id = -1;
 	}
 	// set defaults
@@ -243,6 +245,9 @@ customCtx.sendNewMessage = (cid: number, text: string, opt: ExtraReplyMessage, n
 			return msg;
 		})
 		.catch((err) => {
+			// @todo is bot forbidden to send messages => got removed from chat/blocked ?
+			// destroy chat linkings / user instances
+			console.error("@TODO", err);
 			return undefined;
 		});
 };

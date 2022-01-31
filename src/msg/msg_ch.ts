@@ -8,8 +8,8 @@ export default {
 	langCurrent: "当前语言。中文。",
 
 	invalidName: "无效的名称。该名称不能包含空格或特殊字符。",
-	invalidFormatSrv: "无效的格式。使用: '<address>|<query_port>|<ts3_port>'",
-	invalidFormatAcc: "无效的格式。使用: '<query_user>|<query_passwd>'",
+	invalidFormatSrv: "无效的格式。使用: 'address|query_port|ts3_port'",
+	invalidFormatAcc: "无效的格式。使用: 'query_user|query_passwd'",
 	noInstSelected: "没有选择服务器。",
 	notLinked: "没有服务器链接到这个组。",
 	notAllowed: "你不允许这样做。",
@@ -21,7 +21,7 @@ export default {
 	channelSwitch: "切换到频道: ",
 	notConnected: "错误。机器人没有连接。",
 	用户在线: " 用户: ",
-	connectError: "在<attempts>尝试后无法连接。最后一个错误。",
+	connectError: "在$attempts$尝试后无法连接。最后一个错误。",
 	replyError: "无法执行命令。",
 
 	optionOn: "开",
@@ -40,9 +40,9 @@ export default {
 	groupJoin: "加入了该组。",
 	groupLeave: "离开该组。",
 
-	spamStart1: "触发了垃圾邮件保护。你的信息将被忽略。<time>分钟。",
-	spamStart2: "垃圾邮件保护被触发。由于机器人无法与你私下联系，你在这里收到这个信息: 你的信息将被忽略。<time>分钟。",
-	spamEnd: "你不再因为垃圾邮件而被忽略。下次你将被忽略。<time>分钟。",
+	spamStart1: "触发了垃圾邮件保护。你的信息将被忽略。$time$分钟。",
+	spamStart2: "垃圾邮件保护被触发。由于机器人无法与你私下联系，你在这里收到这个信息: 你的信息将被忽略。$time$分钟。",
+	spamEnd: "你不再因为垃圾邮件而被忽略。下次你将被忽略。$time$分钟。",
 
 	spamIgnoreTrigger: "垃圾邮件保护被触发。你的信息将被忽略，时间为。",
 	spamIgnoreRevoke: "您不再因垃圾邮件而被忽略。下次你将被忽略，因为。",
@@ -70,7 +70,7 @@ export default {
 		"-b_virtualserver_client_list\n -b_virtualserver_notify_register\n -b_virtualserver_notify_unregister\n" +
 		"用户名和频道信息每2分钟才更新一次。" +
 		"这个机器人是用nodejs编写的。" +
-		"代码行数。<sloc>",
+		"代码行数。$sloc$",
 	helpText:
 		"TS3Bot帮助: \r\n这个机器人提供了一个接口，用于连接TeamSpeak 3服务器" +
 		"到Telegram（特定的群组），以便交叉聊天和看到在线用户。" +
@@ -82,7 +82,7 @@ export default {
 		"不保证它能一直在线或运行。禁止你篡改机器人和相关的 系统。" +
 		"系统进行压力、性能或安全测试。这些事情可能被认为是DDoS，并将被主机商起诉" +
 		" 存储的数据使用RSA128加密，只用于在重新启动之间保存数据。",
-	tosAgree: "要同意，请准确键入。'<tos_string>'",
+	tosAgree: "要同意，请准确键入。'$tos_string$'",
 	tosString: "我同意",
 	ignorebots: "其他TS3查询客户端将被忽略",
 	unignorebots: "其他TS3查询客户端不会被忽略。",
@@ -94,10 +94,10 @@ export default {
 	channelNameErr: "错误。名称需要在2到32个字符之间。",
 	tosAccept: "Thanks :)",
 	tosReject: ":(",
-	addedServer: "服务器已创建。现在告诉我服务器地址，格式如下: \r\n'<ip_or_host>|<query_port>|<ts3_vserver_id>",
+	addedServer: "服务器已创建。现在告诉我服务器地址，格式如下: \r\n'ip_or_host|query_port|ts3_vserver_id",
 	nameInUse: "这个名字已经在使用了。",
-	linkDestroyed: "深层链接 '<link>' 被破坏。",
-	linkingDestroyed: "群组链接 '<linking>' 被破坏。",
+	linkDestroyed: "深层链接 '$link$' 被破坏。",
+	linkingDestroyed: "群组链接 '$linking$' 被破坏。",
 	serverUnlinked: "服务器被从这个组中取消链接。",
 	serverDeleted: "服务器被删除。",
 	deleteError: "错误。输入是区分大小写的。重试或/取消",
@@ -125,7 +125,7 @@ export default {
 	shareMediaOn: "共享小组媒体将在TS3中可用。",
 	shareMediaOff: "共享的群组媒体在TS3中不可用。",
 	用法: "用法。",
-	setServerAddress: "好的，请告诉我服务器地址，格式为'<address>|<query_port>|<ts3_vserver_id>'。",
+	setServerAddress: "好的，请告诉我服务器地址，格式为 'address|query_port|ts3_vserver_id'。",
 	setBotName: "好的，请告诉我机器人在你的服务器上应该如何称呼自己。",
 	setChatMode: "聊天模式设置为。",
 	setChannelDepth: "频道深度设置为。",
@@ -135,7 +135,7 @@ export default {
 	serverReconnecting: "重新连接......这有时可能需要一些时间（关于错误请看私人聊天）",
 	setMoveNotifications: "客户端移动通知设置为。",
 	setJoinNotifications: "客户加入通知设置为。",
-	manageHeader: "具有链接组的服务器: <代码>",
+	manageHeader: "具有链接组的服务器: <code>",
 	manageSelected: "（选定）",
 	manageFooter: "/unlink [link_name] to delete.",
 	enableAutoConnect: "机器人将自动（重新）连接。",
@@ -144,9 +144,9 @@ export default {
 	autoConnecting: "正在自动连接。请稍等...",
 	leftServer: "离开了服务器。",
 	joinedServer: "加入了服务器。",
-	botConnected: "</b>现在已经连接了。<b><users>用户</b>和<b><bots>机器人</b>在线。",
+	botConnected: "</b>现在已经连接了。<b>$users$用户</b>和<b>$bots$机器人</b>在线。",
 	botChannelMsg: "",
-	LiveTreeFormat: "LiveTree\r\n<code><tree></code>\r\nChanged: <time>",
+	LiveTreeFormat: "LiveTree\r\n<code>$tree$</code>\r\nChanged: $time$",
 	liveTreeError: " ⚠️",
 	liveTreeStop: "LiveTree 被停止并删除。",
 
@@ -223,9 +223,9 @@ export default {
 	commandNoSelect: "请先/选择一个服务器。",
 	commandNoAdded: "请先/添加一个服务器。",
 	commandNoTOS: "请先接受/tos和/添加一个服务器",
-	commandResult: "命令搜索匹配'<command>': ",
-	commandNotFound: "没有找到与'<command>'匹配的命令。",
-	commandCommand: "\r\n<code>Command:      [用法]\r\nDescription:  [desc]\r\nAvailable:    [available]</code>",
+	commandResult: "命令搜索匹配'$command$': ",
+	commandNotFound: "没有找到与'$command$'匹配的命令。",
+	commandCommand: "\r\n<code>Command:      [用法]\r\nDescription:  $desc$\r\nAvailable:    $available$</code>",
 	commandsDetail: "\r\nFor details enter: <code>/commands [command_name]</code>",
 	commandMax: "最多可显示5个条目",
 

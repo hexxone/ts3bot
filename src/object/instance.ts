@@ -216,13 +216,13 @@ export class Instance extends IUtils {
 					if (!lnk) continue;
 					// build message
 					let msgs = Utils.getLanguageMessages(lnk.language);
-					let tmpmsg = "<b>" + botUsr + msgs.botConnected.replace("<users>", userCntStr).replace("<bots>", botCntStr);
+					let tmpmsg = "<b>" + botUsr + msgs.botConnected.replace("$users$", userCntStr).replace("$bots$", botCntStr);
 					lnk.NotifyTelegram(this.serverinfo.virtualserverName, tmpmsg);
 				}
 				// send message to owner
 				let owner = Utils.getUser({ id: this.id });
 				let msgs = Utils.getLanguageMessages(owner.language);
-				let tmpmsg = "<b>" + botUsr + msgs.botConnected.replace("<users>", userCntStr).replace("<bots>", botCntStr);
+				let tmpmsg = "<b>" + botUsr + msgs.botConnected.replace("$users$", userCntStr).replace("$bots$", botCntStr);
 				let opt = {
 					parse_mode: "HTML",
 					reply_markup: {
@@ -426,7 +426,7 @@ export class Instance extends IUtils {
 			this.UpdateLiveTrees(true);
 			this.connectionState = 3;
 			let msgs = Utils.getLanguageMessages(this.owner().language);
-			this.main.sendNewMessage(this.id, msgs.connectError.replace("<attempts>", this.connectTry.toString()) + this.connectionErr);
+			this.main.sendNewMessage(this.id, msgs.connectError.replace("$attempts$", this.connectTry.toString()) + this.connectionErr);
 		}
 	}
 
@@ -637,8 +637,8 @@ export class Instance extends IUtils {
 		if ((isError && !cobj.lasterror) || !cobj.lasttree || cobj.lasttree != currenttree) {
 			if (!isError) cobj.lasttree = currenttree;
 			cobj.lasterror = isError;
-			msg = msg.replace("<time>", Utils.getTime() + (isError ? msgs.liveTreeError : ""));
-			msg = msg.replace("<tree>", cobj.lasttree);
+			msg = msg.replace("$time$", Utils.getTime() + (isError ? msgs.liveTreeError : ""));
+			msg = msg.replace("$tree$", cobj.lasttree);
 			callback(msg);
 		}
 	}

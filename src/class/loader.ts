@@ -68,7 +68,6 @@ class Loader {
 			usrr.sentdev = usr.sentdev;
 			usrr.spams = usr.spams;
 			usrr.banneduntil = usr.banneduntil;
-			usrr.last_msg_id = usr.last_msg;
 			usrr.last_bot_msg_id = usr.last_bot_msg_id;
 			usrr.livetree = usr.livetree;
 			usrr.lasttree = usr.lasttree;
