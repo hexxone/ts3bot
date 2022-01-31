@@ -16,11 +16,9 @@ export declare type TS3Msgs = typeof EN_MSG;
 export declare type TS3Ctx = {
 	defaultLanguage: string;
 
-	startDate: string;
+	startDate: Date;
 
-	parseExStr: (ex: any) => string;
 	handleEx: (call: () => void) => void;
-	telegramErrorHandler: (ex: any) => void;
 	exitHandler: (opt: any, err: any) => void;
 
 	//

@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import Process from "process";
+import Process, { uptime } from "process";
 import { User } from "typegram";
 
 import urlRegex from "url-regex-safe";
@@ -16,6 +16,10 @@ import { MessageCtx, TS3Ctx, TS3Msgs } from "../context";
 import * as UHelpr from "../object/user";
 import { Instance } from "../object/instance";
 import { GroupLinking } from "../object/grouplinking";
+
+const MILLIS_PER_SECOND = 1000;
+const MILLIS_PER_MINUTE = MILLIS_PER_SECOND * 60; //     60,000
+const MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60; //  3,600,000
 
 class Utils {
 	// 'this' of main.js (instanciated on run)
@@ -32,8 +36,7 @@ class Utils {
 	}
 
 	// Time helper
-	getTime() {
-		let d = new Date();
+	getTime(d: Date) {
 		return (
 			[d.getFullYear(), this.get2Dig(d.getMonth() + 1), this.get2Dig(d.getDate())].join("-") +
 			" " +
@@ -111,7 +114,8 @@ class Utils {
 	// s = MESSAGES
 	getStats(s: any) {
 		let msg = "";
-		msg += s.stats01 + this.Parent.startDate;
+		const upTime = new Date().getTime() - this.Parent.startDate.getTime();
+		msg += s.stats01 + upTime / MILLIS_PER_HOUR + " hours";
 		msg += s.stats02 + this.Parent.receivedMessages;
 		msg += s.stats03 + this.Parent.users.length;
 		msg += s.stats04 + this.Parent.groupnames.size;
@@ -314,7 +318,7 @@ class Utils {
 	}
 
 	// converts an 'int' to a string with lower cased numbers
-	getNumberSmallASCII(num) {
+	getNumberSmallASCII(num: string) {
 		let narr = "₀₁₂₃₄₅₆₇₈₉".split(""),
 			res = "";
 		let str = num.toString();
