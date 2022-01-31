@@ -23,10 +23,10 @@ export default {
 		let usage = ctx.groupMessages.usage + this.usage;
 		if (ctx.args.length == 2) {
 			if (Utils.isYes(ctx.args[1])) {
-				ctx.groupBinding.alladmin = true;
+				ctx.groupLinking.alladmin = true;
 				ctx.respondChat(ctx.groupMessages.admin4allOn, ctx.opt);
 			} else if (Utils.isNo(ctx.args[1])) {
-				ctx.groupBinding.alladmin = false;
+				ctx.groupLinking.alladmin = false;
 				ctx.respondChat(ctx.groupMessages.admin4allOff, ctx.opt);
 			} else ctx.respondChat(usage, ctx.opt);
 		} else ctx.respondChat(usage, ctx.opt);
