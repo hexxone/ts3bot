@@ -95,6 +95,7 @@ export default function (self: TS3Ctx) {
 					resize_keyboard: true,
 					one_time_keyboard: true,
 				},
+				disable_web_page_preview: true,
 			},
 			isGroup: msg.chat.type !== "private",
 		} as MessageCtx;
