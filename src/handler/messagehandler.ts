@@ -106,7 +106,7 @@ export default function (self: TS3Ctx) {
 		// announcement check
 		if (self.run && (!self.announces[ctx.chatId] || self.announces[ctx.chatId] < self.announceID)) {
 			self.announces[ctx.chatId] = self.announceID;
-			bot.telegram.sendMessage(ctx.chatId, self.announceText);
+			bot.telegram.sendMessage(ctx.chatId, self.announceText, { disable_web_page_preview: true });
 		}
 
 		// If sent from group, try to get the group's binding and send the corresponding messages to it

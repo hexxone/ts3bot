@@ -23,6 +23,8 @@ const CONNECT_TRIES = 3;
 const CONNECT_WAIT = 5000;
 const PING_INTERVAL = 30000; // 30 seconds
 
+const DefaultOpt: ExtraReplyMessage = { parse_mode: "HTML", disable_web_page_preview: true };
+
 // represents a ts3 connection
 export class Instance extends IUtils {
 	main: TS3Ctx;
@@ -657,7 +659,7 @@ export class Instance extends IUtils {
 					console.log("Update tree: " + cobj.livetree);
 					this.main.bot.telegram.editMessageText(tree, cobj.livetree, undefined, text);
 				} else {
-					this.main.bot.telegram.sendMessage(tree, text, { parse_mode: "HTML" }).then((msg) => {
+					this.main.bot.telegram.sendMessage(tree, text, DefaultOpt).then((msg) => {
 						cobj.livetree = msg.message_id;
 						console.log("New tree: " + cobj.livetree);
 					});
@@ -688,7 +690,7 @@ export class Instance extends IUtils {
 			cobj.language,
 			(msg) => {
 				// respond for livetree autoconnect
-				this.main.bot.telegram.sendMessage(chatId, msg, { parse_mode: "HTML" });
+				this.main.bot.telegram.sendMessage(chatId, msg, DefaultOpt);
 				// After connect trigger update
 			},
 			() => this.UpdateLiveTree(chatId)
@@ -703,7 +705,7 @@ export class Instance extends IUtils {
 		if (chatObject.livetree) {
 			this.main.bot.telegram.deleteMessage(chatId, chatObject.livetree);
 			chatObject.livetree = 0;
-			this.main.bot.telegram.sendMessage(chatId, Utils.getLanguageMessages(chatObject.language).liveTreeStop);
+			this.main.bot.telegram.sendMessage(chatId, Utils.getLanguageMessages(chatObject.language).liveTreeStop, DefaultOpt);
 		}
 	}
 
