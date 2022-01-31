@@ -51,9 +51,9 @@ export default {
 						let avail = Utils.avToStr(cmsgs.langCode, obj.available);
 						if (extramsg !== "") avail += " (" + extramsg + ")";
 						// build command string
-						cmdmsg = cmdmsg.replace("[usage]", obj.usage);
-						cmdmsg = cmdmsg.replace("[desc]", cmsgs["cmd_" + obj.description]);
-						cmdmsg = cmdmsg.replace("[available]", avail);
+						cmdmsg = cmdmsg.replace("$usage$", obj.usage);
+						cmdmsg = cmdmsg.replace("$desc$", cmsgs["cmd_" + obj.description]);
+						cmdmsg = cmdmsg.replace("$available$", avail);
 						if (resCnt > 1) ifomsg += "\r\n--- --- --- --- --- --- --- ---";
 						ifomsg += cmdmsg;
 					}
@@ -68,7 +68,7 @@ export default {
 			if (resCnt == 0) {
 				ifomsg = cmsgs.commandNotFound;
 			}
-			ctx.respondChat(ifomsg.replace("<command>", ctx.args[1]), ctx.opt);
+			ctx.respondChat(ifomsg.replace("$command$", ctx.args[1]), ctx.opt);
 			// send message
 			return;
 		}

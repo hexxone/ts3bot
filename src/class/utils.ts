@@ -161,7 +161,7 @@ class Utils {
 			// Notify, Unregister and remove it
 			let usr = this.getUser({ id: lnk.instance.id });
 			let msgs = this.getLanguageMessages(usr.language);
-			this.Parent.sendNewMessage(usr.id, msgs.linkingDestroyed.replace("<linking>", linking.name));
+			this.Parent.sendNewMessage(usr.id, msgs.linkingDestroyed.replace("$linking$", linking.name));
 			if (!noGroupMsg) {
 				let grp = this.getGroupLinking(linking.groupid);
 				let gmsgs = this.getLanguageMessages(grp.language);

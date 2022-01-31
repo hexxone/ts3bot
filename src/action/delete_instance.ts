@@ -23,7 +23,7 @@ export default {
 					if (linking.instance.id != ctx.sender.id || Utils.getArrayObjectByName(ctx.senderLinkings, linking.name) == null || !ctx.senderSelectedInstance.HasGroup(linking.groupid))
 						return true;
 					// Notify, Unregister and remove it
-					ctx.respondChat(ctx.senderMessages.linkingDestroyed.replace("<linking>", linking.name), ctx.opt);
+					ctx.respondChat(ctx.senderMessages.linkingDestroyed.replace("$linking$", linking.name), ctx.opt);
 					main.sendNewMessage(linking.groupid, ctx.senderMessages.serverUnlinked, ctx.opt);
 					linking.Unlink();
 					return false;

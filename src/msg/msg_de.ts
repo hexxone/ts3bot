@@ -17,8 +17,8 @@ export default {
 	langCurrent: "Jetzige Sprache: Deutsch.",
 
 	invalidName: "Ungültiger Name. Es dürfen keine Leer- oder Sonderzeichen verwendet werden.",
-	invalidFormatSrv: "Ungültiges Format. Benutze: '<address>|<query_port>|<ts3_port>'",
-	invalidFormatAcc: "Ungültiges Format. Benutze: '<query_benutzer>|<query_passwort>'",
+	invalidFormatSrv: "Ungültiges Format. Benutze: 'addresse|query_port|ts3_port'",
+	invalidFormatAcc: "Ungültiges Format. Benutze: 'query_benutzer|query_passwort'",
 	noInstSelected: "Kein Server gewählt",
 	notLinked: "Es ist noch kein Server mit der Gruppe verbunden.",
 	notAllowed: "Du hast keine Erlaubnis dazu.",
@@ -30,7 +30,7 @@ export default {
 	channelSwitch: "hat den Channel gewechselt:",
 	notConnected: "Fehler: Bot ist nicht verbunden.",
 	userOnline: " Benutzer:",
-	connectError: "Konnte nach <attempts> Versuch(en) nicht verbinden. Letzer Fehler: ",
+	connectError: "Konnte nach $attempts$ Versuch(en) nicht verbinden. Letzer Fehler: ",
 	replyError: "Konnte Befehl nicht ausführen.",
 
 	optionOn: "An",
@@ -49,9 +49,9 @@ export default {
 	groupJoin: " hat die Gruppe betreten.",
 	groupLeave: " hat die Gruppe verlassen.",
 
-	spamStart1: "Spam Schutz: Deine Nachrichten werden für <time> Minuten ignoriert.",
-	spamStart2: "Spam Schutz:\r\nWeil der Bot dich nicht erreichen konnte, bekommst du die Info hier:\r\nDeine Nachrichten werden für <time> Minuten ignoriert.",
-	spamEnd: "You are no longer ignored due to Spam. Next time you will be ignored for: <time> minutes.",
+	spamStart1: "Spam Schutz: Deine Nachrichten werden für $time$ Minuten ignoriert.",
+	spamStart2: "Spam Schutz:\r\nWeil der Bot dich nicht erreichen konnte, bekommst du die Info hier:\r\nDeine Nachrichten werden für $time$ Minuten ignoriert.",
+	spamEnd: "You are no longer ignored due to Spam. Next time you will be ignored for: $time$ minutes.",
 
 	spamIgnoreTrigger: "Spam Schutz ausgelöst. Deine Nachrichten werden ignoriert für: ",
 	spamIgnoreRevoke: "Du wirst nicht länger ignoriert. Dauer beim nächsten mal: ",
@@ -80,7 +80,7 @@ export default {
 		" - b_virtualserver_client_list\r\n - b_virtualserver_notify_register\r\n - b_virtualserver_notify_unregister\r\n" +
 		"Die User Namen & Channel werden nur alle 2 Minuten aktualisiert.\r\n" +
 		"Dieser Bot wurde mit NodeJS realisiert.\r\n" +
-		"Codezeilen: <sloc>",
+		"Codezeilen: $sloc$",
 	helpText:
 		"TS3Bot Hilfe:\r\nDieser Bot bietet ein Interface um TS3 Server" +
 		" mit Telegram(-Gruppen) zu verbinden. Hauptzweck ist Cross-Chat und User Anzeige.\r\nDie TS3-Verbindung wird über" +
@@ -91,7 +91,7 @@ export default {
 		" für eventuelle Schäden am Nutzer oder anderen Parteien. Da dies ein kostenloser Service ist, besteht keine Garantie dafür dass er" +
 		" immer online oder verfügbar ist. Es ist desweiteren verboten den Bot oder zugehörige Systeme sogenannten Stress-, Performance oder" +
 		"'Sicherheits'-Tests zu unterziehen. Gegebenenfalls werden diese als DDoS gewertet und vom Provider verfolgt. Der Bot speichert gewisse Nutzerdaten verschlüsselt ab (zwischen neustarts).",
-	tosAgree: "Um zuzustimmen, tippe bitte folgendes: '<tos_string>'",
+	tosAgree: "Um zuzustimmen, tippe bitte folgendes: '$tos_string$'",
 	tosString: "Ich stimme zu",
 	ignorebots: "Andere TS3 query clients werden ignoriert",
 	unignorebots: "Andere TS3 query clients werden nicht mehr ignoriert.",
@@ -103,10 +103,10 @@ export default {
 	channelNameErr: "Fehler: Der Name muss zwischen 2 und 32 Zeichen lang sein.",
 	tosAccept: "Danke :)",
 	tosReject: ":(",
-	addedServer: "Server erstellt. Als nächstes bitte die Server Addresse in folgendem Format eingeben:\r\n'<ip_oder_host>|<query_port>|<ts3_vserver_id>'.",
+	addedServer: "Server erstellt. Als nächstes bitte die Server Addresse in folgendem Format eingeben:\r\n'ip_oder_host|query_port|ts3_port'.",
 	nameInUse: "Der Name ist bereits in Verwendung.",
-	linkDestroyed: "Deep-link '<link>' wurde zerstört.",
-	linkingDestroyed: "Gruppen-link '<linking>' wurde zerstört.",
+	linkDestroyed: "Deep-link '$link$' wurde zerstört.",
+	linkingDestroyed: "Gruppen-link '$linking$' wurde zerstört.",
 	serverUnlinked: "Server-verlinkung mit Gruppe zerstört.",
 	serverDeleted: "Server gelöscht.",
 	deleteError: "Fehler. Achte auf Groß-und-Kleinschreibung.\r\n/cancel zum abbrechen",
@@ -119,7 +119,7 @@ export default {
 	setName: "Bot-Name gesetzt.",
 	setNameFirst: " Als nächstes bitte den exakten Namen des Channels eingeben, den der Bot betreten soll:",
 	setServer: "Server Addresse gesetzt.",
-	setServerFirst: " Als nächstes bitte die TS3 Query Account Daten in folgenden Format angeben:\r\n'<query_user>|<query_password>'.",
+	setServerFirst: " Als nächstes bitte die TS3 Query Account Daten in folgenden Format angeben:\r\n'query_user|query_password'.",
 	linkingNotFound: "Diese Verlinkung existiert nicht.",
 	groupAlreadyLinked: "Diese Gruppe ist bereits mit einem Server verlinkt.",
 	groupLinked: "TS3 Server wurde erfolgreich mit der Gruppe verlinkt",
@@ -134,7 +134,7 @@ export default {
 	shareMediaOn: "Gesendete Medien werden in TS3 geteilt.",
 	shareMediaOff: "Gesendete Medien werden nicht in TS3 geteilt.",
 	usage: "Syntax: ",
-	setServerAddress: "Bitte die Server Addresse in folgendem Format angeben: '<address>|<query_port>|<ts3_vserver_id>'.",
+	setServerAddress: "Bitte die Server Addresse in folgendem Format angeben: 'addresse|query_port|ts3_port'.",
 	setBotName: "Bitte den Namen für den Bot auf dem Server eingeben:",
 	setChatMode: "Chat Modus gesetzt: ",
 	setChannelDepth: "Channel-Tiefe gesetzt: ",
@@ -153,9 +153,9 @@ export default {
 	autoConnecting: "Verbindet automatisch. Bitte etwas Geduld...",
 	leftServer: "hat den Server verlassen.",
 	joinedServer: "hat den Server betreten.",
-	botConnected: "</b> ist nun verbunden.\r\n<b><users> Benutzer</b> und <b><bots> Bot(s)</b> online.",
+	botConnected: "</b> ist nun verbunden.\r\n<b>$users$ Benutzer</b> und <b>$bots$ Bot(s)</b> online.",
 	botChannelMsg: " halo I bims ein Nachrid vong Tesd",
-	liveTreeFormat: "LiveTree\r\n<code><tree></code>\r\nGeändert: <time>",
+	liveTreeFormat: "LiveTree\r\n<code>$tree$</code>\r\nGeändert: $time$",
 	liveTreeError: " ⚠️",
 	liveTreeStop: "LiveTree gestoppt und gelöscht.",
 
@@ -233,9 +233,9 @@ export default {
 	commandNoSelect: "Bitte wähle zuerst einen Server mit /select.",
 	commandNoAdded: "Bitte füge zuerst einen Server mit /add hinzu.",
 	commandNoTOS: "Bitte akzeptiere zuerst die /tos.",
-	commandResult: "Befehl Suchergebnisse für '<command>':",
-	commandNotFound: "Kein Befehl mit dem Inhalt '<command>' gefunden.",
-	commandCommand: "\r\n<code>Befehl:        [usage]" + "\r\nBeschreibung:  [desc]" + "\r\nVerfügbarkeit: [available]</code>",
+	commandResult: "Befehl Suchergebnisse für '$command$':",
+	commandNotFound: "Kein Befehl mit dem Inhalt '$command$' gefunden.",
+	commandCommand: "\r\n<code>Befehl:        $usage$" + "\r\nBeschreibung:  $desc$" + "\r\nVerfügbarkeit: $available$</code>",
 	commandsDetail: "\r\nFür Details tippe: <code>/commands [Befehl]</code>",
 	commandMax: "Es werden Maximal 5 Einträge angezeigt.",
 

@@ -16,7 +16,6 @@ export class User {
 	last_name: string;
 
 	language: string;
-	last_msg_id: number;
 	last_bot_msg_id: number;
 
 	// bot props
@@ -58,7 +57,6 @@ export class User {
 		this.spams = 0;
 		this.banneduntil = null;
 
-		this.last_msg_id = -1;
 		this.last_bot_msg_id = -1;
 
 		this.pm_selected_srv = "";
@@ -79,7 +77,6 @@ export class User {
 			spams: this.spams,
 			banneduntil: this.banneduntil,
 			language: this.language,
-			last_msg_id: this.last_msg_id,
 			last_bot_msg_id: this.last_bot_msg_id,
 			pm_selected_srv: this.pm_selected_srv,
 			pm_selected_usr: this.pm_selected_usr,

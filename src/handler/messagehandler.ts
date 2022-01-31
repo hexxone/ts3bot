@@ -101,9 +101,6 @@ export default function (self: TS3Ctx) {
 			isGroup: msg.chat.type !== "private",
 		} as MessageCtx;
 
-		// update last message id for eventual notification
-		sender.last_msg_id = msg.message_id;
-
 		// announcement check
 		if (self.run && (!self.announces[ctx.chatId] || self.announces[ctx.chatId] < self.announceID)) {
 			self.announces[ctx.chatId] = self.announceID;
@@ -140,18 +137,18 @@ export default function (self: TS3Ctx) {
 							ctx.sender.banneduntil = null;
 							const nexTime = ((ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5).toString();
 							try {
-								self.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamEnd.replace("<time>", nexTime), ctx.opt);
+								self.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamEnd.replace("$time$", nexTime), ctx.opt);
 							} catch (err) {
-								self.sendNewMessage(ctx.chatId, ctx.senderMessages.spamEnd.replace("<time>", nexTime), ctx.opt);
+								self.sendNewMessage(ctx.chatId, ctx.senderMessages.spamEnd.replace("$time$", nexTime), ctx.opt);
 							}
 						}
 					} else if (self.antispam.CheckRegisterSpam(ctx.sender)) {
 						// Spam detected
 						const banTime = (ctx.sender.spams * ctx.sender.spams * 5).toString();
 						try {
-							self.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamStart1.replace("<time>", banTime));
+							self.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamStart1.replace("$time$", banTime));
 						} catch (err) {
-							self.sendNewMessage(ctx.chatId, ctx.senderMessages.spamStart2.replace("<time>", banTime));
+							self.sendNewMessage(ctx.chatId, ctx.senderMessages.spamStart2.replace("$time$", banTime));
 						}
 						return;
 					}

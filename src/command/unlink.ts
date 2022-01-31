@@ -38,7 +38,7 @@ export default {
 			if (del) {
 				main.deeplinking.delete(del);
 				ctx.sender.menu = "";
-				ctx.respondChat(msgs.linkDestroyed.replace("<link>", ctx.args[1]), ctx.opt);
+				ctx.respondChat(msgs.linkDestroyed.replace("$link$", ctx.args[1]), ctx.opt);
 			}
 			// Check if Name exists in Bindings
 			else if ((o = Utils.getArrayObjectByName(ctx.senderLinkings, ctx.args[1])) !== null) Utils.destroyGroupLinking(o);
