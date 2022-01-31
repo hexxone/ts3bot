@@ -83,6 +83,7 @@ export default function (self: TS3Ctx) {
 			developer_id: self.developer_id,
 			msg: msg,
 			text: msg.text,
+			args: new Array<String>(),
 			chatId: msg.chat.id,
 			sender,
 			senderInstances,
