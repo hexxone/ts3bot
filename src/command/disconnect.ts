@@ -23,7 +23,7 @@ export default {
 		if (ctx.isGroup) {
 			ctx.respondChat(ctx.groupMessages.disconnect, ctx.opt);
 			try {
-				ctx.groupBinding.instance.Disconnect();
+				ctx.groupLinking.instance.Disconnect();
 			} catch (e) {
 				ctx.respondChat(ctx.groupMessages.errorPrefix + JSON.stringify(e), ctx.opt);
 			}

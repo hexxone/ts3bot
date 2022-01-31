@@ -24,13 +24,12 @@ export default {
 	description: "start",
 	command: ["/start"],
 	callback: function (main: TS3Ctx, ctx: MessageCtx) {
-		ctx.opt.disable_web_page_preview = true;
 		let msgs = ctx.senderMessages;
 		if (ctx.isGroup) {
-			if (ctx.groupBinding !== null) msgs = ctx.groupMessages;
+			if (ctx.groupLinking !== null) msgs = ctx.groupMessages;
 
 			if (ctx.args.length === 2) {
-				if (ctx.groupBinding !== null) ctx.respondChat(msgs.groupAlreadyLinked, ctx.opt);
+				if (ctx.groupLinking !== null) ctx.respondChat(msgs.groupAlreadyLinked, ctx.opt);
 				else if (main.deeplinking.has(ctx.args[1])) {
 					// get linking object & remove from hash-map
 					let inst = main.deeplinking.get(ctx.args[1]) as GroupLinking;
@@ -47,7 +46,7 @@ export default {
 						},
 					});
 				} else ctx.respondChat(msgs.invalidLink, ctx.opt);
-			} else ctx.respondChat(ctx.groupBinding === null ? msgs.groupNotLinked : msgs.groupAlreadyLinked, ctx.opt);
+			} else ctx.respondChat(ctx.groupLinking === null ? msgs.groupNotLinked : msgs.groupAlreadyLinked, ctx.opt);
 		} else {
 			ctx.opt.reply_markup.inline_keyboard = [
 				[Utils.getCmdBtn("menu", msgs), Utils.getCmdBtn("stats", msgs)],

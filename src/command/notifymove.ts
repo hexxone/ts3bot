@@ -23,8 +23,8 @@ export default {
 		let usage = "Use: /notifymove [global|channel|false]";
 		let msgs = ctx.senderMessages;
 		if (ctx.isGroup) {
-			if (ctx.groupBinding !== null) {
-				if (ctx.groupBinding.instance.id == ctx.sender.id || ctx.groupBinding.alladmin) {
+			if (ctx.groupLinking !== null) {
+				if (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking.alladmin) {
 					if (ctx.args.length == 2) {
 						switch (ctx.args[1].toLowerCase()) {
 							case "false":
@@ -33,21 +33,21 @@ export default {
 							case "off":
 							case "meh":
 							case "lame":
-								ctx.groupBinding.notifymove = 0;
+								ctx.groupLinking.notifymove = 0;
 								break;
 							case "channel":
 							case "1":
-								ctx.groupBinding.notifymove = 1;
+								ctx.groupLinking.notifymove = 1;
 								break;
 							case "global":
 							case "2":
-								ctx.groupBinding.notifymove = 2;
+								ctx.groupLinking.notifymove = 2;
 								break;
 							default:
 								ctx.respondChat(usage, ctx.opt);
 								return;
 						}
-						let msg = ctx.groupMessages.setMoveNotifications + Utils.nmToStr(ctx.groupBinding.language, ctx.groupBinding.notifymove);
+						let msg = ctx.groupMessages.setMoveNotifications + Utils.nmToStr(ctx.groupLinking.language, ctx.groupLinking.notifymove);
 						ctx.respondChat(msg, ctx.opt);
 					} else ctx.respondChat(usage, ctx.opt);
 				} else ctx.respondChat(msgs.notAllowed, ctx.opt);

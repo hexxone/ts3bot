@@ -23,10 +23,10 @@ export default {
 		let usage = ctx.groupMessages.usage + this.usage;
 		if (ctx.args.length == 2) {
 			if (Utils.isYes(ctx.args[1])) {
-				ctx.groupBinding.ignorebots = true;
+				ctx.groupLinking.ignorebots = true;
 				ctx.respondChat(ctx.groupMessages.ignorebots, ctx.opt);
 			} else if (Utils.isNo(ctx.args[1])) {
-				ctx.groupBinding.ignorebots = false;
+				ctx.groupLinking.ignorebots = false;
 				ctx.respondChat(ctx.groupMessages.unignorebots, ctx.opt);
 			} else ctx.respondChat(usage, ctx.opt);
 		} else ctx.respondChat(usage, ctx.opt);

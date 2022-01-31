@@ -61,11 +61,13 @@ class Loader {
 		this.Parent.receivedMessages = parseInt(objj.msgcnt);
 		this.Parent.users = [];
 		objj.users.forEach((usr) => {
-			let usrr = new User(usr.id, usr.username, usr.first_name, usr.last_name, usr.menu, usr.selected, usr.agreement);
+			let usrr = new User(usr.id, usr.username, usr.first_name, usr.last_name, usr.language);
+			usrr.menu = usr.menu;
+			usrr.selected = usr.selected;
+			usrr.agreement = usr.agreement;
 			usrr.sentdev = usr.sentdev;
 			usrr.spams = usr.spams;
 			usrr.banneduntil = usr.banneduntil;
-			usrr.language = usr.language;
 			usrr.last_msg_id = usr.last_msg;
 			usrr.last_bot_msg_id = usr.last_bot_msg_id;
 			usrr.livetree = usr.livetree;

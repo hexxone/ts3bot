@@ -23,10 +23,10 @@ export default {
 		let usage = ctx.groupMessages.usage + this.usage;
 		if (ctx.args.length == 2) {
 			if (Utils.isYes(ctx.args[1])) {
-				ctx.groupBinding.sharemedia = true;
+				ctx.groupLinking.sharemedia = true;
 				ctx.respondChat(ctx.groupMessages.shareMediaOn, ctx.opt);
 			} else if (Utils.isNo(ctx.args[1])) {
-				ctx.groupBinding.sharemedia = false;
+				ctx.groupLinking.sharemedia = false;
 				ctx.respondChat(ctx.groupMessages.shareMediaOff, ctx.opt);
 			} else ctx.respondChat(usage, ctx.opt);
 		} else ctx.respondChat(usage, ctx.opt);

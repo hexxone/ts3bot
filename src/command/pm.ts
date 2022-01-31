@@ -24,10 +24,10 @@ export default {
 			let usage = ctx.groupMessages.usage + this.usage;
 			if (ctx.args.length == 2) {
 				if (Utils.isYes(ctx.args[1])) {
-					ctx.groupBinding.pm = true;
+					ctx.groupLinking.pm = true;
 					ctx.respondChat(ctx.groupMessages.pmEnabled, ctx.opt);
 				} else if (Utils.isNo(ctx.args[1])) {
-					ctx.groupBinding.pm = false;
+					ctx.groupLinking.pm = false;
 					ctx.respondChat(ctx.groupMessages.pmDisabled, ctx.opt);
 				} else ctx.respondChat(usage, ctx.opt);
 			} else ctx.respondChat(usage, ctx.opt);

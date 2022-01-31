@@ -22,7 +22,7 @@ export default {
 	callback: function (main: TS3Ctx, ctx: MessageCtx) {
 		let isDev = ctx.sender.id == ctx.developer_id;
 		let cmsgs = ctx.senderMessages;
-		if (ctx.isGroup) cmsgs = ctx.groupMessages;
+		if (ctx.groupMessages) cmsgs = ctx.groupMessages;
 
 		if (ctx.args.length > 1 && ctx.args[1] != "-i") {
 			// specific command requested?
@@ -72,22 +72,24 @@ export default {
 			// send message
 			return;
 		}
+		// put detailed info behind a command, under what conditions its available?
 		let info = ctx.args.length > 1 && ctx.args[1] == "-i";
+
 		let msgtxt = cmsgs.availableCommands + "\r\n";
 		let msgtxt2 = "";
-		let isBinding = ctx.groupBinding !== undefined;
-		let isAdmin = (isBinding && (ctx.groupBinding?.instance.id == ctx.sender.id || ctx.groupBinding?.alladmin)) || false;
-		let isSelected = ctx.senderSelectedInstance ? true : false;
+		let hasLinking = ctx.groupLinking ? true : false;
+		let hasAdmin = (hasLinking && (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking?.alladmin)) || false;
+		let hasSelected = ctx.senderSelectedInstance ? true : false;
 		main.commands.some(function (obj, i) {
 			if (obj.hidden) return;
 			let isAvailable = true;
 			if (ctx.isGroup && obj.available > 1) {
-				if (obj.groupperm) isAvailable = isAvailable && isAdmin;
-				if (obj.needslinking) isAvailable = isAvailable && isBinding;
+				if (obj.groupperm) isAvailable = isAvailable && hasAdmin;
+				if (obj.needslinking) isAvailable = isAvailable && hasLinking;
 			} else if (!ctx.isGroup) {
 				if (obj.available === 0) isAvailable = isAvailable && isDev;
 				else if (obj.available === 1 || obj.available === 3) {
-					if (obj.needsselected) isAvailable = isAvailable && isSelected;
+					if (obj.needsselected) isAvailable = isAvailable && hasSelected;
 				} else isAvailable = false;
 			} else isAvailable = false;
 
@@ -95,7 +97,7 @@ export default {
 				let between = ctx.senderMessages["cmd_" + obj.description] || "empty";
 				let overlen = obj.usage.length + between.length - (info ? 37 : 39);
 				if (overlen > 0) between = between.substring(0, between.length - overlen - 2) + "..";
-				//
+				// put detailed info behind a command, under what conditions its available
 				let ifo = "";
 				if (info) {
 					if (ctx.isGroup) ifo += obj.groupperm ? "*" : " " + obj.needslinking ? "#" : " ";

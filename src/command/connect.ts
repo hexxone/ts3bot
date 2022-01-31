@@ -21,13 +21,13 @@ export default {
 	command: ["/connect"],
 	callback: function (main: TS3Ctx, ctx: MessageCtx) {
 		if (ctx.isGroup) {
-			switch (ctx.groupBinding.instance.connectionState) {
+			switch (ctx.groupLinking.instance.connectionState) {
 				case 0:
 				case 3:
 					ctx.respondChat(ctx.groupMessages.conConnect, ctx.opt);
 					try {
-						ctx.groupBinding.instance.connectTry = 0;
-						ctx.groupBinding.instance.Connect();
+						ctx.groupLinking.instance.connectTry = 0;
+						ctx.groupLinking.instance.Connect();
 					} catch (e) {
 						ctx.respondChat(ctx.groupMessages.errorPrefix + JSON.stringify(e), ctx.opt);
 					}

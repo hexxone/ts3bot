@@ -20,10 +20,10 @@ export default {
 	callback: function (main: TS3Ctx, ctx: MessageCtx) {
 		ctx.opt.parse_mode = "HTML";
 		if (ctx.args.length == 2 && ctx.args[1] == "stop") {
-			if (ctx.isGroup) ctx.groupBinding.instance.RemoveLiveTree(ctx.chatId);
+			if (ctx.isGroup) ctx.groupLinking.instance.RemoveLiveTree(ctx.chatId);
 			else ctx.senderSelectedInstance.RemoveLiveTree(ctx.chatId);
 		} else {
-			if (ctx.isGroup) ctx.groupBinding.instance.AddLiveTree(ctx.chatId);
+			if (ctx.isGroup) ctx.groupLinking.instance.AddLiveTree(ctx.chatId);
 			else ctx.senderSelectedInstance.AddLiveTree(ctx.chatId);
 		}
 	},

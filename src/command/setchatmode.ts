@@ -30,24 +30,24 @@ export default {
 				case "off":
 				case "false":
 				case "disable":
-					ctx.groupBinding.chatmode = 0;
+					ctx.groupLinking.chatmode = 0;
 					break;
 				case "1":
 				case "channel":
-					ctx.groupBinding.chatmode = 2;
+					ctx.groupLinking.chatmode = 2;
 					break;
 				case "2":
 				case "global":
-					ctx.groupBinding.chatmode = 3;
+					ctx.groupLinking.chatmode = 3;
 					break;
 				default:
 					ctx.respondChat(usage, ctx.opt);
 					return;
 			}
 			// build message
-			let msg = ctx.groupMessages.setChatMode + Utils.cmToStr(ctx.groupBinding.language, ctx.groupBinding.chatmode);
+			let msg = ctx.groupMessages.setChatMode + Utils.cmToStr(ctx.groupLinking.language, ctx.groupLinking.chatmode);
 			ctx.respondChat(msg, ctx.opt);
-			ctx.groupBinding.NotifyTS3((ctx.msg.chat as Chat.TitleChat).title, msg);
+			ctx.groupLinking.NotifyTS3((ctx.msg.chat as Chat.TitleChat).title, msg);
 		} else ctx.respondChat(usage, ctx.opt);
 	},
 };

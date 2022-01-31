@@ -59,7 +59,8 @@ export class GroupLinking {
 		this.spamcheck = true;
 		this.alladmin = false;
 		this.pm = false;
-		this.language = "Eng";
+		// inherit owner language
+		this.language = instance.owner().language;
 		this.sharemedia = true;
 
 		// dont export

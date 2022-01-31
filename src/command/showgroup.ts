@@ -23,10 +23,10 @@ export default {
 		let usage = ctx.groupMessages.usage + this.usage;
 		if (ctx.args.length == 2) {
 			if (Utils.isYes(ctx.args[1])) {
-				ctx.groupBinding.showgroupname = true;
+				ctx.groupLinking.showgroupname = true;
 				ctx.respondChat(ctx.groupMessages.groupNameShown, ctx.opt);
 			} else if (Utils.isNo(ctx.args[1])) {
-				ctx.groupBinding.showgroupname = false;
+				ctx.groupLinking.showgroupname = false;
 				ctx.respondChat(ctx.groupMessages.groupNameHidden, ctx.opt);
 			} else ctx.respondChat(usage, ctx.opt);
 		} else ctx.respondChat(usage, ctx.opt);
