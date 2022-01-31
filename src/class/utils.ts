@@ -67,7 +67,7 @@ class Utils {
 		console.log("New User: " + tg_user.id);
 		// try to get the user-specific language, or fallback to the default.-
 		// then get the validated language code
-		let lang = this.getLanguageMessages(tg_user.language_code || "").langCode;
+		let lang = this.getLanguageMessages(tg_user.language_code ? tg_user.language_code : "").langCode;
 		// finally create the user
 		let newUser = new UHelpr.User(tg_user.id || 0, tg_user.username || "err", tg_user.first_name || "err", tg_user.last_name || "err", lang);
 		this.Parent.users.push(newUser);
