@@ -63,7 +63,7 @@ export default (ctx: TS3Ctx) => {
 	ctx.debug = process.env.DEBUG == "true" || false;
 
 	// the default language the bot will use for new users
-	ctx.defaultLanguage = process.env.LANGUAGE || "Eng";
+	ctx.defaultLanguage = process.env.LANGUAGE || "en";
 
 	// Bot per chat announcement
 	ctx.announceID = parseInt(process.env.MOTD_ID || "1");

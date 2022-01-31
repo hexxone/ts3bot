@@ -9,7 +9,7 @@
 // Every language-related string / user-message
 export default {
 	id: 1000,
-	langCode: "Eng",
+	langCode: "en",
 	langName: "English",
 	langFlag: "🇺🇸",
 	langText: "Language set to english.",
@@ -17,7 +17,7 @@ export default {
 	langCurrent: "Current language: English.",
 
 	invalidName: "Invalid name. The name must not contain spaces or special characters.",
-	invalidFormatSrv: "Invalid Format. Use: '<address>|<query_port>|<vserver_id>'",
+	invalidFormatSrv: "Invalid Format. Use: '<address>|<query_port>|<ts3_port>'",
 	invalidFormatAcc: "Invalid Format. Use: '<query_user>|<query_passwd>'",
 	noInstSelected: "No server selected.",
 	notLinked: "There is no server linked to this group.",

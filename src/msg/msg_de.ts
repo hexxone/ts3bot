@@ -9,15 +9,15 @@
 // Every language-related string / user-message
 export default {
 	id: 1001,
-	langCode: "De",
-	langName: "Deutsch",
+	langCode: "de",
+	langName: "German",
 	langFlag: "🇩🇪",
 	langText: "Sprache auf Deutsch gestellt.",
 	langNotFound: "Sprache nicht gefunden.",
 	langCurrent: "Jetzige Sprache: Deutsch.",
 
 	invalidName: "Ungültiger Name. Es dürfen keine Leer- oder Sonderzeichen verwendet werden.",
-	invalidFormatSrv: "Ungültiges Format. Benutze: '<addresse>|<query_port>|<vserver_id>'",
+	invalidFormatSrv: "Ungültiges Format. Benutze: '<address>|<query_port>|<ts3_port>'",
 	invalidFormatAcc: "Ungültiges Format. Benutze: '<query_benutzer>|<query_passwort>'",
 	noInstSelected: "Kein Server gewählt",
 	notLinked: "Es ist noch kein Server mit der Gruppe verbunden.",

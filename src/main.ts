@@ -27,6 +27,9 @@
     - catch all possible edit & delte message handlers?
 
     - add pm select server/user/send commands
+	- default html formatting
+	- catch group send telegram permission error -> unlink
+	- test everything
 */
 
 let l = " --------------------------------------------------";
@@ -230,6 +233,9 @@ customCtx.sendNewMessage = (cid: number, text: string, opt: ExtraReplyMessage, n
 		bot.telegram.deleteMessage(cid, sendr.last_bot_msg_id);
 		sendr.last_bot_msg_id = -1;
 	}
+	// set defaults
+	if (opt.parse_mode === undefined) opt.parse_mode = "HTML";
+	if (opt.disable_web_page_preview === undefined) opt.disable_web_page_preview = true;
 	return bot.telegram
 		.sendMessage(cid, text, opt)
 		.then((msg) => {

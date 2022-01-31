@@ -15,7 +15,7 @@ export default {
 	id: 118,
 	available: 3,
 	groupperm: false,
-	needslinking: false,
+	needslinking: true,
 	needsselected: false,
 	usage: "/menu",
 	description: "menu",
@@ -29,9 +29,9 @@ export default {
 		ctx.opt.reply_markup.remove_keyboard = true;
 		if (ctx.isGroup) {
 			// group has linked server
-			if (ctx.groupBinding) {
+			if (ctx.groupLinking) {
 				msgs = ctx.groupMessages;
-				ins = ctx.groupBinding.instance;
+				ins = ctx.groupLinking.instance;
 				let iusr = Utils.getUser({ id: ins.id });
 				// build message
 				msg =

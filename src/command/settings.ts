@@ -25,7 +25,7 @@ export default {
 		let msg = "_";
 		if (ctx.isGroup) {
 			let gmsgs = ctx.groupMessages;
-			let grb = ctx.groupBinding;
+			let grb = ctx.groupLinking;
 			let secondLn = ["/showgroup " + !grb.showgroupname];
 			msg = "<a href='tg://user?id=" + ctx.sender.id + "'>@</a> " + gmsgs.settings00 + "<code>";
 			msg += gmsgs.settings01 + grb.alladmin;
@@ -43,7 +43,7 @@ export default {
 			msg += gmsgs.settings10 + Utils.nmToStr(grb.language, grb.notifymove);
 			msg += "</code>";
 			// if sender admin or all admin set keyboard
-			if (ctx.groupBinding.instance.id == ctx.sender.id || ctx.groupBinding.alladmin) {
+			if (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking.alladmin) {
 				//console.log('commands admin');
 				let nextChatMode = (grb.chatmode + 1) % 4;
 				if (nextChatMode < 1) nextChatMode = 1;

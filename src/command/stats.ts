@@ -20,7 +20,7 @@ export default {
 	command: ["/stats"],
 	callback: function (main: TS3Ctx, ctx: MessageCtx) {
 		ctx.opt.parse_mode = "HTML";
-		let s = ctx.isGroup && ctx.groupBinding ? ctx.groupMessages : ctx.senderMessages;
+		let s = ctx.isGroup && ctx.groupLinking ? ctx.groupMessages : ctx.senderMessages;
 
 		let msg = "Stats:<code>" + Utils.getStats(s) + "</code>";
 		if (!ctx.isGroup) ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("start", s)]];

@@ -20,13 +20,13 @@ export default {
 	callback: function (main: TS3Ctx, ctx: MessageCtx) {
 		let msgs = ctx.senderMessages;
 		if (ctx.isGroup) {
-			if (ctx.groupBinding !== null) {
-				if (ctx.groupBinding.instance.id == ctx.sender.id || ctx.groupBinding.alladmin) {
-					if (ctx.groupBinding.instance.connectionState == 2) {
+			if (ctx.groupLinking !== null) {
+				if (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking.alladmin) {
+					if (ctx.groupLinking.instance.connectionState == 2) {
 						ctx.respondChat(ctx.groupMessages.serverReconnecting, ctx.opt);
 						try {
-							ctx.groupBinding.instance.connectTry = 0;
-							ctx.groupBinding.instance.Disconnect(true);
+							ctx.groupLinking.instance.connectTry = 0;
+							ctx.groupLinking.instance.Disconnect(true);
 						} catch (e) {
 							ctx.respondChat(msgs.errorPrefix + JSON.stringify(e), ctx.opt);
 						}

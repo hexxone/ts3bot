@@ -14,6 +14,8 @@ import { MessageCtx, TS3Ctx } from "../context";
 import Utils from "../class/utils";
 import CommandHandler from "./commandhandler";
 
+const REPLY_IN_GROUPS = false;
+
 // Telegram message-receive-handler
 
 export default function (self: TS3Ctx) {
@@ -112,21 +114,21 @@ export default function (self: TS3Ctx) {
 			// Set/Update the current group name
 			self.groupnames.set(ctx.chatId, title);
 			// reply to messages in groups
-			ctx.opt.reply_to_message_id = msg.message_id;
+			if (REPLY_IN_GROUPS) ctx.opt.reply_to_message_id = msg.message_id;
 			// get the group Binding (if exists)
-			ctx.groupBinding = Utils.getGroupLinking(ctx.chatId);
-			if (!ctx.groupBinding) break groupcheck; // no linked server = abort
+			ctx.groupLinking = Utils.getGroupLinking(ctx.chatId);
+			if (!ctx.groupLinking) break groupcheck; // no linked server = abort
 			// add user
-			ctx.groupBinding.CheckAddUser(ctx.sender);
+			ctx.groupLinking.CheckAddUser(ctx.sender);
 			// get messages for group language
-			ctx.groupMessages = Utils.getLanguageMessages(ctx.groupBinding.language);
+			ctx.groupMessages = Utils.getLanguageMessages(ctx.groupLinking.language);
 			// make Telegram user clickable
 			let tsname = Utils.tryNameClickable(ctx.sender);
 
 			// someone sent a message intended for ts3?
 			if (self.run && msg.text && msg.text.substring(0, 1) !== "/") {
 				// check for spam
-				if (ctx.groupBinding.spamcheck) {
+				if (ctx.groupLinking.spamcheck) {
 					// Check if user is ignored due to spam
 					if (ctx.sender.banneduntil !== null) {
 						if (new Date().getTime() - new Date(ctx.sender.banneduntil).getTime() < 0) return;
@@ -134,32 +136,34 @@ export default function (self: TS3Ctx) {
 						else {
 							// user is no longer ignored.
 							ctx.sender.banneduntil = null;
+							const nexTime = ((ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5).toString();
 							try {
-								self.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamEnd.replace("<time>", (ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5), ctx.opt);
+								self.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamEnd.replace("<time>", nexTime), ctx.opt);
 							} catch (err) {
-								self.sendNewMessage(ctx.chatId, ctx.senderMessages.spamEnd.replace("<time>", (ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5), ctx.opt);
+								self.sendNewMessage(ctx.chatId, ctx.senderMessages.spamEnd.replace("<time>", nexTime), ctx.opt);
 							}
 						}
 					} else if (self.antispam.CheckRegisterSpam(ctx.sender)) {
 						// Spam detected
+						const banTime = (ctx.sender.spams * ctx.sender.spams * 5).toString();
 						try {
-							self.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamStart1.replace("<time>", ctx.sender.spams * ctx.sender.spams * 5));
+							self.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamStart1.replace("<time>", banTime));
 						} catch (err) {
-							self.sendNewMessage(ctx.chatId, ctx.senderMessages.spamStart2.replace("<time>", ctx.sender.spams * ctx.sender.spams * 5));
+							self.sendNewMessage(ctx.chatId, ctx.senderMessages.spamStart2.replace("<time>", banTime));
 						}
 						return;
 					}
 				}
 				// send message
-				ctx.groupBinding.NotifyTS3(title, tsname + " : " + Utils.fixUrlToTS3(msg.text));
+				ctx.groupLinking.NotifyTS3(title, tsname + " : " + Utils.fixUrlToTS3(msg.text));
 			}
 			// someone shared a file?
-			else if (self.run && self.useFileProxy && ctx.groupBinding.sharemedia) {
+			else if (self.run && self.useFileProxy && ctx.groupLinking.sharemedia) {
 				let mft = Utils.getMsgFileType(msg);
 				if (mft !== null) {
 					let proxiedFileUrl = self.fileProxyServer.getURL(msg, mft);
 					console.log("Proxy URL: " + proxiedFileUrl);
-					ctx.groupBinding.NotifyTS3(title, tsname + " (" + mft + "): " + Utils.fixUrlToTS3(proxiedFileUrl));
+					ctx.groupLinking.NotifyTS3(title, tsname + " (" + mft + "): " + Utils.fixUrlToTS3(proxiedFileUrl));
 				}
 			}
 		}
@@ -167,7 +171,7 @@ export default function (self: TS3Ctx) {
 		// Handle text message
 		if (msg.text) {
 			// Check if the text contains args and split them
-			ctx = CommandHandler.prepare(ctx, msg);
+			CommandHandler.prepare(ctx, msg.text);
 
 			if (msg.from.id == self.developer_id && ctx.cmd && ctx.cmd.toLocaleLowerCase() == "/runtoggle") {
 				self.run = !self.run;
@@ -191,7 +195,8 @@ export default function (self: TS3Ctx) {
 			// cancel command
 			if (!ctx.isGroup && ctx.cmd && ctx.cmd.toLowerCase() == "/cancel") {
 				bot.telegram.deleteMessage(msg.chat.id, msg.message_id);
-				return CommandHandler.cancel(ctx);
+				CommandHandler.cancel(ctx);
+				return;
 			}
 
 			// check for menu
@@ -207,7 +212,7 @@ export default function (self: TS3Ctx) {
 				/*
 				 ** MENU ACTION HANDLER AREA
 				 */
-				return self.actions.reduce(function (cont, obj) {
+				self.actions.reduce(function (cont, obj) {
 					if (!cont) return false;
 					return obj.action.reduce(function (cont2, action) {
 						if (cont2 && action.toLowerCase() === ctx.sender.menu.toLowerCase()) {
@@ -225,7 +230,7 @@ export default function (self: TS3Ctx) {
 			 ** COMMAND HANDLER AREA
 			 */
 			if (ctx.cmd !== undefined) {
-				return CommandHandler.handle(self, ctx, 0, ctx.cmd);
+				CommandHandler.handle(self, ctx, 0, ctx.cmd);
 			}
 		}
 	});

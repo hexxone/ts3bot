@@ -11,7 +11,7 @@ import { User } from "typegram";
 
 import urlRegex from "url-regex-safe";
 
-import { TS3Ctx } from "../context";
+import { MessageCtx, TS3Ctx, TS3Msgs } from "../context";
 
 import * as UHelpr from "../object/user";
 import { Instance } from "../object/instance";
@@ -45,6 +45,8 @@ class Utils {
 	// (creates and adds it to existing users if not already in)
 	getUser(tg_user: Partial<User>): UHelpr.User {
 		if (!tg_user) return null as any;
+		// check if the user-id is already known
+		// and check for updated name props
 		for (let user of this.Parent.users)
 			if (user.id == tg_user.id) {
 				if (tg_user.username && user.username != tg_user.username) {
@@ -61,9 +63,13 @@ class Utils {
 				}
 				return user;
 			}
+		// we didnt find one...
 		console.log("New User: " + tg_user.id);
-		let newUser = new UHelpr.User(tg_user.id || 0, tg_user.username || "err", tg_user.first_name || "err", tg_user.last_name || "err", "", "", false);
-		newUser.language = this.Parent.defaultLanguage;
+		// try to get the user-specific language, or fallback to the default.-
+		// then get the validated language code
+		let lang = this.getLanguageMessages(tg_user.language_code || "").langCode;
+		// finally create the user
+		let newUser = new UHelpr.User(tg_user.id || 0, tg_user.username || "err", tg_user.first_name || "err", tg_user.last_name || "err", lang);
 		this.Parent.users.push(newUser);
 		return newUser;
 	}
@@ -129,8 +135,8 @@ class Utils {
 	}
 
 	// returns messages-object for the desired language
-	getLanguageMessages(lang) {
-		let deff = null;
+	getLanguageMessages(lang: string): TS3Msgs {
+		let deff;
 		for (let msgobj of this.Parent.languages) {
 			if (msgobj.langCode == lang || msgobj.langName == lang) return msgobj;
 			if (msgobj.langCode == this.Parent.defaultLanguage) deff = msgobj;
@@ -167,17 +173,14 @@ class Utils {
 	}
 
 	// removes the keyboard and overwrites the response function
-	fixRemoveKeyboard(main, ctx) {
-		let cid = ctx.chatId;
-		main.bot
-			.sendMessage(cid, "🕐...", {
-				reply_markup: { remove_keyboard: true },
-			})
-			.then((data) => main.bot.deleteMessage(cid, data.message_id));
+	fixRemoveKeyboard(main: TS3Ctx, ctx: MessageCtx) {
+		const tg = main.bot.telegram;
+		const cid = ctx.chatId;
+		tg.sendMessage(cid, "🕐...", { reply_markup: { remove_keyboard: true } }).then((data) => tg.deleteMessage(cid, data.message_id));
 	}
 
 	// returns a command by its description name
-	getCmdByDesc(desc) {
+	getCmdByDesc(desc: string) {
 		let objs = this.Parent.commands.filter(function (obj) {
 			return obj.description == desc;
 		});
@@ -186,7 +189,7 @@ class Utils {
 	}
 
 	// Get Command as Button
-	getCmdBtn(desc: string, msgs) {
+	getCmdBtn(desc: string, msgs: TS3Msgs) {
 		if (desc == "cancel")
 			return {
 				text: msgs["cmd_cancel"],
@@ -277,7 +280,7 @@ class Utils {
 
 	// converts available number to string
 	avToStr(language, available) {
-		let msgs = this.getLanguageMessages(language);
+		const msgs = this.getLanguageMessages(language);
 		switch (available) {
 			case 0:
 				return msgs.availableDev;
@@ -285,7 +288,7 @@ class Utils {
 				return msgs.availableChat;
 			case 2:
 				return msgs.availableGroup;
-			case 3:
+			default:
 				return msgs.availableAll;
 		}
 	}

@@ -24,10 +24,10 @@ export default {
 		let setmsg = ctx.groupMessages.silentMode;
 		if (ctx.args.length == 2) {
 			if (Utils.isYes(ctx.args[1])) {
-				ctx.groupBinding.silent = true;
+				ctx.groupLinking.silent = true;
 				ctx.respondChat(setmsg + ctx.groupMessages.optionOn, ctx.opt);
 			} else if (Utils.isNo(ctx.args[1])) {
-				ctx.groupBinding.silent = false;
+				ctx.groupLinking.silent = false;
 				ctx.respondChat(setmsg + ctx.groupMessages.optionOff, ctx.opt);
 			} else ctx.respondChat(usage, ctx.opt);
 		} else ctx.respondChat(usage, ctx.opt);

@@ -26,7 +26,7 @@ export default {
 
 				// call menu command
 				let cmdo = Utils.getCmdByDesc("menu");
-				cmdo.callback(main, ctx);
+				if (cmdo) cmdo.callback(main, ctx);
 			} else ctx.respondChat(ctx.senderMessages.serverNotFound, ctx.opt);
 		} else ctx.respondChat(ctx.senderMessages.invalidName, ctx.opt);
 	},

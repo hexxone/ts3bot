@@ -66,12 +66,12 @@ export default function (self: TS3Ctx) {
 			// Set/Update the current group name
 			self.groupnames.set(ctx.chatId, (msg.chat as Chat.TitleChat).title);
 			// get the group Binding (if exists)
-			ctx.groupBinding = Utils.getGroupLinking(ctx.chatId);
-			if (!ctx.groupBinding) break groupcheck; // no linked server = abort
+			ctx.groupLinking = Utils.getGroupLinking(ctx.chatId);
+			if (!ctx.groupLinking) break groupcheck; // no linked server = abort
 			// add user
-			ctx.groupBinding.CheckAddUser(sender);
+			ctx.groupLinking.CheckAddUser(sender);
 			// get messages for group language
-			ctx.groupMessages = Utils.getLanguageMessages(ctx.groupBinding.language);
+			ctx.groupMessages = Utils.getLanguageMessages(ctx.groupLinking.language);
 		}
 
 		// process query
@@ -94,10 +94,10 @@ export default function (self: TS3Ctx) {
 			if (cq.data.startsWith("l")) {
 				// prepare fake ctx
 				let flag = cq.data.substring(1);
-				ctx = CommandHandler.prepare(ctx, { text: "/lang " + flag });
+				CommandHandler.prepare(ctx, "/lang " + flag);
 				// call lang command
 				let cmdo = Utils.getCmdByDesc("lang");
-				cmdo.callback(self, ctx);
+				if (cmdo) cmdo.callback(self, ctx);
 			}
 			// execute action
 		}

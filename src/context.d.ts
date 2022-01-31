@@ -1,13 +1,17 @@
 import { Telegraf } from "telegraf";
 import { Message, User, UserFromGetMe } from "typegram";
 
-import * as UHelpr from "./class/user";
+import * as UHelpr from "./object/user";
+import { GroupLinking } from "./object/grouplinking";
+import { Instance } from "./object/instance";
 
 import { AntiSpam } from "./class/antispam";
 import { FileProxy } from "./class/fileproxy";
-import { GroupLinking } from "./class/grouplinking";
-import { Instance } from "./object/instance";
+
 import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
+
+import EN_MSG from "./msg/msg_eng";
+export declare type TS3Msgs = typeof EN_MSG;
 
 export declare type TS3Ctx = {
 	defaultLanguage: string;
@@ -24,9 +28,9 @@ export declare type TS3Ctx = {
 	commandsPath: string;
 	languagesPath: string;
 
-	actions: any[];
-	commands: any[];
-	languages: any[];
+	actions: BotAction[];
+	commands: BotCommand[];
+	languages: TS3Msgs[];
 
 	users: UHelpr.User[];
 	instances: Instance[];
@@ -78,14 +82,14 @@ export declare type MessageCtx = {
 	isGroup: boolean;
 	isReply: boolean;
 
-	groupBinding: GroupLinking;
+	groupLinking: GroupLinking;
 	sender: UHelpr.User;
 	opt: ExtraReplyMessage & { reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup };
 	cmd: string;
 
 	// translations
-	groupMessages: any;
-	senderMessages: any;
+	groupMessages: TS3Msgs;
+	senderMessages: TS3Msgs;
 	developer_id: number;
 
 	msg: Message;
@@ -96,4 +100,23 @@ export declare type MessageCtx = {
 	senderLinkings: GroupLinking[];
 
 	respondChat(txt: string, opt?: ExtraReplyMessage, noDel?: boolean): void;
+};
+
+export declare type BotCommand = {
+	id: number; // the id is used for inline commands and has to be unique !
+	hidden: boolean; // dont show this command in the /commands list
+	command: string[]; // the triggers for this command to be called
+	available: 0 | 1 | 2 | 3; // command chat availability, 0 = admin only, 1 = single chat, 2 = group, 3 = chat & group
+	groupperm: boolean; // group permission, if(available=2|3) and set true, command can only be used by admin
+	needslinking: boolean; // the command requires the group to have a linked instance (available 2|3)
+	needsselected: boolean; // the command requires the sender to have an instance selected (available 1|3)
+	usage: string; // command usage (including arguments)
+	description: string; // language bundle description has to be unique aswell to be found by the inline keyboard
+	callback: (main: TS3Ctx, ctx: MessageCtx) => void; // executable command
+};
+
+export declare type BotAction = {
+	id: number; // the id is used for inline actions and has to be unique !
+	action: string[]; // the triggers for this action to be called
+	callback: (main: TS3Ctx, ctx: MessageCtx) => void; // executable action
 };

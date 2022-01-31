@@ -8,10 +8,18 @@
 
 // represents a bot user
 export class User {
+	// telegram props
+
 	id: number;
 	username: string;
 	first_name: string;
 	last_name: string;
+
+	language: string;
+	last_msg_id: number;
+	last_bot_msg_id: number;
+
+	// bot props
 
 	menu: string;
 	selected: string;
@@ -21,46 +29,40 @@ export class User {
 	spams: number;
 	banneduntil: any;
 
-	language: string;
-	last_msg_id: number;
-	last_bot_msg_id: number;
-
+	// live tree
 	livetree?: number;
 	lasttree?: string;
 	lasterror?: string;
 
+	// last server and user you received a msg from or selected
 	pm_selected_srv: string;
 	pm_selected_usr: string;
+	// helper for selecting user on a server
 	pm_select_usr_site: number;
 
-	constructor(id: number, username: string, first_name: string, last_name: string, menu: string, selected: string, agreement: boolean) {
+	constructor(id: number, uname: string, first: string, last: string, lang: string) {
 		// always initialize all instance properties
 		this.id = id;
-		this.username = username;
-		this.first_name = first_name;
-		this.last_name = last_name;
-		this.menu = menu;
-		this.selected = selected;
-		this.agreement = agreement;
+		this.username = uname;
+		this.first_name = first;
+		this.last_name = last;
+		this.language = lang;
 
 		// set defaults
+
+		this.menu = "";
+		this.selected = "";
+		this.agreement = false;
 
 		this.sentdev = false;
 		this.spams = 0;
 		this.banneduntil = null;
 
-		this.language = "Eng";
 		this.last_msg_id = -1;
 		this.last_bot_msg_id = -1;
 
-		// last server and user you received a msg from or selected
 		this.pm_selected_srv = "";
 		this.pm_selected_usr = "";
-
-		// live tree
-		this.livetree = 0;
-
-		// helper for selecting user on a server
 		this.pm_select_usr_site = 0;
 	}
 

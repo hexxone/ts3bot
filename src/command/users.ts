@@ -23,7 +23,7 @@ export default {
 		ctx.opt.parse_mode = "HTML";
 		let showBots = ctx.args.length == 2 && ctx.args[1] == "-a";
 		if (ctx.isGroup) {
-			ctx.groupBinding.instance.GetUserString(ctx.groupBinding.language, !showBots && ctx.groupBinding.ignorebots, (res) => ctx.respondChat(res, ctx.opt));
+			ctx.groupLinking.instance.GetUserString(ctx.groupLinking.language, !showBots && ctx.groupLinking.ignorebots, (res) => ctx.respondChat(res, ctx.opt));
 		} else {
 			ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("menu", ctx.senderMessages)]];
 			ctx.senderSelectedInstance.GetUserString(ctx.sender.language, !showBots, (res) => ctx.respondChat(res, ctx.opt));
