@@ -1,7 +1,7 @@
 "use strict";
 
 //
-// Copyright (c) 2019 D.Thiele All rights reserved.
+// Copyright (c) 2022 hexxone All rights reserved.
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,59 +22,59 @@
 
 /*
     @TODO-LIST
-    - add limit for grouplinkings & deeplinkings tohgether
+    - add limit for grouplinkings & deeplinkings together
     - text reconnect issue fix
     - catch all possible edit & delte message handlers?
 
     - add pm select server/user/send commands
-    - channel & username notifications -> premium?
-    - fix docker
 */
 
-// / / / / / / / / / / / / / / / / / / / / / / //
-// / / / / / / / / / / / / / / / / / / / / / / //
-// / / /                                 / / / //
-// / / /        N  O  T  I  C  E         / / / //
-// / / /                                 / / / //
-// / / /    Do not modify this file!     / / / //
-// / / /    See 'config.js' instead.     / / / //
-// / / /                                 / / / //
-// / / / / / / / / / / / / / / / / / / / / / / //
-// / / / / / / / / / / / / / / / / / / / / / / //
-
-let l = "\r\n / / / / / / / / / / / / / / / / / / / / / / / / / /\r\n";
+let l = " --------------------------------------------------";
 console.log(l);
-console.log(" /        TS3Bot Copyright (c) 2022 D.Thiele        /\r\n");
-console.log(" /  This program comes with ABSOLUTELY NO WARRANTY  /\r\n");
-console.log(" /   This is free software, and you are welcome to  /\r\n");
-console.log(" /     redistribute it under certain conditions;    /\r\n");
-console.log(" /           See LICENSE file for details.          /");
-console.log(l);
+console.log("|        TS3Bot Copyright (c) 2022 D.Thiele        |");
+console.log("|  This program comes with ABSOLUTELY NO WARRANTY  |");
+console.log("|   This is free software, and you are welcome to  |");
+console.log("|     redistribute it under certain conditions;    |");
+console.log("|           See LICENSE file for details.          |");
+console.log(l + "\r\n");
 
 const wait = Date.now() + 5000;
 while (Date.now() < wait) {}
 
-// ctx reference (important)
-const customCtx = {} as any;
+// main Context reference
+// will keep all important objects and settings
+import { TS3Ctx } from "./context";
+const customCtx = {} as TS3Ctx;
 
 // Load required Libaries
-const Path = require("path");
-const TelegramBot = require("node-telegram-bot-api");
-// Load other Classes
-const AntiSpam = require("./class/antispam.js");
-const SLOCCount = require("./class/sloc.js");
-const FileProxy = require("./class/fileproxy.js");
+import fs from "fs";
+import Path from "path";
+import { Telegraf } from "telegraf";
+import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
+
+// Load Classes
+import { AntiSpam } from "./class/antispam";
+import { FileProxy } from "./class/fileproxy";
+
 // load callback handlers
-const MessageHandler = require("./class/messagehandler.js");
-const ReplyHandler = require("./class/replyhandler.js");
+import SLOCCount from "./class/sloc";
+import MessageHandler from "./handler/messagehandler";
+import ReplyHandler from "./handler/replyhandler";
+
+// load Objects
+import { GroupLinking } from "./object/grouplinking";
 
 // load config into ctx
-require("./config.js")(customCtx);
+import conf from "./config";
+conf(customCtx);
 
 // load special classes => they store a reference to the main ctx by passing 'customCtx'
 // if you require these classes from another one, it will keep the reference when passing 'null'.
-const Utils = require("./class/utils.js").Get(customCtx);
-const Loader = require("./class/loader.js").Get(customCtx);
+import Utils from "./class/utils";
+import Loader from "./class/loader";
+
+Utils.Set(customCtx);
+Loader.Set(customCtx);
 
 // hook console.log to always include time
 const log = console.log;
@@ -102,14 +102,14 @@ customCtx.parseExStr = (ex) =>
 	);
 
 // custom Exception Handler
-customCtx.handleEx = (callback) => {
+customCtx.handleEx = (callback: () => void) => {
 	try {
 		callback();
-	} catch (ex) {
+	} catch (ex: any) {
 		ex = customCtx.parseExStr(ex);
 		if (customCtx.debug) {
 			try {
-				customCtx.bot.sendMessage(customCtx.developer_id, "Bot Exception:\r\n" + ex);
+				customCtx.bot.telegram.sendMessage(customCtx.developer_id, "Bot Exception:\r\n" + ex);
 			} catch (ex2) {
 				ex2 = customCtx.parseExStr(ex2);
 				console.log("Fatal Exception: " + ex + ex2);
@@ -119,7 +119,7 @@ customCtx.handleEx = (callback) => {
 };
 
 // handles bot errors
-customCtx.telegramErrorHandler = function (err) {
+customCtx.telegramErrorHandler = function (err: any) {
 	console.error("Telegram Exception", JSON.stringify(err).substring(0, 100));
 };
 
@@ -137,23 +137,27 @@ customCtx.exitHandler = function (opt, err) {
 // INIT DYNAMIC RESOURCES
 
 // Get module paths
-customCtx.actionsPath = Path.join(__dirname, "actions");
-customCtx.commandsPath = Path.join(__dirname, "commands");
+customCtx.actionsPath = Path.join(__dirname, "action");
+customCtx.commandsPath = Path.join(__dirname, "command");
 customCtx.languagesPath = Path.join(__dirname, "msg");
+
 // Create module arrays
 customCtx.actions = [];
 customCtx.commands = [];
 customCtx.languages = [];
+
 // Create object arrays
 customCtx.users = [];
 customCtx.instances = [];
 customCtx.linkings = [];
+
 // Create array objects
 customCtx.fileMappings = {};
 customCtx.announces = {};
+
 // Create Hash-Maps
-customCtx.deeplinking = new Map();
-customCtx.groupnames = new Map();
+customCtx.deeplinking = new Map<string, GroupLinking>();
+customCtx.groupnames = new Map<number, string>();
 
 // should not close instantly
 process.stdin.resume();
@@ -176,60 +180,66 @@ customCtx.fileProxyServer = new FileProxy(customCtx);
 
 // initial loading
 Loader.loadModules();
-// auto reload modules
-Loader.watchModules();
 // load data
 Loader.loadData();
 
-// save data every 5 minutes
-customCtx.autoSave = setInterval(() => {
+// autosave data every 5 minutes
+setInterval(() => {
 	Loader.saveData();
-}, 300000);
+}, 5 * 60 * 1000);
 
 // CREATE BOT
 
 // Create the Telegram Bot either with webhook or polling
-let bot = (customCtx.bot = new TelegramBot(
-	customCtx.telegram_bot_token,
-	customCtx.useWebHook
-		? {
-				webHook: {
-					port: customCtx.webHookPort,
-					key: customCtx.webHookCustomCertificate ? customCtx.webKey : null,
-					cert: customCtx.webHookCustomCertificate ? customCtx.webCert : null,
-					autoOpen: true,
-				},
-		  }
-		: { polling: true }
-));
+let bot = (customCtx.bot = new Telegraf(customCtx.telegram_bot_token));
 
-// beware of chair
-bot.on("error", customCtx.telegramErrorHandler);
-bot.on("polling_error", customCtx.telegramErrorHandler);
-bot.on("webhook_error", customCtx.telegramErrorHandler);
+if (customCtx.useWebHook) {
+	// Start https webhook
+	if (customCtx.webHookCustomCertificate) {
+		bot.launch({
+			webhook: {
+				host: customCtx.webHookAddr,
+				port: customCtx.webHookPort,
+				tlsOptions: {
+					cert: fs.readFileSync(customCtx.webCert),
+					key: fs.readFileSync(customCtx.webKey),
+					ca: [
+						// This is necessary only if the client uses a self-signed certificate.
+						fs.readFileSync(customCtx.webCert),
+					],
+				},
+			},
+		});
+	} else {
+		bot.launch({
+			webhook: {
+				host: customCtx.webHookAddr,
+				port: customCtx.webHookPort,
+			},
+		});
+	}
+} else {
+	// polling
+	bot.launch();
+}
 
 // wrapper for storing the last sent bot message and deleting the previous one
-bot.sendNewMessage = function (cid, text, opt, noDel) {
+customCtx.sendNewMessage = (cid: number, text: string, opt: ExtraReplyMessage, noDel: boolean) => {
 	let sendr = cid > 0 ? Utils.getUser({ id: cid }) : null;
-	if (!noDel && sendr && sendr.last_bot_msg_id) {
-		this.deleteMessage(cid, sendr.last_bot_msg_id);
-		sendr.last_bot_msg_id = null;
+	if (!noDel && sendr && sendr.last_bot_msg_id > 0) {
+		bot.telegram.deleteMessage(cid, sendr.last_bot_msg_id);
+		sendr.last_bot_msg_id = -1;
 	}
-	return this.sendMessage(cid, text, opt).then((msg) => {
-		if (sendr) sendr.last_bot_msg_id = msg.message_id;
-	});
+	return bot.telegram
+		.sendMessage(cid, text, opt)
+		.then((msg) => {
+			if (sendr) sendr.last_bot_msg_id = msg.message_id;
+			return msg;
+		})
+		.catch((err) => {
+			return undefined;
+		});
 };
-
-// clear or set webHook
-if (!customCtx.useWebHook) {
-	console.log("clearing WebHook... using data polling");
-	bot.setWebHook("");
-} else {
-	let setAddr = "https://" + customCtx.webHookAddr + ":" + customCtx.webHookPort + "/" + customCtx.telegram_bot_token;
-	console.log("setting up WebHook: " + setAddr);
-	if (customCtx.webHookCustomCertificate) bot.setWebHook(setAddr, customCtx.webCert).then((e) => console.log("Webhook result: " + e));
-	else bot.setWebHook(setAddr).then((e) => console.log("WebHook result: " + e));
-}
 
 // Spam protection wrapper
 customCtx.antispam = new AntiSpam(10);
@@ -249,19 +259,19 @@ customCtx.receivedMessages = 0;
 console.log("connecting to Telegram bot API...");
 
 // get telegram bot object
-bot.getMe().then((res) => {
+bot.telegram.getMe().then((res) => {
 	customCtx.me = res; // assign self telegram bot object
+
 	console.log("Success. Telegram bot info: " + JSON.stringify(res));
 	console.log("Callbacks active.\r\n");
 
 	// listen for messages
-	bot.on("message", (msg) => {
-		customCtx.handleEx(() => MessageHandler(customCtx, msg));
-	});
+	MessageHandler(customCtx);
 
 	// listen for inline Button responses
-	bot.on("callback_query", (msg) => {
-		if (!customCtx.run) return;
-		customCtx.handleEx(() => ReplyHandler(customCtx, msg));
-	});
+	ReplyHandler(customCtx);
+
+	// Enable graceful stop
+	process.once("SIGINT", () => bot.stop("SIGINT"));
+	process.once("SIGTERM", () => bot.stop("SIGTERM"));
 });

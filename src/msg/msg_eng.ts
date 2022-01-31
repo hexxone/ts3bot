@@ -1,13 +1,13 @@
 "use strict";
 
 //
-// Copyright (c) 2019 D.Thiele All rights reserved.
+// Copyright (c) 2022 hexxone All rights reserved.
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.
 //
 
 // Every language-related string / user-message
-const myObject = {
+export default {
 	id: 1000,
 	langCode: "Eng",
 	langName: "English",
@@ -16,10 +16,8 @@ const myObject = {
 	langNotFound: "Language not found.",
 	langCurrent: "Current language: English.",
 
-	invalidName:
-		"Invalid name. The name must not contain spaces or special characters.",
-	invalidFormatSrv:
-		"Invalid Format. Use: '<address>|<query_port>|<vserver_id>'",
+	invalidName: "Invalid name. The name must not contain spaces or special characters.",
+	invalidFormatSrv: "Invalid Format. Use: '<address>|<query_port>|<vserver_id>'",
 	invalidFormatAcc: "Invalid Format. Use: '<query_user>|<query_passwd>'",
 	noInstSelected: "No server selected.",
 	notLinked: "There is no server linked to this group.",
@@ -51,40 +49,28 @@ const myObject = {
 	groupJoin: " joined the group.",
 	groupLeave: " left the group.",
 
-	spamStart1:
-		"Spam protection triggered. Your messages will be ignored for: <time> minutes.",
-	spamStart2:
-		"Spam protection triggered.\r\nSince the bot couldnt contact you privately, you receive this info here:\r\nYour messages will be ignored for: <time> minutes.",
-	spamEnd:
-		"You are no longer ignored due to Spam. Next time you will be ignored for: <time> minutes.",
+	spamStart1: "Spam protection triggered. Your messages will be ignored for: <time> minutes.",
+	spamStart2: "Spam protection triggered.\r\nSince the bot couldnt contact you privately, you receive this info here:\r\nYour messages will be ignored for: <time> minutes.",
+	spamEnd: "You are no longer ignored due to Spam. Next time you will be ignored for: <time> minutes.",
 
-	spamIgnoreTrigger:
-		"Spam protection triggered. Your messages will be ignored for: ",
-	spamIgnoreRevoke:
-		"You are no longer ignored due to Spam. Next time you will be ignored for: ",
+	spamIgnoreTrigger: "Spam protection triggered. Your messages will be ignored for: ",
+	spamIgnoreRevoke: "You are no longer ignored due to Spam. Next time you will be ignored for: ",
 	spamTimeUnit: " minutes.",
-	noAgreement:
-		"Please read and agree to the Terms of Service (using /tos) before adding an server.",
+	noAgreement: "Please read and agree to the Terms of Service (using /tos) before adding an server.",
 	addInfo:
 		"You will need the following information:<code>\r\n- server address\r\n- query port\r\n- vserver ID\r\n- a query account</code>\r\nTo begin, tell me how you want to call the server (e.g.: jeff)",
-	addLimit:
-		"Sorry, but you have reached the limit of 5 servers per User. You can always /delete or alter unneeded ones but if you really need more, contact me using /devmessage",
-	linkLimit:
-		"Sorry, but you have reached the limit of 20 linked groups per User. You can always /unlink or edit unneeded ones but if you really need more, contact me using /devmessage",
+	addLimit: "Sorry, but you have reached the limit of 5 servers per User. You can always /delete or alter unneeded ones but if you really need more, contact me using /devmessage",
+	linkLimit: "Sorry, but you have reached the limit of 20 linked groups per User. You can always /unlink or edit unneeded ones but if you really need more, contact me using /devmessage",
 	admin4allOn: "Everbody is now an Admin... what have you done?",
 	admin4allOff: "Revoked Admin privileges.",
 	availableCommands: "Available commands:",
-	groupNotLinked:
-		"This group is not linked to a TS3 server. " +
-		"Use /add and /link in bot-chat. ",
+	groupNotLinked: 'This group is not linked to a TS3 server.\r\nUse <code>/add</code> and <code>/link</code> in <a href="https://t.me/ts3bot?start">bot-chat</a>.',
 	conConnect: "Connecting. This may sometimes take a while...",
 	conConnecting: "Bot is still connecting. To cancel use /disconnect",
 	conConnected: "Bot is still connected. Use /reconnect instead.",
-	delConfirm:
-		"Deleting a server will unlink all associated groups.\r\nIf you are sure type exactly the following:\r\n\r\n",
+	delConfirm: "Deleting a server will unlink all associated groups.\r\nIf you are sure type exactly the following:\r\n\r\n",
 	delConfirmStr: "Yes, delete ",
-	devWait:
-		"You will have to wait for an answer before sending another message.",
+	devWait: "You will have to wait for an answer before sending another message.",
 	devSend: "Alright :) tell me what you want to.",
 	disconnect: "Disconnecting...",
 	faqText:
@@ -114,38 +100,32 @@ const myObject = {
 	accountSet: "Account details set.",
 	accBotName: " Next tell me a name for the Bot on your Server.",
 	channelSet: "Channel name set.",
-	channelComplete:
-		" The Setup is complete. You can now:\r\n/link the Server to a group\r\n/connect the bot\r\nor edit the settings\r\n(see /commands)",
+	channelComplete: " The Setup is complete. You can now:\r\n/link the Server to a group\r\n/connect the bot\r\nor edit the settings\r\n(see /commands)",
 	channelNameErr: "Error: The name requires between 2 and 32 chars.",
 	tosAccept: "Thanks :)",
 	tosReject: ":(",
-	addedServer:
-		"Server created. Now tell me the server address in the following format:\r\n'<ip_or_host>|<query_port>|<ts3_vserver_id>'.",
+	addedServer: "Server created. Now tell me the server address in the following format:\r\n'<ip_or_host>|<query_port>|<ts3_vserver_id>'.",
 	nameInUse: "This name is already in use.",
 	linkDestroyed: "Deep-link '<link>' was destroyed.",
 	linkingDestroyed: "Group linking '<linking>' was destroyed.",
 	serverUnlinked: "Server was unlinked from this group.",
 	serverDeleted: "Server deleted.",
 	deleteError: "Error. Input is case-sensitive. Try again or /cancel",
-	devSent:
-		"The message was delivered. I will look into it and try to contact you.",
+	devSent: "The message was delivered. I will look into it and try to contact you.",
 	devError: "Please use between 10 and 500 characters. Current: ",
 	linkGroup: "Ok, the bot can now be added to a group using this link:",
 	nameError: "The name must not contain spaces or special characters.",
 	serverSelected: "Server selected: ",
 	serverNotFound: "Server doesn't exist.",
 	setName: "Bot-name set.",
-	setNameFirst:
-		" Now please tell me the exact name of the channel the bot should join.",
+	setNameFirst: " Now please tell me the exact name of the channel the bot should join.",
 	setServer: "Server address set.",
-	setServerFirst:
-		" Now please tell me the account details in the following format:\r\n'<query_user>|<query_password>'.",
+	setServerFirst: " Now please tell me the account details in the following format:\r\n'<query_user>|<query_password>'.",
 	linkingNotFound: "Linking doesn't exist.",
 	groupAlreadyLinked: "This group is already linked to a server.",
 	groupLinked: "TS3 server was successfully linked to this group",
 	invalidLink: "Error: deeplinking key invalid.",
-	startChat:
-		"Hi! This bot can link your TeamSpeak3 Server to one or more Telegram group(s).",
+	startChat: "Hi! This bot can link your TeamSpeak3 Server to one or more Telegram group(s).",
 	spamCheck: "Spam checking set to: ",
 	silentMode: "Silent mode set to: ",
 	serverNameHidden: "Server name will be hidden in Telegram.",
@@ -155,20 +135,14 @@ const myObject = {
 	shareMediaOn: "Shared group media will be available in TS3.",
 	shareMediaOff: "Shared group media won't be available in TS3.",
 	usage: "Usage: ",
-	setServerAddress:
-		"Ok, please tell me the server address in format '<address>|<query_port>|<ts3_vserver_id>'.",
-	setBotName:
-		"Ok, please tell me how the bot should call itself on your server.",
+	setServerAddress: "Ok, please tell me the server address in format '<address>|<query_port>|<ts3_vserver_id>'.",
+	setBotName: "Ok, please tell me how the bot should call itself on your server.",
 	setChatMode: "Chat mode set to: ",
 	setChannelDepth: "Channel-depth set to: ",
-	setChannelName:
-		"Ok, please tell me the name of the channel the bot should join.",
-	setAccountDetails:
-		"Ok, please tell me the account details in format '<query_user>|<query_passwd>'.",
-	selectServer:
-		"Tap or write the name of the server you want to edit / select.",
-	serverReconnecting:
-		"Reconnecting.. this may sometimes take a while (for errors see private chat)",
+	setChannelName: "Ok, please tell me the name of the channel the bot should join.",
+	setAccountDetails: "Ok, please tell me the account details in format '<query_user>|<query_passwd>'.",
+	selectServer: "Tap or write the name of the server you want to edit / select.",
+	serverReconnecting: "Reconnecting.. this may sometimes take a while (for errors see private chat)",
 	setMoveNotifications: "Client move notifications set to: ",
 	setJoinNotifications: "Client join notifications set to: ",
 	manageHeader: "Servers with linked Groups:<code>",
@@ -180,8 +154,7 @@ const myObject = {
 	autoConnecting: "Auto-connecting. One moment please...",
 	leftServer: "left the server.",
 	joinedServer: "joined the server.",
-	botConnected:
-		"</b> is now connected.\r\n<b><users> User(s)</b> and <b><bots> Bot(s)</b> online.",
+	botConnected: "</b> is now connected.\r\n<b><users> User(s)</b> and <b><bots> Bot(s)</b> online.",
 	botChannelMsg: "",
 	liveTreeFormat: "LiveTree\r\n<code><tree></code>\r\nChanged: <time>",
 	liveTreeError: " ⚠️",
@@ -227,7 +200,7 @@ const myObject = {
 	settings21: "\r\nlabel:          ",
 	settings22: "\r\nserver address: ",
 	settings23: "\r\nquery port:     ",
-	settings24: "\r\nserver ID:      ",
+	settings24: "\r\nserver port:    ",
 	settings25: "\r\nquery user:     ",
 	settings26: "\r\nquery pass:     ",
 	settings27: "\r\nclient name:    ",
@@ -254,21 +227,16 @@ const myObject = {
 	commandsGroup: "* = Needs Admin Permission\r\n# = Needs linked Server\r\n",
 	commandsChat: "~ = Needs selected Server\r\n",
 	commandForbidden: "You are not allowed to use this command.",
-	commandNotLinked:
-		"There is no server linked to this group.\r\nTo do so: /add a server and /link it.",
-	commandErrChat1: "This command is meant for bot-chat only.",
-	commandErrChat2: "This command is meant for group-chat only.",
+	commandNotLinked: "There is no server linked to this group.\r\nTo do so: /add a server and /link it.",
+	commandErrChat1: 'This command is meant for <a href="https://t.me/ts3bot?start">bot-chat</a> only.',
+	commandErrChat2: "This command is meant for group-chat only. Use /link.",
 	commandNoSelect: "Please /select a server first.",
 	commandNoAdded: "Please /add a server first.",
 	commandNoTOS: "Please accept the /tos and /add a server first.",
 	commandResult: "Command search matches for '<command>':",
 	commandNotFound: "No command matching '<command>' found.",
-	commandCommand:
-		"\r\n<code>Command:      [usage]" +
-		"\r\nDescription:  [desc]" +
-		"\r\nAvailable:    [available]</code>",
-	commandsDetail:
-		"\r\nFor details enter: <code>/commands [command_name]</code>",
+	commandCommand: "\r\n<code>Command:      [usage]" + "\r\nDescription:  [desc]" + "\r\nAvailable:    [available]</code>",
+	commandsDetail: "\r\nFor details enter: <code>/commands [command_name]</code>",
 	commandMax: "5 entries shown at max.",
 
 	cmd_addServer: "Add server",
@@ -318,5 +286,3 @@ const myObject = {
 	cmd_savedata: "Store data",
 	cmd_lol: "idk",
 };
-
-module.exports = myObject;
