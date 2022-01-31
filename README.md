@@ -2,7 +2,7 @@
 
 **This bot can link your TeamSpeak3-server to Telegram-groups for customizable cross-chat & notifications.**
 
-Code is written in NodeJS and deployed using docker-compose.
+Code is written in TypeScript and deployed using docker-compose.
 _Author: hexxone_
 
 ## Requirements
@@ -36,7 +36,8 @@ Here is the general structure:
 -   COMMANDS
 
     create your own commands functions by placing a new \*.js
-    file into the /commands/ folder. Take a look at this file: `src/commands/aaa_sample.js`
+    file into the `/commands/` folder. Take a look at this file:
+    `src/commands/aaa_sample.js`
 
 -   ACTIONS
 
@@ -47,7 +48,6 @@ Here is the general structure:
 
     if you think you need an additional static classes or functions,
     feel free to add a new class here: `src/class/`
-    and single functions could be put here: `src/class/utils.js`
 
 ## Features
 

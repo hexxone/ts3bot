@@ -27,7 +27,6 @@
     - catch all possible edit & delte message handlers?
 
     - add pm select server/user/send commands
-	- default html formatting
 	- catch group send telegram permission error -> unlink
 	- test everything
 */
@@ -82,18 +81,18 @@ Loader.Set(customCtx);
 // hook console.log to always include time
 const log = console.log;
 console.log = function () {
-	log.apply(console, ["[" + Utils.getTime() + "]"].concat(arguments.length > 1 ? arguments : arguments[0]));
+	log.apply(console, ["[" + Utils.getTime(new Date()) + "]"].concat(arguments.length > 1 ? arguments : arguments[0]));
 };
 
 // set our start time, cuz why not
-customCtx.startDate = Utils.getTime();
+customCtx.startDate = new Date();
 console.log("Bot running from directory: " + __dirname);
 console.log("Static classes loaded.");
 
 // SOME IMPORTANT HELPER FUNCTIONS
 
 // parses string for an exception (Result shall never be sent to a normal user!!!)
-customCtx.parseExStr = (ex) =>
+const parseExStr = (ex) =>
 	JSON.stringify(
 		{
 			code: ex.code,
@@ -109,21 +108,16 @@ customCtx.handleEx = (callback: () => void) => {
 	try {
 		callback();
 	} catch (ex: any) {
-		ex = customCtx.parseExStr(ex);
+		ex = parseExStr(ex);
 		if (customCtx.debug) {
 			try {
 				customCtx.bot.telegram.sendMessage(customCtx.developer_id, "Bot Exception:\r\n" + ex, { disable_web_page_preview: true });
 			} catch (ex2) {
-				ex2 = customCtx.parseExStr(ex2);
+				ex2 = parseExStr(ex2);
 				console.log("Fatal Exception: " + ex + ex2);
 			}
 		} else console.log("Exception: " + ex);
 	}
-};
-
-// handles bot errors
-customCtx.telegramErrorHandler = function (err: any) {
-	console.error("Telegram Exception", JSON.stringify(err).substring(0, 100));
 };
 
 // handles any closing of the program
