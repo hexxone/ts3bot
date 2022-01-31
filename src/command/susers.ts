@@ -20,7 +20,7 @@ export default {
 	callback: function (main: TS3Ctx, ctx: MessageCtx) {
 		ctx.opt.parse_mode = "HTML";
 		if (ctx.isGroup) {
-			ctx.groupBinding.instance.GetSimpleUserString(ctx.groupBinding.language, ctx.groupBinding.ignorebots, (res) => {
+			ctx.groupLinking.instance.GetSimpleUserString(ctx.groupLinking.language, ctx.groupLinking.ignorebots, (res) => {
 				let mymsg = "<code>" + res + "</code>";
 				ctx.respondChat(res, ctx.opt);
 			});

@@ -31,7 +31,7 @@ export default {
 			for (let lang of main.languages) {
 				if (lang.langCode == trylang || lang.langName == trylang || lang.langFlag == trylang) {
 					// set language
-					if (ctx.isGroup) ctx.groupBinding.language = lang.langCode;
+					if (ctx.isGroup) ctx.groupLinking.language = lang.langCode;
 					else ctx.sender.language = lang.langCode;
 					// set response text
 					let local = Utils.getLanguageMessages(lang.langCode);

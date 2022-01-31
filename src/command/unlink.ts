@@ -23,7 +23,7 @@ export default {
 		let o;
 		if (ctx.isGroup) {
 			// destroy
-			Utils.destroyGroupLinking(ctx.groupBinding);
+			Utils.destroyGroupLinking(ctx.groupLinking);
 		} else {
 			let msgs = ctx.senderMessages;
 			if (ctx.args.length != 2 || !Utils.testName(ctx.args[1])) {

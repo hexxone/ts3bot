@@ -24,10 +24,10 @@ export default {
 		if (ctx.args.length == 2) {
 			let setmsg = ctx.groupMessages.spamCheck;
 			if (Utils.isYes(ctx.args[1])) {
-				ctx.groupBinding.spamcheck = true;
+				ctx.groupLinking.spamcheck = true;
 				ctx.respondChat(setmsg + ctx.groupMessages.optionOn, ctx.opt);
 			} else if (Utils.isNo(ctx.args[1])) {
-				ctx.groupBinding.spamcheck = false;
+				ctx.groupLinking.spamcheck = false;
 				ctx.respondChat(setmsg + ctx.groupMessages.optionOff, ctx.opt);
 			} else ctx.respondChat(usage, ctx.opt);
 		} else ctx.respondChat(usage, ctx.opt);

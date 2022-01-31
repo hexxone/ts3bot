@@ -202,24 +202,25 @@ export class Instance extends IUtils {
 			})
 			// Successfully connected, notify groups / ts3 and start keepalive
 			.then(() => {
-				let tcnt = this.GetUserCount(true);
-				let bcnt = this.users.length - tcnt;
-				let busr = this.main.me.username;
+				const uCount = this.GetUserCount(true);
+				let userCntStr = uCount.toString();
+				let botCntStr = (this.users.length - uCount).toString();
+				let botUsr = this.main.me.username;
 				// send ts3 msg
-				this.SendChannelMessage("Hi! [URL=https://t.me/" + busr + "]" + busr + "[/URL] is now active.");
+				this.SendChannelMessage("Hi! [URL=https://t.me/" + botUsr + "]" + botUsr + "[/URL] is now active.");
 				// send message for each group & language seperately
 				for (let grp of this.groups) {
 					let lnk = Utils.getGroupLinking(grp);
 					if (!lnk) continue;
 					// build message
 					let msgs = Utils.getLanguageMessages(lnk.language);
-					let tmpmsg = "<b>" + busr + msgs.botConnected.replace("<users>", tcnt).replace("<bots>", bcnt);
+					let tmpmsg = "<b>" + botUsr + msgs.botConnected.replace("<users>", userCntStr).replace("<bots>", botCntStr);
 					lnk.NotifyTelegram(this.serverinfo.virtualserverName, tmpmsg);
 				}
 				// send message to owner
 				let owner = Utils.getUser({ id: this.id });
 				let msgs = Utils.getLanguageMessages(owner.language);
-				let tmpmsg = "<b>" + busr + msgs.botConnected.replace("<users>", tcnt).replace("<bots>", bcnt);
+				let tmpmsg = "<b>" + botUsr + msgs.botConnected.replace("<users>", userCntStr).replace("<bots>", botCntStr);
 				let opt = {
 					parse_mode: "HTML",
 					reply_markup: {
@@ -357,13 +358,13 @@ export class Instance extends IUtils {
 						switch (lnk.notifymove) {
 							// notify channel
 							case 1:
-								let send = null;
+								let send = null as any;
 								// user left our channel
 								if (this.channelid == oldChannel) send = msgs.channelLeave;
 								// user joined our channel
 								else if (this.channelid == data.channel.cid) send = msgs.channelJoin;
 								// actual send
-								if (send != null) lnk.NotifyTelegram(srvname, bName + bFlag + send + " [" + this.GetChannelUser(this.channelid, lnk.ignorebots).length + "]");
+								if (send) lnk.NotifyTelegram(srvname, bName + bFlag + send + " [" + this.GetChannelUser(this.channelid, lnk.ignorebots).length + "]");
 								break;
 							// notify global
 							case 2:
@@ -423,7 +424,7 @@ export class Instance extends IUtils {
 			this.UpdateLiveTrees(true);
 			this.connectionState = 3;
 			let msgs = Utils.getLanguageMessages(this.owner().language);
-			this.main.sendNewMessage(this.id, msgs.connectError.replace("<attempts>", this.connectTry) + this.connectionErr);
+			this.main.sendNewMessage(this.id, msgs.connectError.replace("<attempts>", this.connectTry.toString()) + this.connectionErr);
 		}
 	}
 

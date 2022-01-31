@@ -12,24 +12,23 @@ import { TS3Ctx, MessageCtx } from "../context";
 
 export default {
 	// prepares ctx strings from message
-	prepare: function (ctx: MessageCtx, msg): MessageCtx {
+	prepare: function (ctx: MessageCtx, txt: string): void {
 		let cmd = "";
-		let args = msg.text.includes(" ") ? msg.text.split(" ") : [msg.text];
+		let args = txt.includes(" ") ? txt.split(" ") : [txt];
 		// Check if the text starts as command and set it
-		if (msg.text.startsWith("/")) {
+		if (txt.startsWith("/")) {
 			// if args, set first - else set text
-			cmd = args.length > 1 ? args[0] : msg.text;
+			cmd = args.length > 1 ? args[0] : txt;
 			// Check if the command contains a bot target
 			// and set command without the bot name
 			if (cmd.includes("@")) args[0] = cmd = cmd.split("@")[0];
 		}
 		ctx.cmd = cmd;
 		ctx.args = args;
-		return ctx;
 	},
 
 	// handles cancel
-	cancel: function (ctx: MessageCtx) {
+	cancel: function (ctx: MessageCtx): boolean {
 		ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("menu", ctx.senderMessages)]];
 		if (ctx.sender.menu !== "") {
 			let tmenu = ctx.sender.menu;
@@ -41,11 +40,11 @@ export default {
 	},
 
 	// handles bot command
-	handle: function (self: TS3Ctx, ctx: MessageCtx, mode: number, value: string) {
+	handle: function (self: TS3Ctx, ctx: MessageCtx, mode: number, value: string): boolean {
 		return !self.commands.reduce(function (cont, obj) {
 			// ID recognized?
 			if (!cont) return false;
-			if (mode == 1 && obj.id != value) return true;
+			if (mode == 1 && obj.id !== parseInt(value)) return true;
 			let msgs = ctx.senderMessages;
 			// loop possible alts
 			return obj.command.reduce(function (cont2, command) {
@@ -55,14 +54,14 @@ export default {
 				let exec = false;
 				if (ctx.isGroup) {
 					// sent in group?
-					if (ctx.groupBinding) msgs = ctx.groupMessages;
+					if (ctx.groupLinking) msgs = ctx.groupMessages;
 					if (obj.available > 1) {
 						// command is available in group?
 						// does the group need a linked server?
-						if (obj.needslinking && !(exec = ctx.groupBinding ? true : false)) self.sendNewMessage(ctx.chatId, msgs.commandNotLinked, ctx.opt);
+						if (obj.needslinking && !(exec = ctx.groupLinking ? true : false)) self.sendNewMessage(ctx.chatId, msgs.commandNotLinked, ctx.opt);
 
 						// does the command require admin permissions?
-						if (obj.groupperm && !(exec = !ctx.groupBinding || ctx.groupBinding.instance.id == ctx.sender.id || ctx.groupBinding.alladmin))
+						if (obj.groupperm && !(exec = !ctx.groupLinking || ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking.alladmin))
 							self.sendNewMessage(ctx.chatId, msgs.commandForbidden, ctx.opt);
 
 						// if nothing was required, we can execute.

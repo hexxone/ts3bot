@@ -22,6 +22,6 @@ export default {
 	callback: function (main: TS3Ctx, ctx: MessageCtx) {
 		if (!ctx.isGroup)
 			ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("start", ctx.senderMessages)], [Utils.getCmdBtn("faq", ctx.senderMessages), Utils.getCmdBtn("commands", ctx.senderMessages)]];
-		ctx.respondChat((ctx.isGroup && ctx.groupBinding !== null ? ctx.groupMessages : ctx.senderMessages).helpText, ctx.opt);
+		ctx.respondChat((ctx.isGroup && ctx.groupLinking !== null ? ctx.groupMessages : ctx.senderMessages).helpText, ctx.opt);
 	},
 };
