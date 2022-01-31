@@ -57,6 +57,7 @@ export default function (self: TS3Ctx) {
 				reply_markup: {
 					inline_keyboard: [],
 				},
+				disable_web_page_preview: true,
 			},
 			isGroup: msg.chat.type !== "private",
 		} as MessageCtx;
