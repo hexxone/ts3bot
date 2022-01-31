@@ -112,7 +112,7 @@ customCtx.handleEx = (callback: () => void) => {
 		ex = customCtx.parseExStr(ex);
 		if (customCtx.debug) {
 			try {
-				customCtx.bot.telegram.sendMessage(customCtx.developer_id, "Bot Exception:\r\n" + ex);
+				customCtx.bot.telegram.sendMessage(customCtx.developer_id, "Bot Exception:\r\n" + ex, { disable_web_page_preview: true });
 			} catch (ex2) {
 				ex2 = customCtx.parseExStr(ex2);
 				console.log("Fatal Exception: " + ex + ex2);
