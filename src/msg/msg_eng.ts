@@ -30,7 +30,7 @@ export default {
 	channelSwitch: "switched to channel:",
 	notConnected: "Error: Bot is not connected.",
 	userOnline: " users:",
-	connectError: "Couldn't connect after <attempts> attempts. Last error: ",
+	connectError: "Couldn't connect after $attempts$ attempts. Last error: ",
 	replyError: "Couldn't execute command.",
 
 	optionOn: "On",
@@ -49,9 +49,9 @@ export default {
 	groupJoin: " joined the group.",
 	groupLeave: " left the group.",
 
-	spamStart1: "Spam protection triggered. Your messages will be ignored for: <time> minutes.",
-	spamStart2: "Spam protection triggered.\r\nSince the bot couldnt contact you privately, you receive this info here:\r\nYour messages will be ignored for: <time> minutes.",
-	spamEnd: "You are no longer ignored due to Spam. Next time you will be ignored for: <time> minutes.",
+	spamStart1: "Spam protection triggered. Your messages will be ignored for: $time$ minutes.",
+	spamStart2: "Spam protection triggered.\r\nSince the bot couldnt contact you privately, you receive this info here:\r\nYour messages will be ignored for: $time$ minutes.",
+	spamEnd: "You are no longer ignored due to Spam. Next time you will be ignored for: $time$ minutes.",
 
 	spamIgnoreTrigger: "Spam protection triggered. Your messages will be ignored for: ",
 	spamIgnoreRevoke: "You are no longer ignored due to Spam. Next time you will be ignored for: ",
@@ -80,7 +80,7 @@ export default {
 		" - b_virtualserver_client_list\r\n - b_virtualserver_notify_register\r\n - b_virtualserver_notify_unregister\r\n" +
 		"The username and channel information gets only updated every 2 minutes.\r\n" +
 		"This bot is written in nodejs.\r\n" +
-		"Lines of Code: <sloc>",
+		"Lines of Code: $sloc$",
 	helpText:
 		"TS3Bot Help:\r\nThis bot provides an interface for linking a TeamSpeak 3 Server" +
 		" to Telegram (specific Groups) for cross-chatting and seeing online users.\r\nThe TS3-Connection is established" +
@@ -92,7 +92,7 @@ export default {
 		" there is no guarantee for it to stay online or running. You are forbidden to tamper with the bot and associated " +
 		" systems in terms of stress-,performance- or security-testing. These things might be considered a DDoS and will be prosecuted by the hoster." +
 		" Stored data is encrypted using RSA128 and only used to keep data between restarts.",
-	tosAgree: "To agree, please Type exactly: '<tos_string>'",
+	tosAgree: "To agree, please Type exactly: '$tos_string$'",
 	tosString: "I agree",
 	ignorebots: "Other TS3 query clients will be ignored.",
 	unignorebots: "Other TS3 query clients won't be ignored.",
@@ -104,10 +104,10 @@ export default {
 	channelNameErr: "Error: The name requires between 2 and 32 chars.",
 	tosAccept: "Thanks :)",
 	tosReject: ":(",
-	addedServer: "Server created. Now tell me the server address in the following format:\r\n'<ip_or_host>|<query_port>|<ts3_vserver_id>'.",
+	addedServer: "Server created. Now tell me the server address in the following format:\r\n'ip_or_host|query_port|ts3_port'.",
 	nameInUse: "This name is already in use.",
-	linkDestroyed: "Deep-link '<link>' was destroyed.",
-	linkingDestroyed: "Group linking '<linking>' was destroyed.",
+	linkDestroyed: "Deep-link '$link$' was destroyed.",
+	linkingDestroyed: "Group linking '$linking$' was destroyed.",
 	serverUnlinked: "Server was unlinked from this group.",
 	serverDeleted: "Server deleted.",
 	deleteError: "Error. Input is case-sensitive. Try again or /cancel",
@@ -120,7 +120,7 @@ export default {
 	setName: "Bot-name set.",
 	setNameFirst: " Now please tell me the exact name of the channel the bot should join.",
 	setServer: "Server address set.",
-	setServerFirst: " Now please tell me the account details in the following format:\r\n'<query_user>|<query_password>'.",
+	setServerFirst: " Now please tell me the account details in the following format:\r\n'query_user|query_password'.",
 	linkingNotFound: "Linking doesn't exist.",
 	groupAlreadyLinked: "This group is already linked to a server.",
 	groupLinked: "TS3 server was successfully linked to this group",
@@ -135,12 +135,12 @@ export default {
 	shareMediaOn: "Shared group media will be available in TS3.",
 	shareMediaOff: "Shared group media won't be available in TS3.",
 	usage: "Usage: ",
-	setServerAddress: "Ok, please tell me the server address in format '<address>|<query_port>|<ts3_vserver_id>'.",
+	setServerAddress: "Ok, please tell me the server address in format 'address|query_port|ts3_port'.",
 	setBotName: "Ok, please tell me how the bot should call itself on your server.",
 	setChatMode: "Chat mode set to: ",
 	setChannelDepth: "Channel-depth set to: ",
 	setChannelName: "Ok, please tell me the name of the channel the bot should join.",
-	setAccountDetails: "Ok, please tell me the account details in format '<query_user>|<query_passwd>'.",
+	setAccountDetails: "Ok, please tell me the account details in format 'query_user|query_passwd'.",
 	selectServer: "Tap or write the name of the server you want to edit / select.",
 	serverReconnecting: "Reconnecting.. this may sometimes take a while (for errors see private chat)",
 	setMoveNotifications: "Client move notifications set to: ",
@@ -154,9 +154,9 @@ export default {
 	autoConnecting: "Auto-connecting. One moment please...",
 	leftServer: "left the server.",
 	joinedServer: "joined the server.",
-	botConnected: "</b> is now connected.\r\n<b><users> User(s)</b> and <b><bots> Bot(s)</b> online.",
+	botConnected: "</b> is now connected.\r\n<b>$users$ User(s)</b> and <b>$bots$ Bot(s)</b> online.",
 	botChannelMsg: "",
-	liveTreeFormat: "LiveTree\r\n<code><tree></code>\r\nChanged: <time>",
+	liveTreeFormat: "LiveTree\r\n<code>$tree$</code>\r\nChanged: $time$",
 	liveTreeError: " ⚠️",
 	liveTreeStop: "LiveTree stopped and removed.",
 
@@ -233,9 +233,9 @@ export default {
 	commandNoSelect: "Please /select a server first.",
 	commandNoAdded: "Please /add a server first.",
 	commandNoTOS: "Please accept the /tos and /add a server first.",
-	commandResult: "Command search matches for '<command>':",
-	commandNotFound: "No command matching '<command>' found.",
-	commandCommand: "\r\n<code>Command:      [usage]" + "\r\nDescription:  [desc]" + "\r\nAvailable:    [available]</code>",
+	commandResult: "Command search matches for '$command$':",
+	commandNotFound: "No command matching '$command$' found.",
+	commandCommand: "\r\n<code>Command:      $usage$" + "\r\nDescription:  $desc$" + "\r\nAvailable:    $available$</code>",
 	commandsDetail: "\r\nFor details enter: <code>/commands [command_name]</code>",
 	commandMax: "5 entries shown at max.",
 
