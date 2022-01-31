@@ -1,22 +1,22 @@
 "use strict";
 
 //
-// Copyright (c) 2019 D.Thiele All rights reserved.
+// Copyright (c) 2022 hexxone All rights reserved.
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.
 //
 
-const fs = require("fs");
-const path = require("path");
-const sloc = require("sloc");
+import fs from "fs";
+import path from "path";
+import sloc from "sloc";
 
 // Counts siginificant lines of code for all files in src.
 // if other files than .js are added, the params need to be adjusted.
-module.exports = (callme) => {
+export default (callme: (sloc: number) => void) => {
 	console.log("asynchronously counting significant lines of code (SLOC)...");
 	let slocc = 0;
 	let walk = function (dir, done) {
-		let results = [];
+		let results = [] as string[];
 		fs.readdir(dir, function (err, list) {
 			if (err) return done(err);
 			let i = 0;

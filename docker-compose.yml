@@ -9,7 +9,6 @@ services:
         ports:
             - 8443:80 # can be removed if not using webhook
             - 8080:8080 # can be removed if not using fileProxy
-        env_file:
-            - .bot-variables.env # all possible environment variables (change BOT_TOKEN !)
         volumes:
             - ./data:/app/data # bot settings storage directory
+            - ./.env:/app/.env # all possible environment variables (change BOT_TOKEN !)
