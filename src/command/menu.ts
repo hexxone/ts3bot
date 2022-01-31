@@ -76,17 +76,18 @@ export default {
 		// instance?
 		if (ins) {
 			msg += "\r\n</code>--- --- --- --- --- --- --- ---<code>";
-			msg += msgs.info20 + Utils.stToStr(msgs.langCode, ins.connectionState);
+			msg += msgs.info21 + Utils.stToStr(msgs.langCode, ins.connectionState);
 			// connected?
 			if (ins.connectionState == 2) {
 				// add 'users' command
 				conArr.push(Utils.getCmdBtn("users", msgs));
 				// add server infos
-				msg += msgs.info21 + ins.serverinfo.virtualserverName;
-				msg += msgs.info22 + ins.serverinfo.virtualserverPlatform;
+				msg += msgs.info22 + ins.serverinfo.virtualserverName;
 				msg += msgs.info23 + new String(ins.serverinfo.virtualserverVersion || "").split(" ")[0];
-				msg += msgs.info24 + ins.users.length + " / " + ins.serverinfo.virtualserverMaxclients;
-				msg += msgs.info25 + ins.serverinfo.virtualserverChannelsonline;
+				msg += msgs.info24 + ins.serverinfo.virtualserverPlatform;
+				msg += msgs.info25 + ins.serverinfo.virtualserverUptime;
+				msg += msgs.info26 + ins.users.length + " / " + ins.serverinfo.virtualserverMaxclients;
+				msg += msgs.info27 + ins.serverinfo.virtualserverChannelsonline;
 			}
 			// include admin keyboard for single chat
 			if (!ctx.isGroup) {

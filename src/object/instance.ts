@@ -9,7 +9,7 @@
 import { ClientDisconnectEvent, TeamSpeak, TeamSpeakClient, TextMessageTargetMode } from "ts3-nodejs-library";
 
 import { ServerInfo } from "ts3-nodejs-library/lib/types/ResponseTypes";
-import { ClientMoved } from "ts3-nodejs-library/lib/types/Events";
+import { ClientConnect, ClientMoved, TextMessage } from "ts3-nodejs-library/lib/types/Events";
 import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
 
 import { TS3Ctx } from "../context";
@@ -59,6 +59,7 @@ export class Instance extends IUtils {
 	channels: any;
 	channelid: any; // own channel id
 
+	// TODO make enum
 	connectionState: number;
 	connectionErr: string;
 	connectTry: number;
@@ -129,12 +130,7 @@ export class Instance extends IUtils {
 		this.connectionState = 1;
 		this.connectTry++;
 		// ts3 bot settings
-		let settings = {
-			name: this.clientname,
-			host: this.addr,
-			port: this.qport,
-			sid: this.serverPort,
-		};
+
 		//console.log('settings: ' + JSON.stringify(settings));
 		this.bot = new TeamSpeak({
 			host: this.addr,
@@ -267,16 +263,16 @@ export class Instance extends IUtils {
 		});
 	}
 
-	_onClientEnterView(data) {
+	_onClientEnterView(data: ClientConnect) {
 		this.main.handleEx(() => {
 			//console.log('Join data: ' + JSON.stringify(data));
-			for (let usr of this.users) if (usr.clid === data.clid) return; // user already connected
+			for (let usr of this.users) if (usr.clid === data.client.clid) return; // user already connected
 
 			// add object data
-			this.users.push(data);
+			this.users.push(data.client);
 			this.SortUsers();
 			// if the client is of type server query, the type will be 1
-			let isbot = data.type == 1;
+			let isbot = data.client.type == 1;
 			//console.log(this.name + ' | Join: ',  data)
 			// Notify groups by looping all
 			for (let gid of this.groups) {
@@ -287,8 +283,8 @@ export class Instance extends IUtils {
 				// ignore query clients in this group ?
 				if (isbot && lnk.ignorebots) continue;
 				// build message
-				let bName = "<b>" + this.fixNameToTelegram(data.nickname) + "</b>";
-				let bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(data.client_database_id) + "₎ ";
+				let bName = "<b>" + this.fixNameToTelegram(data.client.nickname) + "</b>";
+				let bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(data.client.databaseId) + "₎ ";
 				let msgs = Utils.getLanguageMessages(lnk.language);
 				// send Message
 				lnk.NotifyTelegram(this.serverinfo.virtualserverName, bName + bFlag + msgs.joinedServer);
@@ -381,17 +377,17 @@ export class Instance extends IUtils {
 		});
 	}
 
-	_onTextMessage(data) {
+	_onTextMessage(data: TextMessage) {
 		this.main.handleEx(() => {
 			// ignore messages by the bot itself
-			if (this.whoami != null && data.invokerid == this.whoami) return;
+			if (this.whoami != null && data.invoker.clid == this.whoami.clid) return;
 			// Get message
 			let msgText = this.unescapeStr(data.msg);
 			// is private bot message?
 			if (data.targetmode === 1) {
 			}
 			// Notify groups
-			else this.NotifyGroups(data.targetmode, "<b>" + this.fixNameToTelegram(data.invokername) + "</b> : " + this.fixUrlToTelegram(msgText));
+			else this.NotifyGroups(data.targetmode, "<b>" + this.fixNameToTelegram(data.invoker.nickname) + "</b> : " + this.fixUrlToTelegram(msgText));
 		});
 	}
 
@@ -438,7 +434,7 @@ export class Instance extends IUtils {
 	GetUserString(language, ignorebots, callback) {
 		this.WrapAutoConnect(language, callback, () => {
 			let msgs = Utils.getLanguageMessages(language);
-			let userStruct = {};
+			let userStruct: { [cid: string]: TeamSpeakClient[] } = {};
 			// Add users to array grouped by channel
 			for (let usr of this.users) {
 				// if this is a query client, ignore him
@@ -457,12 +453,11 @@ export class Instance extends IUtils {
 				if (!channel) continue;
 				// Add channelname and users
 				let chres = "\r\n( " + this.fixSpacer(channel.name) + " ) [" + userStruct[cid].length + "]";
-				for (let usr in userStruct[cid]) {
-					let user = userStruct[cid][usr];
+				for (let user of userStruct[cid]) {
 					let isbot = user.type == 1;
 					if (isbot && ignorebots) continue;
 					let bName = this.fixNameToTelegram(user.nickname);
-					let bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(user.client_database_id) + "₎ ";
+					let bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(user.databaseId) + "₎ ";
 					chres += "\r\n - " + bName + bFlag;
 				}
 				// channeldepth thingy
@@ -637,7 +632,7 @@ export class Instance extends IUtils {
 		if ((isError && !cobj.lasterror) || !cobj.lasttree || cobj.lasttree != currenttree) {
 			if (!isError) cobj.lasttree = currenttree;
 			cobj.lasterror = isError;
-			msg = msg.replace("$time$", Utils.getTime() + (isError ? msgs.liveTreeError : ""));
+			msg = msg.replace("$time$", Utils.getTime(new Date()) + (isError ? msgs.liveTreeError : ""));
 			msg = msg.replace("$tree$", cobj.lasttree);
 			callback(msg);
 		}
