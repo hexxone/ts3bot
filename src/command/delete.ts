@@ -8,7 +8,7 @@
 
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 106,
@@ -19,7 +19,7 @@ export default {
 	usage: "/delete",
 	description: "delete",
 	command: ["/delete"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		ctx.sender.menu = "delete_instance";
 		ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("cancel", ctx.senderMessages)]];
 		ctx.respondChat(ctx.senderMessages.delConfirm + ctx.senderMessages.delConfirmStr + ctx.sender.selected, ctx.opt);

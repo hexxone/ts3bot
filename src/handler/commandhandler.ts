@@ -8,7 +8,7 @@
 
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	// prepares ctx strings from message
@@ -40,7 +40,7 @@ export default {
 	},
 
 	// handles bot command
-	handle: function (self: TS3Ctx, ctx: MessageCtx, mode: number, value: string): boolean {
+	handle: function (self: TS3BotCtx, ctx: MessageCtx, mode: number, value: string): boolean {
 		return !self.commands.reduce(function (cont, obj) {
 			// ID recognized?
 			if (!cont) return false;
@@ -71,7 +71,7 @@ export default {
 						self.sendNewMessage(ctx.chatId, msgs.commandErrChat1, ctx.opt);
 				} else {
 					// is admin command and sender is admin?
-					if (obj.available === 0 && ctx.sender.id == self.developer_id) exec = true;
+					if (obj.available === 0 && ctx.sender.id == self.settings.developer_id) exec = true;
 					// is group command ?
 					else if (obj.available === 2) self.sendNewMessage(ctx.chatId, msgs.commandErrChat2, ctx.opt);
 					else {

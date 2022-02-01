@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 // This is a sample command which descibes the different attributes of a Telegram-bot command.
 // For a command to work it just needs to be a .js file like this and be located in the 'commands' folder.
@@ -31,7 +31,7 @@ export default {
 	needsselected: false, // the command requires the sender to have an instance selected (available 1|3)
 	usage: "/sample", // command usage (including arguments)
 	description: "sample", // language bundle description has to be unique aswell to be found by the inline keyboard
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		// This code will be called when the specified command is run and the required conditions are met.
 		// fyi: The following arguments will also be used when calling an 'action'
 		// the 'main' object will basically contain all runtime-persistent data.

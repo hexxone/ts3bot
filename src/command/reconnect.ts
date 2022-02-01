@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 export default {
 	id: 122,
@@ -17,7 +17,7 @@ export default {
 	usage: "/reconnect",
 	description: "reconnect",
 	command: ["/reconnect"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		let msgs = ctx.senderMessages;
 		if (ctx.isGroup) {
 			if (ctx.groupLinking !== null) {

@@ -12,12 +12,12 @@ import CircularJSON from "circular-json";
 
 const Algorithm = "aes-256-cbc";
 
-import { TS3Ctx } from "../context";
+import { TS3BotCtx } from "../context";
 
 import Utils from "./utils";
 
 class Loader {
-	Parent!: TS3Ctx;
+	Parent!: TS3BotCtx;
 
 	// fills Mathods.Parent with a reference to main.js (users, groups, etc)
 	Set(self) {
@@ -27,7 +27,7 @@ class Loader {
 	// load stored bot data from json
 	loadData() {
 		// set or get telegram api key
-		let s = this.Parent.telegram_bot_token.split(":");
+		let s = this.Parent.settings.telegram_bot_token.split(":");
 		// file name is 'bot id' of api key
 		let filePath = "./data/bot_" + s[0] + ".stor";
 		// File exists?
@@ -160,7 +160,7 @@ class Loader {
 		// safe-parse data structure to string
 		let txtt = CircularJSON.stringify(objj);
 		// get telegram api key
-		let s = this.Parent.telegram_bot_token.split(":");
+		let s = this.Parent.settings.telegram_bot_token.split(":");
 		// hash of api key is used as password
 		let hash = Crypto.createHash("md5").update(s[1], "utf8").digest("hex").toUpperCase();
 		// generate random IV
