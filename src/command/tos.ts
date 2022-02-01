@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 export default {
 	id: 141,
@@ -17,7 +17,7 @@ export default {
 	usage: "/tos",
 	description: "tos",
 	command: ["/tos"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		let agree = "\r\n\r\n" + ctx.senderMessages.tosAgree.replace("$tos_string$", ctx.senderMessages.tosString);
 
 		ctx.respondChat(ctx.senderMessages.tosText + (ctx.sender.agreement ? "" : agree), ctx.opt);

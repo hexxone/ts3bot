@@ -16,6 +16,12 @@ export default {
 	langNotFound: "Sprache nicht gefunden.",
 	langCurrent: "Jetzige Sprache: Deutsch.",
 
+	timeYears: "J",
+	timeDays: "T",
+	timeHours: "Std",
+	timeMins: "Min",
+	timeSecs: "Sek",
+
 	invalidName: "Ungültiger Name. Es dürfen keine Leer- oder Sonderzeichen verwendet werden.",
 	invalidFormatSrv: "Ungültiges Format. Benutze: 'addresse|query_port|ts3_port'",
 	invalidFormatAcc: "Ungültiges Format. Benutze: 'query_benutzer|query_passwort'",

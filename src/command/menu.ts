@@ -7,7 +7,7 @@ import { Instance } from "../object/instance";
 // See LICENSE file in the project root for full license information.
 //
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 
@@ -20,7 +20,7 @@ export default {
 	usage: "/menu",
 	description: "menu",
 	command: ["/menu"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		Utils.fixRemoveKeyboard(main, ctx);
 		let msgs = ctx.senderMessages;
 		let msg = msgs.menu00 + "<code>";
@@ -82,10 +82,11 @@ export default {
 				// add 'users' command
 				conArr.push(Utils.getCmdBtn("users", msgs));
 				// add server infos
+				const upTime = (ins.serverinfo.virtualserverUptime as number) * 1000;
 				msg += msgs.info22 + ins.serverinfo.virtualserverName;
 				msg += msgs.info23 + new String(ins.serverinfo.virtualserverVersion || "").split(" ")[0];
 				msg += msgs.info24 + ins.serverinfo.virtualserverPlatform;
-				msg += msgs.info25 + ins.serverinfo.virtualserverUptime;
+				msg += msgs.info25 + Utils.getTimeSpan(upTime, msgs);
 				msg += msgs.info26 + ins.users.length + " / " + ins.serverinfo.virtualserverMaxclients;
 				msg += msgs.info27 + ins.serverinfo.virtualserverChannelsonline;
 			}

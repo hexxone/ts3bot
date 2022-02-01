@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 
@@ -19,8 +19,8 @@ export default {
 	usage: "/rstdev [id]",
 	description: "rstdev",
 	command: ["/rstdev"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
-		if (ctx.sender.id == ctx.developer_id) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
+		if (ctx.sender.id == main.settings.developer_id) {
 			if (ctx.args.length == 2) {
 				let resetusr = Utils.getUser({ id: parseInt(ctx.args[1]) });
 				if (resetusr) {
