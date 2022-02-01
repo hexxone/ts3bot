@@ -8,12 +8,12 @@
 
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 12,
 	action: ["set_name", "set_name_first"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		let msgs = ctx.senderMessages;
 		if (ctx.senderSelectedInstance != null) {
 			if (ctx.args.length == 1 && Utils.testName(ctx.args[0])) {

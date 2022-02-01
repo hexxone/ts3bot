@@ -8,7 +8,7 @@
 
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 103,
@@ -19,8 +19,8 @@ export default {
 	usage: "/commands",
 	description: "commands",
 	command: ["/commands"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
-		let isDev = ctx.sender.id == ctx.developer_id;
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
+		let isDev = ctx.sender.id == main.settings.developer_id;
 		let cmsgs = ctx.senderMessages;
 		if (ctx.groupMessages) cmsgs = ctx.groupMessages;
 

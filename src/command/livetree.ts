@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 export default {
 	id: 114,
@@ -17,7 +17,7 @@ export default {
 	usage: "/livetree",
 	description: "livetree",
 	command: ["/livetree"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		ctx.opt.parse_mode = "HTML";
 		if (ctx.args.length == 2 && ctx.args[1] == "stop") {
 			if (ctx.isGroup) ctx.groupLinking.instance.RemoveLiveTree(ctx.chatId);

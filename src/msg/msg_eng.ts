@@ -16,6 +16,12 @@ export default {
 	langNotFound: "Language not found.",
 	langCurrent: "Current language: English.",
 
+	timeYears: "Y",
+	timeDays: "D",
+	timeHours: "Hrs",
+	timeMins: "Min",
+	timeSecs: "Sec",
+
 	invalidName: "Invalid name. The name must not contain spaces or special characters.",
 	invalidFormatSrv: "Invalid Format. Use: '<address>|<query_port>|<ts3_port>'",
 	invalidFormatAcc: "Invalid Format. Use: '<query_user>|<query_passwd>'",

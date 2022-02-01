@@ -11,11 +11,11 @@ import { User } from "./user";
 
 import Utils from "../class/utils";
 
-import { TS3Ctx } from "../context";
+import { TS3BotCtx } from "../context";
 
 // represents a binding of a ts3 server to a Telegram group.
 export class GroupLinking {
-	main: TS3Ctx;
+	main: TS3BotCtx;
 	name: string;
 	instance: Instance;
 
@@ -99,7 +99,7 @@ export class GroupLinking {
 	}
 
 	// real init when added to group via link
-	Link(groupid) {
+	Link(groupid: number) {
 		this.groupid = groupid;
 		this.instance.AddGroup(groupid);
 	}
@@ -138,8 +138,7 @@ export class GroupLinking {
 
 	// Sends a mesage to the relating telegram group respecting the
 	// .. 'show server name'- and notification-settings
-	NotifyTelegram(server: string, msg: string) {
-		if (this.showservername && server) msg = "(" + server + ") " + msg;
+	NotifyTelegram(msg: string) {
 		let oobj = { parse_mode: "HTML" } as ExtraReplyMessage;
 		if (this.silent) oobj.disable_notification = true;
 		this.main.sendNewMessage(this.groupid, msg, oobj).catch((a) => {

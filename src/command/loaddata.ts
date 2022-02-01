@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 import Loader from "../class/loader";
 
@@ -19,8 +19,8 @@ export default {
 	usage: "/loaddata",
 	description: "loaddata",
 	command: ["/loaddata"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
-		if (ctx.sender.id == ctx.developer_id) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
+		if (ctx.sender.id == main.settings.developer_id) {
 			if (ctx.args.length == 1) {
 				Loader.loadData();
 				// Notify

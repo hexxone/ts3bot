@@ -8,12 +8,12 @@
 
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 3,
 	action: ["delete_instance"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.senderSelectedInstance != null) {
 			if (ctx.text == ctx.senderMessages.delConfirmStr + ctx.sender.selected) {
 				ctx.sender.menu = "";
