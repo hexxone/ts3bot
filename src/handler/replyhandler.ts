@@ -9,14 +9,15 @@
 import { CallbackQuery, Message, Chat } from "typegram";
 import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 import CommandHandler from "./commandhandler";
+import { TextMessage } from "ts3-nodejs-library/lib/types/Events";
 
 // Telegram message-receive-handler
 
-export default function (self: TS3Ctx) {
+export default function (self: TS3BotCtx) {
 	let bot = self.bot;
 
 	bot.on("callback_query", (cqCtx) => {
@@ -42,9 +43,12 @@ export default function (self: TS3Ctx) {
 		let ctx = {
 			isReply: true,
 			respondChat: (txt: string, opt: ExtraReplyMessage, noDel: boolean) => {
-				self.bot.telegram.editMessageText(msg.chat.id, msg.message_id, undefined, txt, opt as any);
+				return new Promise((res, rej) => {
+					self.bot.telegram.editMessageText(msg.chat.id, msg.message_id, undefined, txt, opt as any).then((dat) => {
+						res(dat as any);
+					});
+				});
 			},
-			developer_id: self.developer_id,
 			msg: msg,
 			text: msg.text,
 			args: new Array<String>(),

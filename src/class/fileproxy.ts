@@ -14,9 +14,11 @@
 import http from "http";
 import url from "url";
 import shortid from "shortid";
+import { TS3BotCtx } from "../context";
 
+// @TODO use improved telegram bot file downloading?
 export class FileProxy {
-	Parent: any;
+	Parent: TS3BotCtx;
 	bot: any;
 	address: any;
 	port: any;
@@ -47,7 +49,7 @@ export class FileProxy {
 				this.bot
 					.getFile(file_id)
 					.then((lnk) => {
-						let lpath = "https://api.telegram.org/file/bot" + this.Parent.telegram_bot_token + "/" + lnk.file_path;
+						let lpath = "https://api.telegram.org/file/bot" + this.Parent.settings.telegram_bot_token + "/" + lnk.file_path;
 						let options = {
 							method: "GET",
 							host: url.parse(lpath).host,

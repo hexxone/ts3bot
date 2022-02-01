@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 
@@ -19,7 +19,7 @@ export default {
 	usage: "/ignorebots [on|off]",
 	description: "ignorebots",
 	command: ["/ignorebots"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		let usage = ctx.groupMessages.usage + this.usage;
 		if (ctx.args.length == 2) {
 			if (Utils.isYes(ctx.args[1])) {

@@ -8,7 +8,7 @@
 
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 100,
@@ -19,7 +19,7 @@ export default {
 	needsselected: false,
 	usage: "/add",
 	description: "addServer",
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (!ctx.sender.agreement) {
 			ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("tos", ctx.senderMessages)]];
 			ctx.respondChat(ctx.senderMessages.noAgreement, ctx.opt);

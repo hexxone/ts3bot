@@ -11,11 +11,10 @@ import { FileProxy } from "./class/fileproxy";
 import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
 
 import EN_MSG from "./msg/msg_eng";
-export declare type TS3Msgs = typeof EN_MSG;
+import { TextMessage } from "ts3-nodejs-library/lib/types/Events";
+export declare type TS3BotMsgs = typeof EN_MSG;
 
-export declare type TS3Ctx = {
-	defaultLanguage: string;
-
+export declare type TS3BotCtx = {
 	startDate: Date;
 
 	handleEx: (call: () => void) => void;
@@ -26,9 +25,9 @@ export declare type TS3Ctx = {
 	commandsPath: string;
 	languagesPath: string;
 
-	actions: BotAction[];
-	commands: BotCommand[];
-	languages: TS3Msgs[];
+	actions: TS3BotAction[];
+	commands: TS3BotCmd[];
+	languages: TS3BotMsgs[];
 
 	users: UHelpr.User[];
 	instances: Instance[];
@@ -50,10 +49,15 @@ export declare type TS3Ctx = {
 	me: UserFromGetMe;
 	run: boolean;
 
-	sendNewMessage(chatId: number, text: string, options?: ExtraReplyMessage, noDelete?: boolean): Promise<Message.TextMessage | undefined>;
+	settings: TS3BotConfig;
 
-	// Settings
-	// @see "config.ts"
+	sendNewMessage(chatId: number, text: string, options?: ExtraReplyMessage, noDelete?: boolean): Promise<Message.TextMessage | undefined>;
+};
+
+// Settings
+// @see "config.ts"
+export declare type TS3BotConfig = {
+	defaultLanguage: string;
 
 	telegram_bot_token: string;
 	developer_id: number;
@@ -86,9 +90,8 @@ export declare type MessageCtx = {
 	cmd: string;
 
 	// translations
-	groupMessages: TS3Msgs;
-	senderMessages: TS3Msgs;
-	developer_id: number;
+	groupMessages: TS3BotMsgs;
+	senderMessages: TS3BotMsgs;
 
 	msg: Message;
 	text: string;
@@ -97,10 +100,10 @@ export declare type MessageCtx = {
 	senderSelectedInstance: Instance;
 	senderLinkings: GroupLinking[];
 
-	respondChat(txt: string, opt?: ExtraReplyMessage, noDel?: boolean): void;
+	respondChat(txt: string, opt?: ExtraReplyMessage, noDel?: boolean): Promise<Message.TextMessage | undefined>;
 };
 
-export declare type BotCommand = {
+export declare type TS3BotCmd = {
 	id: number; // the id is used for inline commands and has to be unique !
 	hidden: boolean; // dont show this command in the /commands list
 	command: string[]; // the triggers for this command to be called
@@ -110,11 +113,11 @@ export declare type BotCommand = {
 	needsselected: boolean; // the command requires the sender to have an instance selected (available 1|3)
 	usage: string; // command usage (including arguments)
 	description: string; // language bundle description has to be unique aswell to be found by the inline keyboard
-	callback: (main: TS3Ctx, ctx: MessageCtx) => void; // executable command
+	callback: (main: TS3BotCtx, ctx: MessageCtx) => void; // executable command
 };
 
-export declare type BotAction = {
+export declare type TS3BotAction = {
 	id: number; // the id is used for inline actions and has to be unique !
 	action: string[]; // the triggers for this action to be called
-	callback: (main: TS3Ctx, ctx: MessageCtx) => void; // executable action
+	callback: (main: TS3BotCtx, ctx: MessageCtx) => void; // executable action
 };

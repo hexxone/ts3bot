@@ -17,5 +17,8 @@
 	},
 	"[glsl]": {
 		"editor.defaultFormatter": "raczzalan.webgl-glsl-editor"
+	},
+	"[markdown]": {
+		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
 	}
 }

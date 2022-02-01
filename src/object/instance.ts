@@ -6,13 +6,13 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { ClientDisconnectEvent, TeamSpeak, TeamSpeakClient, TextMessageTargetMode } from "ts3-nodejs-library";
+import { ClientDisconnectEvent, TeamSpeak, TeamSpeakChannel, TeamSpeakClient, TextMessageTargetMode } from "ts3-nodejs-library";
 
 import { ServerInfo } from "ts3-nodejs-library/lib/types/ResponseTypes";
 import { ClientConnect, ClientMoved, TextMessage } from "ts3-nodejs-library/lib/types/Events";
 import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
 
-import { TS3Ctx } from "../context";
+import { TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 
@@ -27,13 +27,13 @@ const DefaultOpt: ExtraReplyMessage = { parse_mode: "HTML", disable_web_page_pre
 
 // represents a ts3 connection
 export class Instance extends IUtils {
-	main: TS3Ctx;
+	main: TS3BotCtx;
 	id: any;
 	name: string;
 
 	// persistent values / settings
 
-	groups: GroupLinking[];
+	groups: number[];
 	trees: number[];
 
 	qname: string;
@@ -53,11 +53,9 @@ export class Instance extends IUtils {
 	// runtime values
 
 	bot: TeamSpeak;
+	lastPing: Date;
 	serverinfo: ServerInfo; // info
 	whoami: TeamSpeakClient; // own id
-
-	channels: any;
-	channelid: any; // own channel id
 
 	// TODO make enum
 	connectionState: number;
@@ -65,7 +63,7 @@ export class Instance extends IUtils {
 	connectTry: number;
 	connectCallback: () => void;
 
-	constructor(main: TS3Ctx, id, name) {
+	constructor(main: TS3BotCtx, id, name) {
 		super();
 
 		this.main = main;
@@ -73,14 +71,14 @@ export class Instance extends IUtils {
 		this.name = name;
 
 		this.bot = null as any;
+		this.lastPing = null as any;
+		this.serverinfo = null as any;
 		this.whoami = null as any;
 
 		this.connectionState = 0; // 0=disconnected | 1=connecting | 2=connected | 3=disconnected(err)
 		this.connectionErr = "";
 		this.connectTry = 0;
 		this.connectCallback = () => {};
-
-		this.serverinfo = {} as any;
 
 		// data to be exported when saving
 		this.groups = [];
@@ -174,13 +172,13 @@ export class Instance extends IUtils {
 		// 44	b_virtualserver_notify_unregister	Unregister from server notifications
 		this.bot
 			.connect()
+			// Get own client id (for moving & ignoring own messages)
 			.then(async (ts3) => {
-				// Get own client id (for moving & ignoring own messages)
 				const whoami = await ts3.whoami();
 				this.whoami = (await ts3.getClientById(whoami.clientId)) as TeamSpeakClient;
-				// get server info like name, users / slots
-				this.serverinfo = await ts3.serverInfo();
 			})
+			// get server info like name, users / slots
+			.then(() => this._updateServerInfo())
 			// get the user list once (will then be updated by events)
 			.then(() => this._updateClientList())
 			// get the channel list and try to move to the given channel
@@ -195,10 +193,10 @@ export class Instance extends IUtils {
 					if (myChannel === null) throw "Target channel was not found (case sensitive).";
 					this.channelid = myChannel.cid;
 					// Move the bot to desired channel
-					return this.bot.clientMove(this.whoami, this.channelid);
+					return this.bot.clientMove(this.whoami, myChannel.cid);
 				}
 			})
-			// Successfully connected, notify groups / ts3 and start keepalive
+			// ts3 connecting-part succeeded, notify groups / ts3 and start keepalive
 			.then(() => {
 				const uCount = this.GetUserCount(true);
 				let userCntStr = uCount.toString();
@@ -212,13 +210,13 @@ export class Instance extends IUtils {
 					if (!lnk) continue;
 					// build message
 					let msgs = Utils.getLanguageMessages(lnk.language);
-					let tmpmsg = "<b>" + botUsr + msgs.botConnected.replace("$users$", userCntStr).replace("$bots$", botCntStr);
-					lnk.NotifyTelegram(this.serverinfo.virtualserverName, tmpmsg);
+					let tmpmsg = "<b>" + this.serverinfo.virtualserverName + msgs.botConnected.replace("$users$", userCntStr).replace("$bots$", botCntStr);
+					lnk.NotifyTelegram(tmpmsg);
 				}
 				// send message to owner
 				let owner = Utils.getUser({ id: this.id });
 				let msgs = Utils.getLanguageMessages(owner.language);
-				let tmpmsg = "<b>" + botUsr + msgs.botConnected.replace("$users$", userCntStr).replace("$bots$", botCntStr);
+				let tmpmsg = "<b>" + this.serverinfo.virtualserverName + msgs.botConnected.replace("$users$", userCntStr).replace("$bots$", botCntStr);
 				let opt = {
 					parse_mode: "HTML",
 					reply_markup: {
@@ -231,7 +229,7 @@ export class Instance extends IUtils {
 				else this.main.sendNewMessage(this.id, tmpmsg, opt);
 				// start ping to prevent timeout
 				this.connectionState = 2;
-				this.RunPing(this);
+				this.RunPing();
 				// we dont want any of the following calls to maybe throw an error
 				// due to an deleted message or some shit and fail our connection.
 				// TODO test
@@ -287,7 +285,7 @@ export class Instance extends IUtils {
 				let bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(data.client.databaseId) + "₎ ";
 				let msgs = Utils.getLanguageMessages(lnk.language);
 				// send Message
-				lnk.NotifyTelegram(this.serverinfo.virtualserverName, bName + bFlag + msgs.joinedServer);
+				lnk.NotifyTelegram(bName + bFlag + msgs.joinedServer);
 			}
 			// trigger tree update
 			this.UpdateLiveTrees();
@@ -318,7 +316,7 @@ export class Instance extends IUtils {
 					let bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(usr.databaseId) + "₎ ";
 					let msgs = Utils.getLanguageMessages(lnk.language);
 					// send messages
-					lnk.NotifyTelegram(this.serverinfo.virtualserverName, bName + bFlag + msgs.leftServer);
+					lnk.NotifyTelegram(bName + bFlag + msgs.leftServer);
 				}
 			}
 			// trigger tree update
@@ -362,11 +360,11 @@ export class Instance extends IUtils {
 								// user joined our channel
 								else if (this.channelid == data.channel.cid) send = msgs.channelJoin;
 								// actual send
-								if (send) lnk.NotifyTelegram(srvname, bName + bFlag + send + " [" + this.GetChannelUser(this.channelid, lnk.ignorebots).length + "]");
+								if (send) lnk.NotifyTelegram(bName + bFlag + send + " [" + this.GetChannelUser(this.channelid, lnk.ignorebots).length + "]");
 								break;
 							// notify global
 							case 2:
-								lnk.NotifyTelegram(srvname, bName + bFlag + msgs.channelSwitch + " <b>" + chan.name + "</b> [" + this.GetChannelUser(data.channel.cid, lnk.ignorebots).length + "]");
+								lnk.NotifyTelegram(bName + bFlag + msgs.channelSwitch + " <b>" + chan.name + "</b> [" + this.GetChannelUser(data.channel.cid, lnk.ignorebots).length + "]");
 								break;
 						}
 					}
@@ -391,11 +389,12 @@ export class Instance extends IUtils {
 		});
 	}
 
-	// clientlist -uid -away -voice -times
-	_updateClientList() {
-		return this.bot.clientList().then((cl) => {
-			this.users = cl;
-			return cl;
+	// serverinfo --all--flags--
+	_updateServerInfo() {
+		return this.bot.serverInfo().then((si) => {
+			this.lastPing = new Date();
+			this.serverinfo = si;
+			return si;
 		});
 	}
 
@@ -403,6 +402,13 @@ export class Instance extends IUtils {
 	_updateChannelList() {
 		return this.bot.channelList().then((cl) => {
 			this.channels = cl;
+			return cl;
+		});
+	}
+	// clientlist -uid -away -voice -times
+	_updateClientList() {
+		return this.bot.clientList().then((cl) => {
+			this.users = cl;
 			return cl;
 		});
 	}
@@ -431,8 +437,8 @@ export class Instance extends IUtils {
 	 */
 
 	// Returns the currently online users grouped by channels as String
-	GetUserString(language, ignorebots, callback) {
-		this.WrapAutoConnect(language, callback, () => {
+	GetUserString(language, ignorebots, responder: (msg: string) => void) {
+		this.WrapAutoConnect(language, responder, () => {
 			let msgs = Utils.getLanguageMessages(language);
 			let userStruct: { [cid: string]: TeamSpeakClient[] } = {};
 			// Add users to array grouped by channel
@@ -445,7 +451,7 @@ export class Instance extends IUtils {
 				userStruct[usr.cid].push(usr);
 			}
 			//console.log(this.name + ' | getting users: ' + JSON.stringify(userStruct));
-			let result = this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserver_maxclients + msgs.userOnline + " <code>";
+			let result = this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserverMaxclients + msgs.userOnline + " <code>";
 			// Loop all channelIds
 			for (let cid of Object.keys(userStruct)) {
 				// get channel
@@ -474,15 +480,15 @@ export class Instance extends IUtils {
 				result = msgs.noUsersOnline;
 			} else result += "</code>";
 			// send result
-			callback(result);
+			responder(result);
 		});
 	}
 
 	// callack is function and takes 1 argument: msg string
-	GetSimpleUserString(language, ignorebots, callback) {
-		this.WrapAutoConnect(language, callback, () => {
+	GetSimpleUserString(language: string, ignorebots: boolean, responder: (msg: string) => void) {
+		this.WrapAutoConnect(language, responder, () => {
 			let msgs = Utils.getLanguageMessages(language);
-			let result = this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserver_maxclients + msgs.userOnline + " <code>";
+			let result = this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserverMaxclients + msgs.userOnline + " <code>";
 			let userStruct = {};
 			// Add users to array grouped by channel
 			for (let usr of this.users) {
@@ -498,7 +504,7 @@ export class Instance extends IUtils {
 				let channel = this.GetChannelById(cid);
 				result += "\r\n( " + this.fixSpacer(channel.name) + " ) [" + userStruct[cid] + "]";
 			}
-			callback(result + "</code>");
+			responder(result + "</code>");
 		});
 	}
 
@@ -508,15 +514,15 @@ export class Instance extends IUtils {
 
 	// Send a Text Message to the Server Chat, visible for anyone
 	// URLS need ro be fixed beforehand using Utils.fixUrlToTS3
-	SendGlobalMessage(msg) {
+	SendGlobalMessage(msg: string) {
 		// prep msg
 		msg = this.escapeStr(msg);
 		if (this.connectionState == 2) {
-			this.bot.sendTextMessage(this.channelid, TextMessageTargetMode.SERVER, msg);
+			this.bot.sendTextMessage(this.channelid as "0", TextMessageTargetMode.SERVER, msg);
 		}
 		// bot not connected, but autoconnect is active and callback is given
 		else if (this.connectionState != 1 && this.autoconnect) {
-			this.Connect(() => this.bot.sendTextMessage(this.channelid, TextMessageTargetMode.SERVER, msg));
+			this.Connect(() => this.bot.sendTextMessage(this.channelid as "0", TextMessageTargetMode.SERVER, msg));
 		}
 	}
 
@@ -530,12 +536,12 @@ export class Instance extends IUtils {
 		}
 		// bot not connected, but autoconnect is active and callback is given
 		else if (this.connectionState != 1 && this.autoconnect) {
-			this.Connect(() => this.bot.sendTextMessage(this.channelid, TextMessageTargetMode.SERVER, msg));
+			this.Connect(() => this.bot.sendTextMessage(this.channelid as "0", TextMessageTargetMode.SERVER, msg));
 		}
 	}
 
 	// Send a Text Message to the given user (case sensitive)
-	SendPrivateMessage(user: TeamSpeakClient, msg) {
+	SendPrivateMessage(user: TeamSpeakClient, msg: string) {
 		if (this.bot != null) {
 			msg = Utils.fixUrlToTS3(msg);
 			this.bot.sendTextMessage(user.clid, TextMessageTargetMode.CLIENT, msg);
@@ -547,29 +553,29 @@ export class Instance extends IUtils {
 	 */
 
 	// send a chatmessage from ts3 to all Telegram groups with the correct channel/chat mode
-	NotifyGroups(targetmode, message) {
+	NotifyGroups(targetmode: number, message: string) {
 		for (let gid of this.groups) {
 			let gl = Utils.getGroupLinking(gid);
 			if (targetmode !== 0 && gl.chatmode != targetmode) continue;
-			gl.NotifyTelegram(this.serverinfo.virtualserverName, message);
+			gl.NotifyTelegram(message);
 		}
 	}
 
 	// Checks if the desired groupid is already registered
-	HasGroup(group) {
+	HasGroup(group: number) {
 		let index = this.groups.indexOf(group);
 		let ret = index > -1;
 		return ret;
 	}
 
 	// Add the given groupid
-	AddGroup(group) {
+	AddGroup(group: number) {
 		if (this.HasGroup(group)) return;
 		this.groups.push(group);
 	}
 
 	// Removes the given groupid
-	RemoveGroup(group) {
+	RemoveGroup(group: number) {
 		let index = this.groups.indexOf(group);
 		if (index > -1) this.groups.splice(index, 1);
 	}
@@ -584,7 +590,7 @@ export class Instance extends IUtils {
 		let childr = this.GetChannelsBymain(root);
 		let chres = "";
 		if (root == 0) {
-			chres += this.serverinfo.virtualserverName + " (" + this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserver_maxclients + ")";
+			chres += this.serverinfo.virtualserverName + " (" + this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserverMaxclients + ")";
 		} else {
 			// get users in channel
 			let userr = this.GetChannelUser(root, ignorebots);
@@ -642,7 +648,7 @@ export class Instance extends IUtils {
 	UpdateLiveTree(tree: number, error?) {
 		let cobj = tree > 0 ? Utils.getUser({ id: tree }) : Utils.getGroupLinking(tree);
 		if (!cobj || !cobj.language) {
-			console.log("Critical: cant find chat object for live tree: " + JSON.stringify([tree, cobj]));
+			console.error("Critical: cant find chat object for live tree: " + JSON.stringify([tree, cobj]));
 			this.RemoveLiveTree(tree);
 			return;
 		}
@@ -708,28 +714,30 @@ export class Instance extends IUtils {
 	 *  PING / UPDATER
 	 */
 
-	// Function for pinging the server to prevent timeouts
-	RunPing(self) {
-		if (self.connectionState == 2) {
-			//console.log(self.name + ' | Updating Channels & Users...');
-			// update channels (e.g channel name change)
-			self._updateClientList()
-				.then(() => self._updateChannelList())
-				.then(() => {
-					// trigger tree update, will only fire when change is detected .
-					self.UpdateLiveTrees();
-					// set next timeout
-					setTimeout(() => self.RunPing(self), PING_INTERVAL);
-				})
-				.catch((err) => {
-					self.connectionErr = JSON.stringify(err);
-					console.log("Ping Err: " + self.connectionErr);
-					if (self.autoconnect) {
-						self.connectTry = 0;
-						self.Disconnect(true);
-					} else self.Disconnect(false, true);
-				});
-		} else console.log("Ping connectionState != 2 cancel.");
+	// Function for updating server infos...
+	RunPing() {
+		if (this.connectionState != 2) {
+			console.error("Ping connectionState != 2 cancel.");
+			return;
+		}
+		// console.log(self.name + ' | Updating Channels & Users...');
+		// update channels (e.g channel name change)
+		this._updateClientList()
+			.then(() => this._updateChannelList())
+			.then(() => {
+				// trigger tree update, will only fire when change is detected.
+				this.UpdateLiveTrees();
+				// set next timeout
+				setTimeout(() => this.RunPing(), PING_INTERVAL);
+			})
+			.catch((err) => {
+				this.connectionErr = JSON.stringify(err);
+				console.log("Ping Err: " + this.connectionErr);
+				if (this.autoconnect) {
+					this.connectTry = 0;
+					this.Disconnect(true);
+				} else this.Disconnect(false, true);
+			});
 	}
 
 	/*
@@ -739,19 +747,19 @@ export class Instance extends IUtils {
 	// Auto-Connect wrapper
 	// will check if the server is currently connected.
 	// if not, it will
-	WrapAutoConnect(language, respond, connectedCallback, passCondition?) {
+	WrapAutoConnect(language: string, responder: (msg: string) => void, connectedCallback: () => void, passCondition = false) {
 		let msgs = Utils.getLanguageMessages(language);
 		if (this.connectionState == 2 || passCondition) {
 			connectedCallback();
 		}
 		// bot not connected, but autoconnect is active and callback is given
 		else if (this.connectionState != 1 && this.autoconnect) {
-			respond(msgs.autoConnecting);
+			responder(msgs.autoConnecting);
 			this.connectTry = 0;
-			this.Connect(() => connectedCallback);
+			this.Connect(connectedCallback);
 		}
 		// bot stays not connected
-		else respond(msgs.notConnected);
+		else responder(msgs.notConnected);
 	}
 }
 

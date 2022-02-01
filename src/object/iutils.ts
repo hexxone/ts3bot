@@ -32,13 +32,13 @@ export type TSChannel = {
 export class IUtils {
 	users: TeamSpeakClient[];
 	channels: TeamSpeakChannel[];
-	channelid: number;
+	channelid: string;
 
 	constructor() {
 		// the users and channels are already correctly sorted when received.
 		this.users = [];
 		this.channels = [];
-		this.channelid = 0;
+		this.channelid = "asdasd";
 	}
 
 	// this function will re-sort the user list alphabetically by name after a user joined.
@@ -51,12 +51,10 @@ export class IUtils {
 	}
 
 	// returns the server's user count, bots can be ignored
-	GetUserCount(ignorebots) {
+	GetUserCount(ignorebots: boolean) {
 		let cnt = this.users.length;
 		// subtract query clients
-		if (ignorebots) {
-			for (let usr of this.users) if (usr.type == 1) cnt--;
-		}
+		if (ignorebots) for (let usr of this.users) if (usr.type == 1) cnt--;
 		return cnt;
 	}
 

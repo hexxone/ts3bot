@@ -8,7 +8,7 @@
 
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 104,
@@ -19,7 +19,7 @@ export default {
 	usage: "/connect",
 	description: "connect",
 	command: ["/connect"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.isGroup) {
 			switch (ctx.groupLinking.instance.connectionState) {
 				case 0:

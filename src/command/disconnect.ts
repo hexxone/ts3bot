@@ -8,7 +8,7 @@
 
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 108,
@@ -19,7 +19,7 @@ export default {
 	usage: "/disconnect",
 	description: "disconnect",
 	command: ["/disconnect"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.isGroup) {
 			ctx.respondChat(ctx.groupMessages.disconnect, ctx.opt);
 			try {

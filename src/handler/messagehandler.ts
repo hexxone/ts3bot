@@ -9,7 +9,7 @@
 import { Chat } from "typegram";
 import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 import CommandHandler from "./commandhandler";
@@ -18,7 +18,7 @@ const REPLY_IN_GROUPS = false;
 
 // Telegram message-receive-handler
 
-export default function (self: TS3Ctx) {
+export default function (self: TS3BotCtx) {
 	self.receivedMessages++;
 	let bot = self.bot;
 
@@ -78,9 +78,12 @@ export default function (self: TS3Ctx) {
 
 		let ctx = {
 			respondChat: (txt: string, opt: ExtraReplyMessage, noDel: boolean) => {
-				self.sendNewMessage(msg.chat.id, txt, opt, noDel);
+				return new Promise((res, rej) => {
+					self.sendNewMessage(msg.chat.id, txt, opt, noDel).then((dat) => {
+						res(dat as any);
+					});
+				});
 			},
-			developer_id: self.developer_id,
 			msg: msg,
 			text: msg.text,
 			args: new Array<String>(),
@@ -102,9 +105,9 @@ export default function (self: TS3Ctx) {
 		} as MessageCtx;
 
 		// announcement check
-		if (self.run && (!self.announces[ctx.chatId] || self.announces[ctx.chatId] < self.announceID)) {
-			self.announces[ctx.chatId] = self.announceID;
-			bot.telegram.sendMessage(ctx.chatId, self.announceText, { disable_web_page_preview: true });
+		if (self.run && (!self.announces[ctx.chatId] || self.announces[ctx.chatId] < self.settings.announceID)) {
+			self.announces[ctx.chatId] = self.settings.announceID;
+			bot.telegram.sendMessage(ctx.chatId, self.settings.announceText, { disable_web_page_preview: true });
 		}
 
 		// If sent from group, try to get the group's binding and send the corresponding messages to it
@@ -157,7 +160,7 @@ export default function (self: TS3Ctx) {
 				ctx.groupLinking.NotifyTS3(title, tsname + " : " + Utils.fixUrlToTS3(msg.text));
 			}
 			// someone shared a file?
-			else if (self.run && self.useFileProxy && ctx.groupLinking.sharemedia) {
+			else if (self.run && self.settings.useFileProxy && ctx.groupLinking.sharemedia) {
 				let mft = Utils.getMsgFileType(msg);
 				if (mft !== null) {
 					let proxiedFileUrl = self.fileProxyServer.getURL(msg, mft);
@@ -172,7 +175,7 @@ export default function (self: TS3Ctx) {
 			// Check if the text contains args and split them
 			CommandHandler.prepare(ctx, msg.text);
 
-			if (msg.from.id == self.developer_id && ctx.cmd && ctx.cmd.toLocaleLowerCase() == "/runtoggle") {
+			if (msg.from.id == self.settings.developer_id && ctx.cmd && ctx.cmd.toLocaleLowerCase() == "/runtoggle") {
 				self.run = !self.run;
 				console.log("runtoggle: " + self.run);
 				return;
@@ -184,7 +187,7 @@ export default function (self: TS3Ctx) {
 			}
 
 			// '"developer bot shell"' (for unnecessary stuff like calculating something)
-			if (msg.from.id == self.developer_id && ctx.cmd && ctx.cmd.toLocaleLowerCase() == "/xd") {
+			if (msg.from.id == self.settings.developer_id && ctx.cmd && ctx.cmd.toLocaleLowerCase() == "/xd") {
 				let myeval = msg.text.substring(4, msg.text.length);
 				console.log("/xd eval: " + myeval);
 				ctx.respondChat(eval(myeval), ctx.opt);

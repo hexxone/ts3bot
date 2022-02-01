@@ -8,7 +8,7 @@
 
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 109,
@@ -19,7 +19,7 @@ export default {
 	usage: "/faq",
 	description: "faq",
 	command: ["/faq"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		let msgs = ctx.isGroup && ctx.groupLinking !== null ? ctx.groupMessages : ctx.senderMessages;
 		let txtt = msgs.faqText;
 		txtt = txtt.replace("$sloc$", main.slocCount.toString());

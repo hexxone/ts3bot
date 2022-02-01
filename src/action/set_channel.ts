@@ -8,12 +8,12 @@
 
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 11,
 	action: ["set_channel", "set_channel_first"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		let msgs = ctx.senderMessages;
 		if (ctx.senderSelectedInstance != null) {
 			if (ctx.text.length > 1 && ctx.text.length < 33) {

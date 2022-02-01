@@ -9,12 +9,12 @@
 import { Instance } from "../object/instance";
 import Utils from "../class/utils";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 9,
 	action: ["select"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.args.length == 1 && Utils.testName(ctx.args[0])) {
 			let inst = Utils.getArrayObjectByName(ctx.senderInstances, ctx.args[0]) as Instance;
 			if (inst != null) {

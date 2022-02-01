@@ -11,19 +11,23 @@ import { User } from "typegram";
 
 import urlRegex from "url-regex-safe";
 
-import { MessageCtx, TS3Ctx, TS3Msgs } from "../context";
+import { MessageCtx, TS3BotCtx, TS3BotMsgs } from "../context";
 
 import * as UHelpr from "../object/user";
 import { Instance } from "../object/instance";
 import { GroupLinking } from "../object/grouplinking";
 
-const MILLIS_PER_SECOND = 1000;
-const MILLIS_PER_MINUTE = MILLIS_PER_SECOND * 60; //     60,000
-const MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60; //  3,600,000
+const CUR_YR = new Date().getFullYear();
+const LEAP_YEAR = !(CUR_YR & 3 || (!(CUR_YR % 25) && CUR_YR & 15));
+const MS_PER_SECOND = 1000;
+const MS_PER_MINUTE = MS_PER_SECOND * 60;
+const MS_PER_HOUR = MS_PER_MINUTE * 60;
+const MS_PER_DAY = MS_PER_HOUR * 24;
+const MS_PER_YEAR = MS_PER_DAY * (LEAP_YEAR ? 366 : 365);
 
 class Utils {
 	// 'this' of main.js (instanciated on run)
-	Parent!: TS3Ctx;
+	Parent!: TS3BotCtx;
 
 	// fills Mathods.Parent with a reference to main.js (users, groups, etc)
 	Set(self) {
@@ -111,11 +115,10 @@ class Utils {
 	}
 
 	// returns statistics string, param s is messages.
-	// s = MESSAGES
-	getStats(s: any) {
+	getStats(s: TS3BotMsgs) {
 		let msg = "";
 		const upTime = new Date().getTime() - this.Parent.startDate.getTime();
-		msg += s.stats01 + upTime / MILLIS_PER_HOUR + " hours";
+		msg += s.stats01 + this.getTimeSpan(upTime, s);
 		msg += s.stats02 + this.Parent.receivedMessages;
 		msg += s.stats03 + this.Parent.users.length;
 		msg += s.stats04 + this.Parent.groupnames.size;
@@ -133,17 +136,37 @@ class Utils {
 		return msg;
 	}
 
+	// get a millisecond timespan string-formatted in given language
+	getTimeSpan(ms: number, msgs: TS3BotMsgs) {
+		let years = Math.round(ms / MS_PER_YEAR),
+			dms = ms % MS_PER_YEAR,
+			days = Math.round(dms / MS_PER_DAY),
+			hms = dms % MS_PER_DAY,
+			hours = Math.round(hms / MS_PER_HOUR),
+			mms = hms % MS_PER_HOUR,
+			mins = Math.round(mms / MS_PER_MINUTE),
+			sms = mms % MS_PER_MINUTE,
+			secs = Math.round(sms / MS_PER_SECOND),
+			res = "";
+		if (years > 0) res += `${years} ${msgs.timeYears}`;
+		if (res != "" || days > 0) res += ` ${days} ${msgs.timeDays}`;
+		if (res != "" || hours > 0) res += ` ${hours} ${msgs.timeHours}`;
+		if (res != "" || mins > 0) res += ` ${mins} ${msgs.timeMins}`;
+		if (res != "" || secs > 0) res += ` ${secs} ${msgs.timeSecs}`;
+		return res.trim();
+	}
+
 	// Regex tests a String meant to be a name
 	testName(name) {
 		return name.match(/^[a-zA-Z0-9]{2,32}$/) !== null;
 	}
 
 	// returns messages-object for the desired language
-	getLanguageMessages(lang: string): TS3Msgs {
+	getLanguageMessages(lang: string): TS3BotMsgs {
 		let deff;
 		for (let msgobj of this.Parent.languages) {
 			if (msgobj.langCode == lang || msgobj.langName == lang) return msgobj;
-			if (msgobj.langCode == this.Parent.defaultLanguage) deff = msgobj;
+			if (msgobj.langCode == this.Parent.settings.defaultLanguage) deff = msgobj;
 		}
 		return deff;
 	}
@@ -177,7 +200,7 @@ class Utils {
 	}
 
 	// removes the keyboard and overwrites the response function
-	fixRemoveKeyboard(main: TS3Ctx, ctx: MessageCtx) {
+	fixRemoveKeyboard(main: TS3BotCtx, ctx: MessageCtx) {
 		const tg = main.bot.telegram;
 		const cid = ctx.chatId;
 		tg.sendMessage(cid, "🕐...", { reply_markup: { remove_keyboard: true } }).then((data) => tg.deleteMessage(cid, data.message_id));
@@ -193,7 +216,7 @@ class Utils {
 	}
 
 	// Get Command as Button
-	getCmdBtn(desc: string, msgs: TS3Msgs) {
+	getCmdBtn(desc: string, msgs: TS3BotMsgs) {
 		if (desc == "cancel")
 			return {
 				text: msgs["cmd_cancel"],

@@ -27,26 +27,13 @@
     - catch all possible edit & delte message handlers?
 
     - add pm select server/user/send commands
-	- catch group send telegram permission error -> unlink
+	- catch send/edit/delete telegram permission error -> unlink
 	- test everything
 */
 
-let l = " --------------------------------------------------";
-console.log(l);
-console.log("|        TS3Bot Copyright (c) 2022 D.Thiele        |");
-console.log("|  This program comes with ABSOLUTELY NO WARRANTY  |");
-console.log("|   This is free software, and you are welcome to  |");
-console.log("|     redistribute it under certain conditions;    |");
-console.log("|           See LICENSE file for details.          |");
-console.log(l + "\r\n");
-
-const wait = Date.now() + 5000;
-while (Date.now() < wait) {}
-
 // main Context reference
 // will keep all important objects and settings
-import { TS3Ctx } from "./context";
-const customCtx = {} as TS3Ctx;
+import { TS3BotCtx } from "./context";
 
 // Load required Libaries
 import fs from "fs";
@@ -66,28 +53,94 @@ import ReplyHandler from "./handler/replyhandler";
 // load Objects
 import { GroupLinking } from "./object/grouplinking";
 
-// load config into ctx
-import conf from "./config";
-conf(customCtx);
-
 // load special classes => they store a reference to the main ctx by passing 'customCtx'
 // if you require these classes from another one, it will keep the reference when passing 'null'.
 import Utils from "./class/utils";
 import Loader from "./class/loader";
 
-Utils.Set(customCtx);
-Loader.Set(customCtx);
+import Configure from "./config";
 
-// hook console.log to always include time
+let l = " --------------------------------------------------";
+console.log(l);
+console.log("|        TS3Bot Copyright (c) 2022 D.Thiele        |");
+console.log("|  This program comes with ABSOLUTELY NO WARRANTY  |");
+console.log("|   This is free software, and you are welcome to  |");
+console.log("|     redistribute it under certain conditions;    |");
+console.log("|           See LICENSE file for details.          |");
+console.log(l + "\r\n");
+
+// hook console.log to always include time from now
 const log = console.log;
 console.log = function () {
 	log.apply(console, ["[" + Utils.getTime(new Date()) + "]"].concat(arguments.length > 1 ? arguments : arguments[0]));
 };
 
-// set our start time, cuz why not
-customCtx.startDate = new Date();
 console.log("Bot running from directory: " + __dirname);
-console.log("Static classes loaded.");
+const wait = Date.now() + 5000;
+while (Date.now() < wait) {}
+
+// load config into ctx
+const settings = Configure();
+
+const customCtx = {
+	startDate: new Date(),
+	actionsPath: Path.join(__dirname, "action"),
+	commandsPath: Path.join(__dirname, "command"),
+	languagesPath: Path.join(__dirname, "msg"),
+
+	actions: new Array(),
+	commands: new Array(),
+	languages: new Array(),
+
+	users: new Array(),
+	instances: new Array(),
+	linkings: new Array(),
+
+	fileMappings: {},
+	announces: {},
+
+	deeplinking: new Map<string, GroupLinking>(),
+	groupnames: new Map<number, string>(),
+	slocCount: 0,
+	receivedMessages: 0,
+
+	settings,
+	antispam: new AntiSpam(10),
+
+	handleEx: (callback: () => void) => {
+		try {
+			callback();
+		} catch (ex: any) {
+			ex = parseExStr(ex);
+			if (customCtx.settings.debug) {
+				try {
+					customCtx.bot.telegram.sendMessage(customCtx.settings.developer_id, "Bot Exception:\r\n" + ex, { disable_web_page_preview: true });
+				} catch (ex2) {
+					ex2 = parseExStr(ex2);
+					console.log("Fatal Exception: " + ex + ex2);
+				}
+			} else console.log("Exception: " + ex);
+		}
+	},
+
+	exitHandler: (opt, err) => {
+		if (err) console.log(err);
+		if (opt && opt.exit) {
+			for (let instance of customCtx.instances) instance.Disconnect();
+			Loader.saveData();
+			console.log("[TS3Bot|Exit]");
+			process.exit(0);
+		}
+	},
+} as TS3BotCtx;
+
+SLOCCount((arg) => {
+	customCtx.slocCount = arg;
+	console.log("SLOC result : " + arg);
+});
+
+Utils.Set(customCtx);
+Loader.Set(customCtx);
 
 // SOME IMPORTANT HELPER FUNCTIONS
 
@@ -103,61 +156,9 @@ const parseExStr = (ex) =>
 		4
 	);
 
-// custom Exception Handler
-customCtx.handleEx = (callback: () => void) => {
-	try {
-		callback();
-	} catch (ex: any) {
-		ex = parseExStr(ex);
-		if (customCtx.debug) {
-			try {
-				customCtx.bot.telegram.sendMessage(customCtx.developer_id, "Bot Exception:\r\n" + ex, { disable_web_page_preview: true });
-			} catch (ex2) {
-				ex2 = parseExStr(ex2);
-				console.log("Fatal Exception: " + ex + ex2);
-			}
-		} else console.log("Exception: " + ex);
-	}
-};
-
-// handles any closing of the program
-customCtx.exitHandler = function (opt, err) {
-	if (err) console.log(err);
-	if (opt && opt.exit) {
-		for (let instance of customCtx.instances) instance.Disconnect();
-		Loader.saveData();
-		console.log("[TS3Bot|Exit]");
-		process.exit(0);
-	}
-};
-
-// INIT DYNAMIC RESOURCES
-
-// Get module paths
-customCtx.actionsPath = Path.join(__dirname, "action");
-customCtx.commandsPath = Path.join(__dirname, "command");
-customCtx.languagesPath = Path.join(__dirname, "msg");
-
-// Create module arrays
-customCtx.actions = [];
-customCtx.commands = [];
-customCtx.languages = [];
-
-// Create object arrays
-customCtx.users = [];
-customCtx.instances = [];
-customCtx.linkings = [];
-
-// Create array objects
-customCtx.fileMappings = {};
-customCtx.announces = {};
-
-// Create Hash-Maps
-customCtx.deeplinking = new Map<string, GroupLinking>();
-customCtx.groupnames = new Map<number, string>();
-
-// should not close instantly
+// dont close the process immediately
 process.stdin.resume();
+
 // register app closing handler
 process.on("exit", customCtx.exitHandler.bind(null, {}));
 // register uncaught exception handler
@@ -165,19 +166,8 @@ process.on("uncaughtException", customCtx.exitHandler.bind(null, {}));
 // register ctrl+c closing handler
 process.on("SIGINT", customCtx.exitHandler.bind(null, { exit: true }));
 
-// LOAD ACTIONS AND COMMANDS
-
-SLOCCount((arg) => {
-	customCtx.slocCount = arg;
-	console.log("SLOC result : " + arg);
-});
-
-// create Fileproxy?
-customCtx.fileProxyServer = new FileProxy(customCtx);
-
-// initial loading
+// LOAD ACTIONS, COMMANDS & DATA
 Loader.loadModules();
-// load data
 Loader.loadData();
 
 // autosave data every 5 minutes
@@ -188,21 +178,21 @@ setInterval(() => {
 // CREATE BOT
 
 // Create the Telegram Bot either with webhook or polling
-let bot = (customCtx.bot = new Telegraf(customCtx.telegram_bot_token));
+let bot = (customCtx.bot = new Telegraf(settings.telegram_bot_token));
 
-if (customCtx.useWebHook) {
+if (settings.useWebHook) {
 	// Start https webhook
-	if (customCtx.webHookCustomCertificate) {
+	if (settings.webHookCustomCertificate) {
 		bot.launch({
 			webhook: {
-				host: customCtx.webHookAddr,
-				port: customCtx.webHookPort,
+				host: settings.webHookAddr,
+				port: settings.webHookPort,
 				tlsOptions: {
-					cert: fs.readFileSync(customCtx.webCert),
-					key: fs.readFileSync(customCtx.webKey),
+					cert: fs.readFileSync(settings.webCert),
+					key: fs.readFileSync(settings.webKey),
 					ca: [
 						// This is necessary only if the client uses a self-signed certificate.
-						fs.readFileSync(customCtx.webCert),
+						fs.readFileSync(settings.webCert),
 					],
 				},
 			},
@@ -210,8 +200,8 @@ if (customCtx.useWebHook) {
 	} else {
 		bot.launch({
 			webhook: {
-				host: customCtx.webHookAddr,
-				port: customCtx.webHookPort,
+				host: settings.webHookAddr,
+				port: settings.webHookPort,
 			},
 		});
 	}
@@ -230,6 +220,7 @@ customCtx.sendNewMessage = async (cid: number, text: string, opt: ExtraReplyMess
 		sendr.last_bot_msg_id = -1;
 	}
 	// set defaults
+	if (opt === undefined) opt = {};
 	if (opt.parse_mode === undefined) opt.parse_mode = "HTML";
 	if (opt.disable_web_page_preview === undefined) opt.disable_web_page_preview = true;
 	return bot.telegram
@@ -246,12 +237,11 @@ customCtx.sendNewMessage = async (cid: number, text: string, opt: ExtraReplyMess
 		});
 };
 
-// Spam protection wrapper
-customCtx.antispam = new AntiSpam(10);
-
+// create Fileproxy?
 // init file proxy
-if (customCtx.useFileProxy) {
-	customCtx.fileProxyServer.init(bot, customCtx.fileProxyAddr, customCtx.fileProxyPort);
+if (settings.useFileProxy) {
+	customCtx.fileProxyServer = new FileProxy(customCtx);
+	customCtx.fileProxyServer.init(bot, settings.fileProxyAddr, settings.fileProxyPort);
 }
 
 // print stats

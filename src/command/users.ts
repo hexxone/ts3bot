@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 
@@ -19,14 +19,15 @@ export default {
 	usage: "/users",
 	description: "users",
 	command: ["/users"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		ctx.opt.parse_mode = "HTML";
 		let showBots = ctx.args.length == 2 && ctx.args[1] == "-a";
+		const responder = (msg: string) => ctx.respondChat(msg, ctx.opt);
 		if (ctx.isGroup) {
-			ctx.groupLinking.instance.GetUserString(ctx.groupLinking.language, !showBots && ctx.groupLinking.ignorebots, (res) => ctx.respondChat(res, ctx.opt));
+			ctx.groupLinking.instance.GetUserString(ctx.groupLinking.language, !showBots && ctx.groupLinking.ignorebots, responder);
 		} else {
 			ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("menu", ctx.senderMessages)]];
-			ctx.senderSelectedInstance.GetUserString(ctx.sender.language, !showBots, (res) => ctx.respondChat(res, ctx.opt));
+			ctx.senderSelectedInstance.GetUserString(ctx.sender.language, !showBots, responder);
 		}
 	},
 };

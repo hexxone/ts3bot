@@ -6,16 +6,16 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 4,
 	action: ["dev_message"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.text.length >= 10 && ctx.text.length <= 500) {
 			// SEND MESSAGE TO DEV
 			main.sendNewMessage(
-				ctx.developer_id,
+				main.settings.developer_id,
 				"DevMessage\r\nFrom: " + JSON.stringify(ctx.msg.from) + "\r\n\r\nText:\r\n" + ctx.text + '\r\n\r\nDont forget: "/rstdev ' + ctx.sender.id + '"',
 				{},
 				true

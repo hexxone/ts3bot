@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 
@@ -19,7 +19,7 @@ export default {
 	usage: "/help",
 	description: "help",
 	command: ["/help"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (!ctx.isGroup)
 			ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("start", ctx.senderMessages)], [Utils.getCmdBtn("faq", ctx.senderMessages), Utils.getCmdBtn("commands", ctx.senderMessages)]];
 		ctx.respondChat((ctx.isGroup && ctx.groupLinking !== null ? ctx.groupMessages : ctx.senderMessages).helpText, ctx.opt);

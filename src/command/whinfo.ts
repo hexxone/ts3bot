@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 export default {
 	id: 144,
@@ -17,8 +17,8 @@ export default {
 	usage: "/whinfo",
 	description: "whinfo",
 	command: ["/whinfo"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
-		if (ctx.sender.id == ctx.developer_id) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
+		if (ctx.sender.id == main.settings.developer_id) {
 			main.bot.telegram.getWebhookInfo().then((whi) => {
 				console.log(whi);
 				ctx.respondChat("Here is the WebHook info:\r\n\r\n" + JSON.stringify(whi), ctx.opt);

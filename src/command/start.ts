@@ -8,7 +8,7 @@
 
 import { Chat } from "telegraf/typings/core/types/typegram";
 
-import { MessageCtx, TS3Ctx } from "../context";
+import { MessageCtx, TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 import { GroupLinking } from "../object/grouplinking";
@@ -23,7 +23,7 @@ export default {
 	usage: "/start",
 	description: "start",
 	command: ["/start"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		let msgs = ctx.senderMessages;
 		if (ctx.isGroup) {
 			if (ctx.groupLinking !== null) msgs = ctx.groupMessages;
@@ -38,12 +38,14 @@ export default {
 					inst.Link(ctx.chatId);
 					main.linkings.push(inst);
 					// Notify
-					let lnked = msgs.groupLinked;
-					ctx.respondChat(lnked + ".", ctx.opt);
-					main.sendNewMessage(inst.instance.id, lnked + ": " + (ctx.msg.chat as Chat.TitleChat).title, {
-						reply_markup: {
-							inline_keyboard: [[Utils.getCmdBtn("menu", msgs)]],
-						},
+					ctx.respondChat(msgs.groupLinked + ".", ctx.opt).then((msg) => {
+						// add menu for user
+						ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("menu", msgs)]];
+						// TODO confirm '4' is always correct ???
+						// wrong: https://t.me/c/-10001417399172/597
+						// corr:  https://t.me/c/1417399172/597
+						const txt = `: <a href="https://t.me/c/${ctx.msg.chat.id.toString().substring(4)}/${msg?.message_id}">${(ctx.msg.chat as Chat.TitleChat).title}</a>`;
+						main.sendNewMessage(inst.instance.id, msgs.groupLinked + txt, ctx.opt);
 					});
 				} else ctx.respondChat(msgs.invalidLink, ctx.opt);
 			} else ctx.respondChat(ctx.groupLinking === null ? msgs.groupNotLinked : msgs.groupAlreadyLinked, ctx.opt);

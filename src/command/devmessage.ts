@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 107,
@@ -18,7 +18,7 @@ export default {
 	usage: "/devmessage",
 	description: "devmessage",
 	command: ["/devmessage"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (!ctx.sender.sentdev) {
 			ctx.sender.menu = "dev_message";
 			ctx.respondChat(ctx.senderMessages.devSend, ctx.opt);

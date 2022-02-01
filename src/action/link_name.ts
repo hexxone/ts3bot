@@ -9,12 +9,12 @@
 import Utils from "../class/utils";
 import { GroupLinking } from "../object/grouplinking";
 
-import { TS3Ctx, MessageCtx } from "../context";
+import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
 	id: 5,
 	action: ["link_name"],
-	callback: function (main: TS3Ctx, ctx: MessageCtx) {
+	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		//ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('manage', ctx.senderMessages),]];
 		if (ctx.senderSelectedInstance !== null) {
 			// Check if Correct Format
