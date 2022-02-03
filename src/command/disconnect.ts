@@ -11,7 +11,7 @@ import Utils from "../class/utils";
 import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
-	id: 108,
+	id: 107,
 	available: 3,
 	groupperm: true,
 	needslinking: true,

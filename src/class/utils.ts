@@ -15,7 +15,7 @@ import { MessageCtx, TS3BotCtx, TS3BotMsgs } from "../context";
 
 import * as UHelper from "../object/user";
 import { QConState, Instance, GreetMode } from "../object/instance";
-import { GroupLinking } from "../object/grouplinking";
+import { GroupLinking, MoveNotification } from "../object/grouplinking";
 import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
 
 export const DefaultOpt: ExtraReplyMessage = { parse_mode: "HTML", disable_web_page_preview: true };
@@ -46,7 +46,7 @@ class Utils {
 	}
 
 	// returns a number with leading 0 if < 10
-	get2Dig(num) {
+	get2Dig(num: number) {
 		return num == 0 ? "00" : num && num < 10 ? "0" + num : num;
 	}
 
@@ -93,7 +93,7 @@ class Utils {
 	}
 
 	// Gets all the Instance the User with the given id owns
-	getUserInstances(id): Instance[] {
+	getUserInstances(id: number): Instance[] {
 		let res = [] as Instance[];
 		for (let instance of this.Parent.instances) {
 			if (instance.id == id) res.push(instance);
@@ -102,7 +102,7 @@ class Utils {
 	}
 
 	// Gets all the Linkings the User with the given id has
-	getUserLinkings(id): GroupLinking[] {
+	getUserLinkings(id: number): GroupLinking[] {
 		let res = [] as GroupLinking[];
 		for (let linking of this.Parent.linkings) {
 			if (linking.instance.id == id) res.push(linking);
@@ -112,7 +112,7 @@ class Utils {
 
 	// Finds a Linking for a group with the given id
 	// (or null if not found)
-	getGroupLinking(groupid): GroupLinking {
+	getGroupLinking(groupid: number): GroupLinking {
 		for (let linking of this.Parent.linkings) {
 			if (linking.groupid == groupid) return linking;
 		}
@@ -283,7 +283,7 @@ class Utils {
 	}
 
 	// Returns a Random string of desired length
-	randomString(length) {
+	randomString(length: number) {
 		let text = "";
 		let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		for (let i = 0; i < length; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -312,9 +312,7 @@ class Utils {
 	}
 
 	// converts notify move mode (number) to string
-	// @TODO use enum
-	nmToStr(language, number) {
-		let msgs = this.getLanguageMessages(language);
+	nmToStr(msgs: TS3BotMsgs, number: MoveNotification) {
 		switch (number) {
 			case 1:
 				return "Channel";
@@ -326,9 +324,7 @@ class Utils {
 	}
 
 	// converts connection state to language string
-	// @TODO use enum
-	stToStr(language, number) {
-		let msgs = this.getLanguageMessages(language);
+	stToStr(msgs: TS3BotMsgs, number: QConState) {
 		switch (number) {
 			case 1:
 				return msgs.stateConnecting;
@@ -376,11 +372,11 @@ class Utils {
 	}
 
 	// will surround urls with given TAG for being clickable TS3
-	fixUrlToTS3(str) {
+	fixUrlToTS3(str: string) {
 		// make urls clickable for ts3 clients
 		let urll = str.match(urlRegex());
 		if (urll) {
-			if (typeof urll == typeof []) {
+			if (urll instanceof Array) {
 				for (let i = 0; i < urll.length; i++) str = str.replace(urll[i], "[URL]" + urll[i] + "[/URL]");
 			} else str = str.replace(urll, "[URL]" + urll + "[/URL]");
 		}
@@ -399,21 +395,6 @@ class Utils {
 		}
 		return res;
 	}
-
-	// returns available ts3 server for user
-	getUserAvailableServers(user) {
-		let servers = {};
-		this.Parent.linkings.forEach((lnk) => {
-			if (lnk.pm && lnk.HasUser(user)) {
-				let key = lnk.instance.id + "_" + lnk.instance.name;
-				if (!servers[key]) servers[key] = lnk.instance;
-			}
-		});
-		return servers;
-	}
-
-	// returns users of a ts3 server
-	getServerAvailableUsers(instance) {}
 }
 
 export default new Utils();

@@ -41,7 +41,9 @@ export default class {
 
 	// Function that excludes the [spacer] strings from channel names
 	static fixSpacer(str): string {
-		return String(str).replace(/(\[\*{0,1}[l,r,c]{0,1}spacer[0-9]{0,}\])/g, "");
+		return String(str)
+			.replace(/(\[\*{0,1}[l,r,c]{0,1}spacer[0-9]{0,}\])/g, "")
+			.trim();
 	}
 
 	// Function that actually fixes the [spacer] strings from channel names
@@ -106,52 +108,6 @@ export default class {
 
 	// removes [URL]-Tags from links
 	static fixUrlToTelegram(str): string {
-		return str.replace(/\[\/*URL\]/g, "");
-	}
-
-	// Function for escaping a string message before sending
-	static escapeStr(str: string): string {
-		return String(str)
-			.replace(/\\/g, "\\\\")
-			.replace(/\//g, "\\/")
-			.replace(/\|/g, "\\p")
-			.replace(/\n/g, "\\n")
-			.replace(/\r/g, "\\r")
-			.replace(/\t/g, "\\t")
-			.replace(/\v/g, "\\v")
-			.replace(/\f/g, "\\f")
-			.replace(/ /g, "\\s");
-	}
-
-	// Function for un-escaping a string message after receiving
-	static unescapeStr(str: string): string {
-		return String(str)
-			.replace(/\\\\/g, "\\")
-			.replace(/\\\//g, "/")
-			.replace(/\\p/g, "|")
-			.replace(/\\n/g, "\n")
-			.replace(/\\r/g, "\r")
-			.replace(/\\t/g, "\t")
-			.replace(/\\v/g, "\v")
-			.replace(/\\f/g, "\f")
-			.replace(/\\s/g, " ");
-	}
-
-	// teamspeak3 library is using parameter arrays since all data fields
-	// are always sent per object and it uses a little bit less memory.
-	// Its however not very practical to sort or work with.
-	// This function reformats the given data to object arrays..
-	// from:  parameter array object {'a':['1','4'],'b':['2','5'],'c':['3','6']}
-	// to:    object array           [{'a':'1','b':'2','c':'3'},{'a':'4','b':'5','c':'6'}]
-	static formatData(data: object): object[] {
-		return Object.keys(data).reduce((arr: any[], key) => {
-			if (data[key] instanceof Array) {
-				data[key].forEach((value, i) => {
-					if (!arr[i]) arr[i] = {};
-					arr[i][key] = value;
-				});
-			}
-			return arr;
-		}, []);
+		return str.replace(/\[\/*URL\]/g, "").replace(/[<|>]/, "");
 	}
 }

@@ -32,13 +32,12 @@ export type TSChannel = {
 export class IUtils {
 	users: TeamSpeakClient[];
 	channels: TeamSpeakChannel[];
-	channelid: string;
+	myChannel!: TeamSpeakChannel;
 
 	constructor() {
 		// the users and channels are already correctly sorted when received.
 		this.users = [];
 		this.channels = [];
-		this.channelid = "asdasd";
 	}
 
 	// this function will re-sort the user list alphabetically by name after a user joined.

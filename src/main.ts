@@ -59,13 +59,13 @@ import Loader from "./class/loader";
 import Configure from "./config";
 import { User } from "./object/user";
 
-let l = " --------------------------------------------------";
+let l = "+-------------------------------------------------+";
 console.log(l);
-console.log("|        TS3Bot Copyright (c) 2022 D.Thiele        |");
-console.log("|  This program comes with ABSOLUTELY NO WARRANTY  |");
-console.log("|   This is free software, and you are welcome to  |");
-console.log("|     redistribute it under certain conditions;    |");
-console.log("|           See LICENSE file for details.          |");
+console.log("|        TS3Bot Copyright (c) 2022 hexxone        |");
+console.log("|       This bot comes without ANY WARRANTY       |");
+console.log("|  This is free software, and you are welcome to  |");
+console.log("|    redistribute it under certain conditions;    |");
+console.log("|          See LICENSE file for details.          |");
 console.log(l + "\r\n");
 
 // hook console.log to always include time from now
@@ -186,7 +186,8 @@ customCtx.sendNewMessage = async (cid: number, text: string, opt: ExtraReplyMess
 		})
 		.catch((err: Error) => {
 			if (settings.debug) console.error(err, cid, text, opt);
-			// @todo bot forbidden to send messages => got removed from chat/blocked/stopped ?
+			// bot forbidden to send messages => got removed from chat/blocked/stopped ?
+			// @todo test
 			const etl = err.message.toLocaleLowerCase();
 			if (etl.includes("forbidden") || etl.includes("not found") || etl.includes("blocked") || etl.includes("stopped")) {
 				// destroy chat linkings / user instances
