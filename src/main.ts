@@ -44,7 +44,6 @@ import { AntiSpam } from "./class/antispam";
 import { FileProxy } from "./class/fileproxy";
 
 // load callback handlers
-import SLOCCount from "./class/sloc";
 import MessageHandler from "./handler/messagehandler";
 import ReplyHandler from "./handler/replyhandler";
 
@@ -101,17 +100,11 @@ const customCtx = {
 
 	deeplinking: new Map<string, GroupLinking>(),
 	groupnames: new Map<number, string>(),
-	slocCount: 0,
 	receivedMessages: 0,
 
 	settings,
 	antispam: new AntiSpam(10),
 } as TS3BotCtx;
-
-SLOCCount((arg) => {
-	customCtx.slocCount = arg;
-	console.log("SLOC result : " + arg);
-});
 
 Utils.Set(customCtx);
 Loader.Set(customCtx);
