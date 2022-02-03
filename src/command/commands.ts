@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import Utils from "../class/utils";
+import Utils, { CmdAvailable } from "../class/utils";
 
 import { TS3BotCtx, MessageCtx } from "../context";
 
@@ -29,7 +29,7 @@ export default {
 			let ifomsg = cmsgs.commandResult;
 			let resCnt = 0;
 			let none = main.commands.some(function (obj, i) {
-				if (obj.available > 0 || (isDev && !ctx.isGroup)) {
+				if (obj.available > CmdAvailable.AdminOnly || (isDev && !ctx.isGroup)) {
 					// build search string from command & language description
 					let desc = cmsgs["cmd_" + obj.description];
 					let searchString = obj.usage + desc;
@@ -48,7 +48,7 @@ export default {
 							extramsg += " selected server";
 						}
 						// build available string
-						let avail = Utils.avToStr(cmsgs.langCode, obj.available);
+						let avail = Utils.avToStr(cmsgs, obj.available);
 						if (extramsg !== "") avail += " (" + extramsg + ")";
 						// build command string
 						cmdmsg = cmdmsg.replace("$usage$", obj.usage);
@@ -83,12 +83,12 @@ export default {
 		main.commands.some(function (obj, i) {
 			if (obj.hidden) return;
 			let isAvailable = true;
-			if (ctx.isGroup && obj.available > 1) {
+			if (ctx.isGroup && obj.available > CmdAvailable.SingleChat) {
 				if (obj.groupperm) isAvailable = isAvailable && hasAdmin;
 				if (obj.needslinking) isAvailable = isAvailable && hasLinking;
 			} else if (!ctx.isGroup) {
-				if (obj.available === 0) isAvailable = isAvailable && isDev;
-				else if (obj.available === 1 || obj.available === 3) {
+				if (obj.available === CmdAvailable.AdminOnly) isAvailable = isAvailable && isDev;
+				else if (obj.available === CmdAvailable.SingleChat || obj.available === CmdAvailable.All) {
 					if (obj.needsselected) isAvailable = isAvailable && hasSelected;
 				} else isAvailable = false;
 			} else isAvailable = false;
