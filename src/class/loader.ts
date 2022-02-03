@@ -8,7 +8,7 @@
 
 import FS from "fs";
 import Crypto from "crypto";
-import CircularJSON from "circular-json";
+import { parse, stringify, toJSON, fromJSON } from "flatted";
 
 const Algorithm = "aes-256-cbc";
 
@@ -52,11 +52,11 @@ class Loader {
 			// decrypt & finalize data
 			let data = decipher.update(crypted[1], "hex", "utf8") + decipher.final("utf8");
 			// parse to object
-			objj = CircularJSON.parse(data);
+			objj = parse(data);
 			// debug print
 			//console.log('Data: ' + data);
 		} catch (err) {
-			console.error("loadData Error: " + JSON.stringify(err));
+			console.error("loadData Error: " + stringify(err));
 			return;
 		}
 		// Apply values
@@ -104,7 +104,7 @@ class Loader {
 			if (!instt) {
 				console.error(
 					"Error loading linking! Debug: " +
-						JSON.stringify({
+						stringify({
 							loadObject: lnk,
 							userObject: instts,
 						})
@@ -123,7 +123,7 @@ class Loader {
 			if (!instt) {
 				console.error(
 					"Error loading deeplink! Debug: " +
-						JSON.stringify({
+						stringify({
 							loadObject: keyset,
 							userObject: instts,
 						})
@@ -161,7 +161,7 @@ class Loader {
 		this.Parent.deeplinking.forEach((val, key) => objj.deeplinking.push({ k: key, v: val.Export() }));
 		this.Parent.groupnames.forEach((val, key) => objj.groupnames.push({ k: key, v: val }));
 		// safe-parse data structure to string
-		let txtt = CircularJSON.stringify(objj);
+		let txtt = stringify(objj);
 		// get telegram api key
 		let s = this.Parent.settings.telegram_bot_token.split(":");
 		// hash of api key is used as password

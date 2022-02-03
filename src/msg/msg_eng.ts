@@ -88,7 +88,7 @@ export default {
 		" - b_virtualserver_client_list\r\n - b_virtualserver_notify_register\r\n - b_virtualserver_notify_unregister\r\n" +
 		"The username and channel information gets only updated every 2 minutes.\r\n" +
 		"This bot is written in TypeScript.\r\n" +
-		"Lines of Code: $sloc$",
+		"Code: https://github.com/hexxone/ts3bot",
 	helpText:
 		"TS3Bot Help:\r\nThis bot provides an interface for linking a TeamSpeak 3 Server" +
 		" to Telegram (specific Groups) for cross-chatting and seeing online users.\r\nThe TS3-Connection is established" +

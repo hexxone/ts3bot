@@ -38,7 +38,6 @@ export declare type TS3BotCtx = {
 	deeplinking: Map<string, GroupLinking>;
 	groupnames: Map<number, string>;
 
-	slocCount: number;
 	receivedMessages: number;
 
 	bot: Telegraf;

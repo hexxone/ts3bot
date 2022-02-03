@@ -22,7 +22,6 @@ export default {
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		let msgs = ctx.isGroup && ctx.groupLinking !== null ? ctx.groupMessages : ctx.senderMessages;
 		let txtt = msgs.faqText;
-		txtt = txtt.replace("$sloc$", main.slocCount.toString());
 		ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("help", msgs)]];
 		ctx.respondChat(txtt, ctx.opt);
 	},
