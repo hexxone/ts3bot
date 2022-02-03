@@ -8,7 +8,7 @@
 
 import http from "http";
 import url from "url";
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 import { TS3BotCtx } from "../context";
 import { Telegraf } from "telegraf";
@@ -43,7 +43,7 @@ export class FileProxy {
 		http.createServer((request, response) => {
 			let params = this.getParams(request);
 			let s_id = params["sid"] || null;
-			let file_id = shortid.isValid(s_id) ? this.Parent.fileMappings[s_id] || null : null;
+			let file_id = this.Parent.fileMappings[s_id] ? this.Parent.fileMappings[s_id] || null : null;
 			if (s_id === null || file_id === null) {
 				console.log("fileproxy Error: sid not given: " + JSON.stringify(request));
 				response.write("No sid.");
@@ -118,7 +118,7 @@ export class FileProxy {
 			}
 			fa = photo.file_id;
 		} else fa = msg[filetype].file_id;
-		let sid = shortid.generate();
+		let sid = nanoid();
 		this.Parent.fileMappings[sid] = fa;
 		return "http://" + this.address + ":" + this.port + "/?sid=" + sid;
 	}
