@@ -6,16 +6,19 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import Process, { uptime } from "process";
+import Process from "process";
 import { User } from "typegram";
 
 import urlRegex from "url-regex-safe";
 
 import { MessageCtx, TS3BotCtx, TS3BotMsgs } from "../context";
 
-import * as UHelpr from "../object/user";
-import { Instance } from "../object/instance";
+import * as UHelper from "../object/user";
+import { QConState, Instance, GreetMode } from "../object/instance";
 import { GroupLinking } from "../object/grouplinking";
+import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
+
+export const DefaultOpt: ExtraReplyMessage = { parse_mode: "HTML", disable_web_page_preview: true };
 
 const CUR_YR = new Date().getFullYear();
 const LEAP_YEAR = !(CUR_YR & 3 || (!(CUR_YR % 25) && CUR_YR & 15));
@@ -24,6 +27,14 @@ const MS_PER_MINUTE = MS_PER_SECOND * 60;
 const MS_PER_HOUR = MS_PER_MINUTE * 60;
 const MS_PER_DAY = MS_PER_HOUR * 24;
 const MS_PER_YEAR = MS_PER_DAY * (LEAP_YEAR ? 366 : 365);
+
+// command chat availability, 0 = admin only, 1 = single chat, 2 = group, 3 = chat & group
+export enum CmdAvailable {
+	AdminOnly = 0,
+	SingleChat = 1,
+	Group = 2,
+	All = 3,
+}
 
 class Utils {
 	// 'this' of main.js (instanciated on run)
@@ -50,7 +61,7 @@ class Utils {
 
 	// Returns a User Object with the given id
 	// (creates and adds it to existing users if not already in)
-	getUser(tg_user: Partial<User>): UHelpr.User {
+	getUser(tg_user: Partial<User>): UHelper.User {
 		if (!tg_user) return null as any;
 		// check if the user-id is already known
 		// and check for updated name props
@@ -76,7 +87,7 @@ class Utils {
 		// then get the validated language code
 		let lang = this.getLanguageMessages(tg_user.language_code ? tg_user.language_code : "").langCode;
 		// finally create the user
-		let newUser = new UHelpr.User(tg_user.id || 0, tg_user.username || "err", tg_user.first_name || "err", tg_user.last_name || "err", lang);
+		let newUser = new UHelper.User(tg_user.id || 0, tg_user.username || "err", tg_user.first_name || "err", tg_user.last_name || "err", lang);
 		this.Parent.users.push(newUser);
 		return newUser;
 	}
@@ -126,7 +137,7 @@ class Utils {
 		msg += s.stats06 + this.Parent.linkings.length;
 		let ts3users = 0;
 		for (let linking of this.Parent.linkings) {
-			if (linking.instance.connectionState == 2) {
+			if (linking.instance.connectionState == QConState.Connected) {
 				ts3users += linking.instance.users.length;
 			}
 		}
@@ -138,6 +149,7 @@ class Utils {
 
 	// get a millisecond timespan string-formatted in given language
 	getTimeSpan(ms: number, msgs: TS3BotMsgs) {
+		ms = Math.abs(ms); // dont be so negative
 		let years = Math.round(ms / MS_PER_YEAR),
 			dms = ms % MS_PER_YEAR,
 			days = Math.round(dms / MS_PER_DAY),
@@ -152,7 +164,7 @@ class Utils {
 		if (res != "" || days > 0) res += ` ${days} ${msgs.timeDays}`;
 		if (res != "" || hours > 0) res += ` ${hours} ${msgs.timeHours}`;
 		if (res != "" || mins > 0) res += ` ${mins} ${msgs.timeMins}`;
-		if (res != "" || secs > 0) res += ` ${secs} ${msgs.timeSecs}`;
+		res += ` ${secs} ${msgs.timeSecs}`; // always... at least
 		return res.trim();
 	}
 
@@ -162,11 +174,11 @@ class Utils {
 	}
 
 	// returns messages-object for the desired language
-	getLanguageMessages(lang: string): TS3BotMsgs {
+	getLanguageMessages(lang?: string): TS3BotMsgs {
 		let deff;
 		for (let msgobj of this.Parent.languages) {
-			if (msgobj.langCode == lang || msgobj.langName == lang) return msgobj;
-			if (msgobj.langCode == this.Parent.settings.defaultLanguage) deff = msgobj;
+			if (msgobj.langCode === lang || msgobj.langName === lang) return msgobj;
+			if (msgobj.langCode === this.Parent.settings.defaultLanguage) deff = msgobj;
 		}
 		return deff;
 	}
@@ -179,16 +191,51 @@ class Utils {
 		return null;
 	}
 
+	// if a user blocks the bot from sending messages, destroy him
+	destroyUser(usr: UHelper.User) {
+		// Remove all instances (& linkings) with this User
+		this.Parent.instances.forEach((instance) => {
+			if (instance.id == usr.id) this.destroyInstance(instance, false, true);
+		});
+		// Remove User
+		this.Parent.users = this.Parent.users.filter((user) => {
+			// Check if is this is the user we want to destroy
+			return user.id != usr.id;
+		});
+	}
+
+	destroyInstance(ins: Instance, noGroupMsg?: boolean, noUsrMsg?: boolean) {
+		// Remove all Linkings with this Instance
+		this.Parent.linkings.forEach((linking) => {
+			if (linking.instance.id == ins.id) this.destroyGroupLinking(linking, noGroupMsg, noUsrMsg);
+		});
+		// Disconnect from the Server
+		ins.Disconnect();
+		// Remove Instance
+		this.Parent.instances = this.Parent.instances.filter((instance) => {
+			const filtr = instance.id != ins.id || instance.name != ins.name;
+			if (!filtr && !noUsrMsg) {
+				let usr = this.getUser({ id: instance.id });
+				let msgs = this.getLanguageMessages(usr.language);
+				this.Parent.sendNewMessage(usr.id, msgs.serverDeleted);
+			}
+			return filtr;
+		});
+	}
+
 	// destroys a given group linking
-	destroyGroupLinking(lnk: GroupLinking, noGroupMsg?: boolean) {
+	destroyGroupLinking(lnk: GroupLinking, noGroupMsg?: boolean, noUsrMsg?: boolean) {
 		// Remove Linking
 		this.Parent.linkings = this.Parent.linkings.filter((linking) => {
 			// Check if is this is the linking we want to destroy
 			if (linking.instance.id != lnk.instance.id || linking.name != lnk.name) return true;
-			// Notify, Unregister and remove it
-			let usr = this.getUser({ id: lnk.instance.id });
-			let msgs = this.getLanguageMessages(usr.language);
-			this.Parent.sendNewMessage(usr.id, msgs.linkingDestroyed.replace("$linking$", linking.name));
+			// Notify user (if not blocked)
+			if (!noUsrMsg) {
+				let usr = this.getUser({ id: lnk.instance.id });
+				let msgs = this.getLanguageMessages(usr.language);
+				this.Parent.sendNewMessage(usr.id, msgs.linkingDestroyed.replace("$linking$", linking.name));
+			}
+			// notify group (if not removed)
 			if (!noGroupMsg) {
 				let grp = this.getGroupLinking(linking.groupid);
 				let gmsgs = this.getLanguageMessages(grp.language);
@@ -265,6 +312,7 @@ class Utils {
 	}
 
 	// converts notify move mode (number) to string
+	// @TODO use enum
 	nmToStr(language, number) {
 		let msgs = this.getLanguageMessages(language);
 		switch (number) {
@@ -277,20 +325,8 @@ class Utils {
 		}
 	}
 
-	// converts chat mode (number) to string
-	cmToStr(language, number) {
-		let msgs = this.getLanguageMessages(language);
-		switch (number) {
-			case 2:
-				return "Channel";
-			case 3:
-				return "Global";
-			default:
-				return msgs.optionOff;
-		}
-	}
-
 	// converts connection state to language string
+	// @TODO use enum
 	stToStr(language, number) {
 		let msgs = this.getLanguageMessages(language);
 		switch (number) {
@@ -306,8 +342,7 @@ class Utils {
 	}
 
 	// converts available number to string
-	avToStr(language, available) {
-		const msgs = this.getLanguageMessages(language);
+	avToStr(msgs: TS3BotMsgs, available: CmdAvailable) {
 		switch (available) {
 			case 0:
 				return msgs.availableDev;
@@ -320,8 +355,20 @@ class Utils {
 		}
 	}
 
+	// converts greetmode number to string
+	gmToStr(msgs: TS3BotMsgs, greetmode: GreetMode) {
+		switch (greetmode) {
+			default:
+				return msgs.optionOff;
+			case GreetMode.OnJoin:
+				return msgs.greetOnJoin;
+			case GreetMode.OnConnect:
+				return msgs.greetConnect;
+		}
+	}
+
 	// trys to make a Telegram user name a clickable link
-	tryNameClickable(userObj: UHelpr.User) {
+	tryNameClickable(userObj: UHelper.User) {
 		// make Telegram user clickable
 		let tsname = userObj.GetName();
 		if (tsname.startsWith("@")) tsname = "[URL=https://t.me/" + tsname.substring(1, tsname.length) + "]" + tsname + "[/URL]";

@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import Utils from "../class/utils";
+import Utils, { CmdAvailable } from "../class/utils";
 
 import { TS3BotCtx, MessageCtx } from "../context";
 
@@ -55,7 +55,7 @@ export default {
 				if (ctx.isGroup) {
 					// sent in group?
 					if (ctx.groupLinking) msgs = ctx.groupMessages;
-					if (obj.available > 1) {
+					if (obj.available > CmdAvailable.SingleChat) {
 						// command is available in group?
 						// does the group need a linked server?
 						if (obj.needslinking && !(exec = ctx.groupLinking ? true : false)) self.sendNewMessage(ctx.chatId, msgs.commandNotLinked, ctx.opt);
@@ -66,14 +66,14 @@ export default {
 
 						// if nothing was required, we can execute.
 						exec = exec || (!obj.groupperm && !obj.needslinking);
-					} else if (obj.available !== 0)
-						// > dev commands 'do not exist' => dont respond
+					} else if (obj.available !== CmdAvailable.AdminOnly)
+						// > dev commands 'dont exist' => dont respond at all
 						self.sendNewMessage(ctx.chatId, msgs.commandErrChat1, ctx.opt);
 				} else {
 					// is admin command and sender is admin?
-					if (obj.available === 0 && ctx.sender.id == self.settings.developer_id) exec = true;
+					if (obj.available === CmdAvailable.AdminOnly && ctx.sender.id == self.settings.developer_id) exec = true;
 					// is group command ?
-					else if (obj.available === 2) self.sendNewMessage(ctx.chatId, msgs.commandErrChat2, ctx.opt);
+					else if (obj.available === CmdAvailable.Group) self.sendNewMessage(ctx.chatId, msgs.commandErrChat2, ctx.opt);
 					else {
 						if (obj.needsselected) {
 							if (!(exec = ctx.senderSelectedInstance ? true : false)) {

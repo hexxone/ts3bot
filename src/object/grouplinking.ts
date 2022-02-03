@@ -1,31 +1,34 @@
 "use strict";
 
-import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
-import { Instance } from "./instance";
-import { User } from "./user";
 //
 // Copyright (c) 2022 hexxone All rights reserved.
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
 // See LICENSE file in the project root for full license information.
 //
 
-import Utils from "../class/utils";
-
 import { TS3BotCtx } from "../context";
+
+import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
+import { Instance } from "./instance";
+import { User } from "./user";
 
 // represents a binding of a ts3 server to a Telegram group.
 export class GroupLinking {
 	main: TS3BotCtx;
-	name: string;
+	// instance.id = owner
 	instance: Instance;
+	// Given by the owner
+	name: string;
 
+	// Set when "deeplinking" gets added to group
 	groupid: number;
+
 	silent: boolean;
 	notifyjoin: boolean;
 	notifymove: number;
-	chatmode: number;
+
+	channelchat: boolean;
 	ignorebots: boolean;
-	showservername: boolean;
 	showgroupname: boolean;
 	spamcheck: boolean;
 	alladmin: boolean;
@@ -51,10 +54,9 @@ export class GroupLinking {
 		this.silent = false;
 		this.notifyjoin = true;
 		this.notifymove = 1; // 0 = off | 2 = channel | 3 = global
-		this.chatmode = 0; // 0 = off | 2 = channel | 3 = global
+		this.channelchat = true; // chat with users in current ts3 bot channel
 
 		this.ignorebots = true;
-		this.showservername = true;
 		this.showgroupname = true;
 		this.spamcheck = true;
 		this.alladmin = false;
@@ -82,9 +84,8 @@ export class GroupLinking {
 			silent: this.silent,
 			notifyjoin: this.notifyjoin,
 			notifymove: this.notifymove,
-			chatmode: this.chatmode,
+			channelchat: this.channelchat,
 			ignorebots: this.ignorebots,
-			showservername: this.showservername,
 			showgroupname: this.showgroupname,
 			spamcheck: this.spamcheck,
 			alladmin: this.alladmin,
@@ -132,8 +133,7 @@ export class GroupLinking {
 	// URLS need to be fixed beforehand using Utils.fixUrlToTS3
 	NotifyTS3(group: string, msg: string) {
 		if (this.showgroupname) msg = group + " | " + msg;
-		if (this.chatmode == 2) this.instance.SendChannelMessage(msg);
-		else if (this.chatmode == 2) this.instance.SendGlobalMessage(msg);
+		this.instance.SendChannelMessage(msg);
 	}
 
 	// Sends a mesage to the relating telegram group respecting the
@@ -141,9 +141,7 @@ export class GroupLinking {
 	NotifyTelegram(msg: string) {
 		let oobj = { parse_mode: "HTML" } as ExtraReplyMessage;
 		if (this.silent) oobj.disable_notification = true;
-		this.main.sendNewMessage(this.groupid, msg, oobj).catch((a) => {
-			console.log("Error group send message: " + a.message);
-			if (a.message.includes("chat not found")) Utils.destroyGroupLinking(this);
-		});
+		// notifications should be new messages, dont delete old
+		this.main.sendNewMessage(this.groupid, msg, oobj, true);
 	}
 }

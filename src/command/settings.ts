@@ -29,13 +29,12 @@ export default {
 			let secondLn = ["/showgroup " + !grb.showgroupname];
 			msg = "<a href='tg://user?id=" + ctx.sender.id + "'>@</a> " + gmsgs.settings00 + "<code>";
 			msg += gmsgs.settings01 + grb.alladmin;
-			msg += gmsgs.settings02 + Utils.cmToStr(grb.language, grb.chatmode);
-			if (main.useFileProxy) {
+			msg += gmsgs.settings02 + grb.channelchat;
+			if (main.settings.useFileProxy) {
 				secondLn.push("/sharemedia " + !grb.sharemedia);
 				msg += gmsgs.settings03 + grb.sharemedia;
 			}
 			msg += gmsgs.settings04 + grb.showgroupname;
-			msg += gmsgs.settings05 + grb.showservername;
 			msg += gmsgs.settings06 + grb.ignorebots;
 			msg += gmsgs.settings07 + grb.silent;
 			msg += gmsgs.settings08 + grb.spamcheck;
@@ -45,13 +44,10 @@ export default {
 			// if sender admin or all admin set keyboard
 			if (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking.alladmin) {
 				//console.log('commands admin');
-				let nextChatMode = (grb.chatmode + 1) % 4;
-				if (nextChatMode < 1) nextChatMode = 1;
 				ctx.opt.reply_markup.keyboard = [
-					["/menu"],
-					["/admin4all " + !grb.alladmin, "/setchatmode " + Utils.cmToStr(ctx.sender.language, nextChatMode)],
+					["/menu", "/ignorebots " + !grb.ignorebots],
+					["/admin4all " + !grb.alladmin, "/channelchat " + !grb.channelchat],
 					secondLn,
-					["/showserver " + !grb.showservername, "/ignorebots " + !grb.ignorebots],
 					["/silent " + !grb.silent, "/spamcheck " + !grb.spamcheck],
 					["/notifyjoin " + !grb.notifyjoin, "/notifymove " + ((grb.notifymove + 1) % 3)],
 				];
@@ -73,6 +69,7 @@ export default {
 			msg += smsgs.settings28 + ssi.channelname;
 			msg += smsgs.settings29 + ssi.channeldepth;
 			msg += smsgs.settings30 + ssi.autoconnect;
+			msg += smsgs.settings31 + Utils.gmToStr(smsgs, ssi.greetmode); // @todo test
 			msg += "</code>";
 			// setttings keyboard, since sender is admin
 			let ncd = ssi.channeldepth + 1;

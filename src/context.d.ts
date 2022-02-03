@@ -1,5 +1,8 @@
 import { Telegraf } from "telegraf";
 import { Message, User, UserFromGetMe } from "typegram";
+import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
+
+import { TextMessage } from "ts3-nodejs-library/lib/types/Events";
 
 import * as UHelpr from "./object/user";
 import { GroupLinking } from "./object/grouplinking";
@@ -7,18 +10,14 @@ import { Instance } from "./object/instance";
 
 import { AntiSpam } from "./class/antispam";
 import { FileProxy } from "./class/fileproxy";
-
-import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
+import { CmdAvailable } from "./class/utils";
 
 import EN_MSG from "./msg/msg_eng";
-import { TextMessage } from "ts3-nodejs-library/lib/types/Events";
+
 export declare type TS3BotMsgs = typeof EN_MSG;
 
 export declare type TS3BotCtx = {
 	startDate: Date;
-
-	handleEx: (call: () => void) => void;
-	exitHandler: (opt: any, err: any) => void;
 
 	//
 	actionsPath: string;
@@ -47,7 +46,6 @@ export declare type TS3BotCtx = {
 	fileProxyServer: FileProxy;
 
 	me: UserFromGetMe;
-	run: boolean;
 
 	settings: TS3BotConfig;
 
@@ -107,7 +105,7 @@ export declare type TS3BotCmd = {
 	id: number; // the id is used for inline commands and has to be unique !
 	hidden: boolean; // dont show this command in the /commands list
 	command: string[]; // the triggers for this command to be called
-	available: 0 | 1 | 2 | 3; // command chat availability, 0 = admin only, 1 = single chat, 2 = group, 3 = chat & group
+	available: CmdAvailable;
 	groupperm: boolean; // group permission, if(available=2|3) and set true, command can only be used by admin
 	needslinking: boolean; // the command requires the group to have a linked instance (available 2|3)
 	needsselected: boolean; // the command requires the sender to have an instance selected (available 1|3)

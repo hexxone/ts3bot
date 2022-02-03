@@ -7,6 +7,7 @@
 //
 
 import { MessageCtx, TS3BotCtx } from "../context";
+import { QConState } from "../object/instance";
 
 export default {
 	id: 122,
@@ -22,7 +23,7 @@ export default {
 		if (ctx.isGroup) {
 			if (ctx.groupLinking !== null) {
 				if (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking.alladmin) {
-					if (ctx.groupLinking.instance.connectionState == 2) {
+					if (ctx.groupLinking.instance.connectionState == QConState.Connected) {
 						ctx.respondChat(ctx.groupMessages.serverReconnecting, ctx.opt);
 						try {
 							ctx.groupLinking.instance.connectTry = 0;
@@ -35,7 +36,7 @@ export default {
 			} else ctx.respondChat(msgs.notLinked, ctx.opt);
 		} else {
 			if (ctx.senderSelectedInstance !== null) {
-				if (ctx.senderSelectedInstance.connectionState == 2) {
+				if (ctx.senderSelectedInstance.connectionState == QConState.Connected) {
 					ctx.respondChat(ctx.senderMessages.serverReconnecting, ctx.opt);
 					try {
 						ctx.senderSelectedInstance.connectTry = 0;

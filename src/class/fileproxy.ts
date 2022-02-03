@@ -6,34 +6,38 @@
 // See LICENSE file in the project root for full license information.
 //
 
-// if someone sends a bot a file, you cant easily share it. You have to usually down-and upload it again.
-// However, this is 'fileproxy' is a small application to 'stream'  the Telegram downloads,
-// without taking any space - just bandwidth :) I created this so you can easily access the file
-// after 1h of the time a Telegram link is valid and to hide the bot token from the URL.
-// it takes ?sid= parameter => shortid => file_id to request link for
 import http from "http";
 import url from "url";
 import shortid from "shortid";
-import { TS3BotCtx } from "../context";
 
-// @TODO use improved telegram bot file downloading?
+import { TS3BotCtx } from "../context";
+import { Telegraf } from "telegraf";
+import { CommonMessageBundle } from "telegraf/typings/core/types/typegram";
+
+/**
+If someone sends a file to a bot, you usually cant easily share it
+and have to download and upload it again in order to hide the bot token from the URL.
+However, this fancy 'fileproxy' will 'stream' the downloads, without taking any space
+- just bandwidth :)
+This way you can also access the file after the 1h valid-period of file downloads..
+Sadly Telegram limits the downloads for bot files to 20MB size and 2mb/s..  ;-(
+
+Proxy takes /?sid= parameter aka "shortid" which is internally mapped to the "file_id",
+then requests the actual link for telegram and starts streaming the content.
+ */
 export class FileProxy {
 	Parent: TS3BotCtx;
-	bot: any;
-	address: any;
+	bot: Telegraf;
+
+	address: string;
 	port: any;
 
-	constructor(parent) {
+	constructor(parent: TS3BotCtx, address, port?) {
 		this.Parent = parent;
-	}
-
-	// initialize actual server
-	init(bot, address, port) {
-		if (!bot) throw "Bot not given!";
-		if (!port) port = 8443;
-
-		this.bot = bot;
+		this.bot = parent.bot;
 		this.address = address;
+
+		if (!port) port = 8443;
 		this.port = port;
 
 		http.createServer((request, response) => {
@@ -46,7 +50,7 @@ export class FileProxy {
 				response.end();
 			} else {
 				console.log("proxying file with id: " + file_id);
-				this.bot
+				this.bot.telegram
 					.getFile(file_id)
 					.then((lnk) => {
 						let lpath = "https://api.telegram.org/file/bot" + this.Parent.settings.telegram_bot_token + "/" + lnk.file_path;
@@ -103,8 +107,8 @@ export class FileProxy {
 		return result;
 	}
 
-	// builds URL
-	getURL(msg, filetype) {
+	// builds URL and inserts the file mapping
+	getURL(msg: CommonMessageBundle, filetype: string) {
 		let fa;
 		if (filetype == "photo") {
 			//console.log(msg[filetype]);

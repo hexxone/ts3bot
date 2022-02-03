@@ -9,6 +9,7 @@
 import Utils from "../class/utils";
 
 import { TS3BotCtx, MessageCtx } from "../context";
+import { QConState } from "../object/instance";
 
 export default {
 	id: 11,
@@ -26,8 +27,8 @@ export default {
 					msg += "\r\n" + msgs.channelComplete;
 				}
 				let conSt = ctx.senderSelectedInstance.connectionState;
-				if (conSt == 2) kb.push(Utils.getCmdBtn("reconnect", msgs));
-				else if (conSt != 1) kb.push(Utils.getCmdBtn("connect", msgs));
+				if (conSt == QConState.Connected) kb.push(Utils.getCmdBtn("reconnect", msgs));
+				else if (conSt != QConState.Connecting) kb.push(Utils.getCmdBtn("connect", msgs));
 				ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("menu", msgs)], kb];
 				ctx.sender.menu = "";
 				ctx.respondChat(msg, ctx.opt);

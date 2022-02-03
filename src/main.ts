@@ -22,13 +22,11 @@
 
 /*
     @TODO-LIST
-    - add limit for grouplinkings & deeplinkings together
-    - text reconnect issue fix
     - catch all possible edit & delte message handlers?
 
-    - add pm select server/user/send commands
-	- catch send/edit/delete telegram permission error -> unlink
-	- test everything
+	- greet mode
+	~ catch send/(edit)/delete telegram permission error -> unlink
+	~ test everything
 */
 
 // main Context reference
@@ -59,6 +57,7 @@ import Utils from "./class/utils";
 import Loader from "./class/loader";
 
 import Configure from "./config";
+import { User } from "./object/user";
 
 let l = " --------------------------------------------------";
 console.log(l);
@@ -70,14 +69,15 @@ console.log("|           See LICENSE file for details.          |");
 console.log(l + "\r\n");
 
 // hook console.log to always include time from now
-const log = console.log;
-console.log = function () {
-	log.apply(console, ["[" + Utils.getTime(new Date()) + "]"].concat(arguments.length > 1 ? arguments : arguments[0]));
-};
+const clog = console.log;
+const cifo = console.info;
+const cerr = console.error;
+const logApply = (args) => ["[" + Utils.getTime(new Date()) + "]"].concat(args.length > 1 ? args : args[0]);
+console.log = (...args) => clog.apply(console, logApply(args));
+console.info = (...args) => cifo.apply(console, logApply(args));
+console.error = (...args) => cerr.apply(console, logApply(args));
 
-console.log("Bot running from directory: " + __dirname);
-const wait = Date.now() + 5000;
-while (Date.now() < wait) {}
+console.log("Running from directory: " + __dirname);
 
 // load config into ctx
 const settings = Configure();
@@ -106,32 +106,6 @@ const customCtx = {
 
 	settings,
 	antispam: new AntiSpam(10),
-
-	handleEx: (callback: () => void) => {
-		try {
-			callback();
-		} catch (ex: any) {
-			ex = parseExStr(ex);
-			if (customCtx.settings.debug) {
-				try {
-					customCtx.bot.telegram.sendMessage(customCtx.settings.developer_id, "Bot Exception:\r\n" + ex, { disable_web_page_preview: true });
-				} catch (ex2) {
-					ex2 = parseExStr(ex2);
-					console.log("Fatal Exception: " + ex + ex2);
-				}
-			} else console.log("Exception: " + ex);
-		}
-	},
-
-	exitHandler: (opt, err) => {
-		if (err) console.log(err);
-		if (opt && opt.exit) {
-			for (let instance of customCtx.instances) instance.Disconnect();
-			Loader.saveData();
-			console.log("[TS3Bot|Exit]");
-			process.exit(0);
-		}
-	},
 } as TS3BotCtx;
 
 SLOCCount((arg) => {
@@ -141,30 +115,6 @@ SLOCCount((arg) => {
 
 Utils.Set(customCtx);
 Loader.Set(customCtx);
-
-// SOME IMPORTANT HELPER FUNCTIONS
-
-// parses string for an exception (Result shall never be sent to a normal user!!!)
-const parseExStr = (ex) =>
-	JSON.stringify(
-		{
-			code: ex.code,
-			msg: ex.message,
-			stack: ex.stack,
-		},
-		null,
-		4
-	);
-
-// dont close the process immediately
-process.stdin.resume();
-
-// register app closing handler
-process.on("exit", customCtx.exitHandler.bind(null, {}));
-// register uncaught exception handler
-process.on("uncaughtException", customCtx.exitHandler.bind(null, {}));
-// register ctrl+c closing handler
-process.on("SIGINT", customCtx.exitHandler.bind(null, { exit: true }));
 
 // LOAD ACTIONS, COMMANDS & DATA
 Loader.loadModules();
@@ -179,7 +129,6 @@ setInterval(() => {
 
 // Create the Telegram Bot either with webhook or polling
 let bot = (customCtx.bot = new Telegraf(settings.telegram_bot_token));
-
 if (settings.useWebHook) {
 	// Start https webhook
 	if (settings.webHookCustomCertificate) {
@@ -210,12 +159,17 @@ if (settings.useWebHook) {
 	bot.launch();
 }
 
-// wrapper for storing the last sent bot message and deleting the previous one
+// wrapper for deleting the previous bot message, sending a new one and storing its id.
+// will also try to handle some telegram errors by removing servers/links.
 customCtx.sendNewMessage = async (cid: number, text: string, opt: ExtraReplyMessage, noDel: boolean) => {
-	let sendr = cid > 0 ? Utils.getUser({ id: cid }) : null;
+	// get the target chat object
+	const sendr = cid > 0 ? Utils.getUser({ id: cid }) : Utils.getGroupLinking(cid);
+	let noStore = false;
+	// try to delte the old message
 	if (!noDel && sendr && sendr.last_bot_msg_id > 0) {
 		await bot.telegram.deleteMessage(cid, sendr.last_bot_msg_id).catch((ex) => {
 			// @todo is bot only forbidden to delete messages, or is message too old, or did he get removed from chat?
+			noStore = true;
 		});
 		sendr.last_bot_msg_id = -1;
 	}
@@ -223,33 +177,63 @@ customCtx.sendNewMessage = async (cid: number, text: string, opt: ExtraReplyMess
 	if (opt === undefined) opt = {};
 	if (opt.parse_mode === undefined) opt.parse_mode = "HTML";
 	if (opt.disable_web_page_preview === undefined) opt.disable_web_page_preview = true;
+	// send actual message
 	return bot.telegram
 		.sendMessage(cid, text, opt)
 		.then((msg) => {
-			if (sendr) sendr.last_bot_msg_id = msg.message_id;
+			if (sendr && !noStore) sendr.last_bot_msg_id = msg.message_id;
 			return msg;
 		})
-		.catch((err) => {
-			// @todo is bot forbidden to send messages => got removed from chat/blocked ?
-			// destroy chat linkings / user instances
-			console.error("@TODO", err);
+		.catch((err: Error) => {
+			if (settings.debug) console.error(err, cid, text, opt);
+			// @todo bot forbidden to send messages => got removed from chat/blocked/stopped ?
+			const etl = err.message.toLocaleLowerCase();
+			if (etl.includes("forbidden") || etl.includes("not found") || etl.includes("blocked") || etl.includes("stopped")) {
+				// destroy chat linkings / user instances
+				if (!sendr) console.error("FATAL: Unkown sender error", err);
+				else if (sendr instanceof User) {
+					Utils.destroyUser(sendr);
+				} else if (sendr instanceof GroupLinking) {
+					Utils.destroyGroupLinking(sendr, true);
+				}
+			}
 			return undefined;
 		});
 };
 
+// CTRL + C handler
+const exitHandler = (opt, err) => {
+	if (err) console.error("exitHandler", err);
+	if (opt && opt.exit) {
+		bot.stop(err); // SIGINT & SIGTERM registered
+		for (let instance of customCtx.instances) instance.Disconnect();
+		Loader.saveData();
+		console.info("[TS3Bot|Exit]");
+		process.exit(0);
+	} else if (err) {
+		if (customCtx.settings.debug) {
+			try {
+				customCtx.bot.telegram.sendMessage(customCtx.settings.developer_id, "Bot Exception:\r\n" + err, { disable_web_page_preview: true });
+			} catch (ex2) {
+				console.error("Fatal Exception: " + err + ex2);
+				process.exit(1);
+			}
+		}
+	}
+};
+
+// register app handlers
+const registerExitHandlers = () => {
+	process.on("exit", exitHandler.bind(null, {}));
+	process.on("uncaughtException", exitHandler.bind(null, {}));
+	process.on("SIGINT", exitHandler.bind(null, { exit: true }));
+	process.on("SIGTERM", exitHandler.bind(null, { exit: true }));
+	// dont close the process
+	process.stdin.resume();
+};
+
 // create Fileproxy?
-// init file proxy
-if (settings.useFileProxy) {
-	customCtx.fileProxyServer = new FileProxy(customCtx);
-	customCtx.fileProxyServer.init(bot, settings.fileProxyAddr, settings.fileProxyPort);
-}
-
-// print stats
-//console.log('Stats:' + Utils.getStats(Utils.getLanguageMessages(self2.defaultLanguage)));
-
-customCtx.run = false;
-customCtx.me; // contains the bot's info object
-customCtx.receivedMessages = 0;
+if (settings.useFileProxy) customCtx.fileProxyServer = new FileProxy(customCtx, settings.fileProxyAddr, settings.fileProxyPort);
 
 console.log("connecting to Telegram bot API...");
 
@@ -258,7 +242,6 @@ bot.telegram.getMe().then((res) => {
 	customCtx.me = res; // assign self telegram bot object
 
 	console.log("Success. Telegram bot info: " + JSON.stringify(res));
-	console.log("Callbacks active.\r\n");
 
 	// listen for messages
 	MessageHandler(customCtx);
@@ -266,7 +249,10 @@ bot.telegram.getMe().then((res) => {
 	// listen for inline Button responses
 	ReplyHandler(customCtx);
 
-	// Enable graceful stop
-	process.once("SIGINT", () => bot.stop("SIGINT"));
-	process.once("SIGTERM", () => bot.stop("SIGTERM"));
+	// print stats
+	console.log("Stats:" + Utils.getStats(Utils.getLanguageMessages()));
+
+	registerExitHandlers();
+
+	console.log("Running.\r\n");
 });

@@ -74,4 +74,4 @@ Here is the general structure:
 - "Admin 4 All" will allow all users in a group to change the settings (Admin Group?)
 - Easy to add languages, commands and response actions
 - Automatic reload of language, command and action files when running
-- FAQ, Help, Stats, DevMessage
+- FAQ, Help, Stats, Commands

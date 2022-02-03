@@ -15,8 +15,8 @@ export default (): TS3BotConfig => {
 	const conf = {} as TS3BotConfig;
 
 	// loads ".env" file into process.env variables
+	console.log("Loading config from '.env'");
 	dotenv.config();
-	// console.log(process.env);
 
 	// bot token from @BotFather in Telegram
 	// will be used to encrypt & store the individual bot data

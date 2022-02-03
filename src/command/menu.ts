@@ -1,6 +1,6 @@
 "use strict";
 
-import { Instance } from "../object/instance";
+import { QConState, Instance } from "../object/instance";
 //
 // Copyright (c) 2022 hexxone All rights reserved.
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
@@ -78,11 +78,11 @@ export default {
 			msg += "\r\n</code>--- --- --- --- --- --- --- ---<code>";
 			msg += msgs.info21 + Utils.stToStr(msgs.langCode, ins.connectionState);
 			// connected?
-			if (ins.connectionState == 2) {
+			if (ins.connectionState == QConState.Connected) {
 				// add 'users' command
 				conArr.push(Utils.getCmdBtn("users", msgs));
 				// add server infos
-				const upTime = (ins.serverinfo.virtualserverUptime as number) * 1000;
+				const upTime = (ins.serverinfo.virtualserverUptime as number) * 1000 + (Date.now() - ins.lastPing.getTime());
 				msg += msgs.info22 + ins.serverinfo.virtualserverName;
 				msg += msgs.info23 + new String(ins.serverinfo.virtualserverVersion || "").split(" ")[0];
 				msg += msgs.info24 + ins.serverinfo.virtualserverPlatform;
@@ -93,9 +93,9 @@ export default {
 			// include admin keyboard for single chat
 			if (!ctx.isGroup) {
 				switch (ins.connectionState) {
-					case 2:
+					case QConState.Connected:
 						conArr.push(Utils.getCmdBtn("reconnect", msgs));
-					case 1:
+					case QConState.Connecting:
 						conArr.push(Utils.getCmdBtn("disconnect", msgs));
 						break;
 					default:

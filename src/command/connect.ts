@@ -9,6 +9,7 @@
 import Utils from "../class/utils";
 
 import { TS3BotCtx, MessageCtx } from "../context";
+import { QConState } from "../object/instance";
 
 export default {
 	id: 104,
@@ -22,8 +23,8 @@ export default {
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.isGroup) {
 			switch (ctx.groupLinking.instance.connectionState) {
-				case 0:
-				case 3:
+				case QConState.Disconnected:
+				case QConState.Error:
 					ctx.respondChat(ctx.groupMessages.conConnect, ctx.opt);
 					try {
 						ctx.groupLinking.instance.connectTry = 0;
@@ -32,10 +33,10 @@ export default {
 						ctx.respondChat(ctx.groupMessages.errorPrefix + JSON.stringify(e), ctx.opt);
 					}
 					break;
-				case 1:
+				case QConState.Connecting:
 					ctx.respondChat(ctx.groupMessages.conConnecting, ctx.opt);
 					break;
-				case 2:
+				case QConState.Connected:
 					ctx.respondChat(ctx.groupMessages.conConnected, ctx.opt);
 					break;
 			}

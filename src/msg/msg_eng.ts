@@ -52,6 +52,9 @@ export default {
 	availableGroup: "for groups only",
 	availableAll: "for users and groups",
 
+	greetOnJoin: "on join",
+	greetConnect: "on connect",
+
 	groupJoin: " joined the group.",
 	groupLeave: " left the group.",
 
@@ -65,9 +68,9 @@ export default {
 	noAgreement: "Please read and agree to the Terms of Service (using /tos) before adding an server.",
 	addInfo:
 		"You will need the following information:<code>\r\n- server address\r\n- query port\r\n- vserver ID\r\n- a query account</code>\r\nTo begin, tell me how you want to call the server (e.g.: jeff)",
-	addLimit: "Sorry, but you have reached the limit of 5 servers per User. You can always /delete or alter unneeded ones but if you really need more, contact me using /devmessage",
-	linkLimit: "Sorry, but you have reached the limit of 20 linked groups per User. You can always /unlink or edit unneeded ones but if you really need more, contact me using /devmessage",
-	admin4allOn: "Everbody is now an Admin... what have you done?",
+	addLimit: "Sorry, but you reached the limit of 3 servers per User. You can always /delete or edit old ones.",
+	linkLimit: "Sorry, but you reached the limit of 5 linked groups per User. You can always /unlink or edit old ones.",
+	admin4allOn: "Everbody is now an Admin.",
 	admin4allOff: "Revoked Admin privileges.",
 	availableCommands: "Available commands:",
 	groupNotLinked: 'This group is not linked to a TS3 server.\r\nUse <code>/add</code> and <code>/link</code> in <a href="https://t.me/ts3bot?start">bot-chat</a>.',
@@ -76,8 +79,6 @@ export default {
 	conConnected: "Bot is still connected. Use /reconnect instead.",
 	delConfirm: "Deleting a server will unlink all associated groups.\r\nIf you are sure type exactly the following:\r\n\r\n",
 	delConfirmStr: "Yes, delete ",
-	devWait: "You will have to wait for an answer before sending another message.",
-	devSend: "Alright :) tell me what you want to.",
 	disconnect: "Disconnecting...",
 	faqText:
 		"TS3Bot FAQ:\r\nYou can create a query account by connecting to your TS3 server, then click 'Toolbar > Extras > ServerQuery Login' and enter a name.\r\n" +
@@ -85,20 +86,20 @@ export default {
 		" - b_virtualserver_info_view\r\n - b_virtualserver_connectioninfo_view\r\n - b_virtualserver_channel_list\r\n" +
 		" - b_virtualserver_client_list\r\n - b_virtualserver_notify_register\r\n - b_virtualserver_notify_unregister\r\n" +
 		"The username and channel information gets only updated every 2 minutes.\r\n" +
-		"This bot is written in nodejs.\r\n" +
+		"This bot is written in TypeScript.\r\n" +
 		"Lines of Code: $sloc$",
 	helpText:
 		"TS3Bot Help:\r\nThis bot provides an interface for linking a TeamSpeak 3 Server" +
 		" to Telegram (specific Groups) for cross-chatting and seeing online users.\r\nThe TS3-Connection is established" +
 		" using the official Query API and therefore requires an account.Before using the Bot, please accept the /tos. You can add a new Server using: /add\r\n" +
-		" The menu should guide you, but if you encounter errors you should read the /faq and in urgent matters contact me using /devmessage",
+		" The menu should guide you, but if you encounter errors you should read the /faq and refrain from using the bot.",
 	tosText:
 		"TS3Bot TOS (Terms of Service):\r\nThe bot is intended as a fun and educational project by and for me" +
 		" and I am not taking responsibility for any damage it may cause to you or any other party. Since this is a free service," +
 		" there is no guarantee for it to stay online or running. You are forbidden to tamper with the bot and associated " +
 		" systems in terms of stress-,performance- or security-testing. These things might be considered a DDoS and will be prosecuted by the hoster." +
 		" Stored data is encrypted using RSA128 and only used to keep data between restarts.",
-	tosAgree: "To agree, please Type exactly: '$tos_string$'",
+	tosAgree: "To agree, please Type exactly: '<code>$tos_string$</code>'",
 	tosString: "I agree",
 	ignorebots: "Other TS3 query clients will be ignored.",
 	unignorebots: "Other TS3 query clients won't be ignored.",
@@ -117,8 +118,6 @@ export default {
 	serverUnlinked: "Server was unlinked from this group.",
 	serverDeleted: "Server deleted.",
 	deleteError: "Error. Input is case-sensitive. Try again or /cancel",
-	devSent: "The message was delivered. I will look into it and try to contact you.",
-	devError: "Please use between 10 and 500 characters. Current: ",
 	linkGroup: "Ok, the bot can now be added to a group using this link:",
 	nameError: "The name must not contain spaces or special characters.",
 	serverSelected: "Server selected: ",
@@ -134,8 +133,6 @@ export default {
 	startChat: "Hi! This bot can link your TeamSpeak3 Server to one or more Telegram group(s).",
 	spamCheck: "Spam checking set to: ",
 	silentMode: "Silent mode set to: ",
-	serverNameHidden: "Server name will be hidden in Telegram.",
-	serverNameShown: "Server name will be shown in Telegram.",
 	groupNameHidden: "Group name will be hidden in TeamSpeak.",
 	groupNameShown: "Group name will be hidden in TeamSpeak.",
 	shareMediaOn: "Shared group media will be available in TS3.",
@@ -196,7 +193,6 @@ export default {
 	settings02: "\r\nChat mode:    ",
 	settings03: "\r\nShare media:  ",
 	settings04: "\r\nShow group:   ",
-	settings05: "\r\nShow server:  ", // TODO still needed?
 	settings06: "\r\nIgnore bots:  ",
 	settings07: "\r\nSilent:       ",
 	settings08: "\r\nSpam check:   ",
@@ -214,6 +210,7 @@ export default {
 	settings28: "\r\nChannel name:   ",
 	settings29: "\r\nChanneldepth:   ",
 	settings30: "\r\nAuto connect:   ",
+	settings31: "\r\nGreeting:       ",
 
 	stats01: "\r\nlast restart:      ",
 	stats02: "\r\nreceived messages: ",
@@ -227,9 +224,6 @@ export default {
 	actionCommand: "Invalid response (Commands are not allowed).",
 	actionCancel: "Action canceled: ",
 	actionNoCancel: "Nothing to cancel ¯\\_(ツ)_/¯",
-
-	pmDisabled: "PM disabled.",
-	pmEnabled: "PM enabled. (Test feature!)",
 
 	commandsGroup: "* = Needs Admin Permission\r\n# = Needs linked Server\r\n",
 	commandsChat: "~ = Needs selected Server\r\n",
@@ -253,7 +247,6 @@ export default {
 	cmd_connect: "Connect",
 	cmd_debug: "Debug Setting",
 	cmd_delete: "Delete server and linkings",
-	cmd_devmessage: "Developer message",
 	cmd_disconnect: "Disconnect",
 	cmd_faq: "FAQ",
 	cmd_help: "Help",
@@ -263,7 +256,7 @@ export default {
 	cmd_livetree: "Server live view",
 	cmd_manage: "Manage",
 	cmd_menu: "Menu",
-	cmd_notifyjoin: "Notify on TS3 join",
+	cmd_notifyjoin: "Join message",
 	cmd_pm: "Personal message",
 	cmd_reconnect: "Reconnect",
 	cmd_sample: "sample",
@@ -271,12 +264,11 @@ export default {
 	cmd_setaccount: "query account details",
 	cmd_setchannel: "TS3 channel name",
 	cmd_setchanneldepth: "channel output depth",
-	cmd_setchatmode: "TS3 chat mode",
+	cmd_channelchat: "TS3 channel chat",
 	cmd_setname: "TS3 display name",
 	cmd_setserver: "TS3 server address",
 	cmd_settings: "Settings",
 	cmd_showgroup: "Show group name in TS3?",
-	cmd_showserver: "Show server name in Telegram?",
 	cmd_silent: "silent messages?",
 	cmd_spamcheck: "spam check",
 	cmd_start: "Start",
@@ -288,7 +280,6 @@ export default {
 
 	cmd_whinfo: "Webhook Info",
 	cmd_reload: "Reload modules & languages",
-	cmd_rstdev: "Reset a dev-msg-sent-status of a user",
 	cmd_loaddata: "Load data",
 	cmd_savedata: "Store data",
 	cmd_lol: "idk",

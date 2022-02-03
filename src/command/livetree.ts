@@ -20,11 +20,11 @@ export default {
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		ctx.opt.parse_mode = "HTML";
 		if (ctx.args.length == 2 && ctx.args[1] == "stop") {
-			if (ctx.isGroup) ctx.groupLinking.instance.RemoveLiveTree(ctx.chatId);
-			else ctx.senderSelectedInstance.RemoveLiveTree(ctx.chatId);
+			if (ctx.isGroup) ctx.groupLinking.instance.treeHelper.Remove(ctx.chatId);
+			else ctx.senderSelectedInstance.treeHelper.Remove(ctx.chatId);
 		} else {
-			if (ctx.isGroup) ctx.groupLinking.instance.AddLiveTree(ctx.chatId);
-			else ctx.senderSelectedInstance.AddLiveTree(ctx.chatId);
+			if (ctx.isGroup) ctx.groupLinking.instance.treeHelper.Add(ctx.chatId);
+			else ctx.senderSelectedInstance.treeHelper.Add(ctx.chatId);
 		}
 	},
 };
