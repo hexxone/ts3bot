@@ -9,7 +9,7 @@
 import { MessageCtx, TS3BotCtx } from "../context";
 
 export default {
-	id: 144,
+	id: 140,
 	available: 0,
 	groupperm: false,
 	needslinking: false,

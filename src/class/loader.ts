@@ -236,7 +236,6 @@ class Loader {
 		lnkk.showgroupname = lnk.showgroupname;
 		lnkk.spamcheck = lnk.spamcheck;
 		lnkk.alladmin = lnk.alladmin;
-		lnkk.pm = lnk.pm;
 		lnkk.language = lnk.language;
 		lnkk.sharemedia = lnk.sharemedia;
 		lnkk.livetree = lnk.livetree;

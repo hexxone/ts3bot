@@ -12,7 +12,7 @@ import Utils from "../class/utils";
 import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
-	id: 9,
+	id: 5,
 	action: ["select"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.args.length == 1 && Utils.testName(ctx.args[0])) {

@@ -11,7 +11,7 @@ import { MessageCtx, TS3BotCtx } from "../context";
 import Loader from "../class/loader";
 
 export default {
-	id: 124,
+	id: 121,
 	available: 0,
 	groupperm: false,
 	needslinking: false,

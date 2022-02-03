@@ -12,7 +12,7 @@ import { TS3BotCtx, MessageCtx } from "../context";
 import { QConState } from "../object/instance";
 
 export default {
-	id: 10,
+	id: 6,
 	action: ["set_account", "set_account_first"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		let msgs = ctx.senderMessages;

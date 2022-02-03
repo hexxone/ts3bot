@@ -11,7 +11,7 @@ import { MessageCtx, TS3BotCtx } from "../context";
 import Utils from "../class/utils";
 
 export default {
-	id: 120,
+	id: 119,
 	available: 2,
 	groupperm: true,
 	needslinking: true,
@@ -47,7 +47,7 @@ export default {
 								ctx.respondChat(usage, ctx.opt);
 								return;
 						}
-						let msg = ctx.groupMessages.setMoveNotifications + Utils.nmToStr(ctx.groupLinking.language, ctx.groupLinking.notifymove);
+						let msg = ctx.groupMessages.setMoveNotifications + Utils.nmToStr(ctx.groupMessages, ctx.groupLinking.notifymove);
 						ctx.respondChat(msg, ctx.opt);
 					} else ctx.respondChat(usage, ctx.opt);
 				} else ctx.respondChat(msgs.notAllowed, ctx.opt);

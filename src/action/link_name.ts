@@ -12,7 +12,7 @@ import { GroupLinking } from "../object/grouplinking";
 import { TS3BotCtx, MessageCtx } from "../context";
 
 export default {
-	id: 5,
+	id: 4,
 	action: ["link_name"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		//ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn('manage', ctx.senderMessages),]];

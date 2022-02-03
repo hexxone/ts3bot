@@ -14,13 +14,13 @@ export default {
 	langFlag: "🇺🇸",
 	langText: "Language set to english.",
 	langNotFound: "Language not found.",
-	langCurrent: "Current language: English.",
+	langCurrent: "Language:      English.",
 
-	timeYears: "Y",
-	timeDays: "D",
-	timeHours: "Hrs",
-	timeMins: "Min",
-	timeSecs: "Sec",
+	timeYears: "y",
+	timeDays: "d",
+	timeHours: "hrs",
+	timeMins: "min",
+	timeSecs: "sec",
 
 	invalidName: "Invalid name. The name must not contain spaces or special characters.",
 	invalidFormatSrv: "Invalid Format. Use: '<address>|<query_port>|<ts3_port>'",
@@ -39,8 +39,8 @@ export default {
 	connectError: "Couldn't connect after $attempts$ attempts. Last error: ",
 	replyError: "Couldn't execute command.",
 
-	optionOn: "On",
-	optionOff: "Off",
+	optionOn: "<code>On</code>",
+	optionOff: "<code>Off</code>",
 
 	stateIdle: "Idle",
 	stateConnecting: "Connecting",
@@ -52,8 +52,9 @@ export default {
 	availableGroup: "for groups only",
 	availableAll: "for users and groups",
 
-	greetOnJoin: "on join",
-	greetConnect: "on connect",
+	greetOnJoin: "<code>on join</code>",
+	greetConnect: "<code>on connect</code>",
+	greetMsg: "\r\nGreet msg: ",
 
 	groupJoin: " joined the group.",
 	groupLeave: " left the group.",
@@ -64,7 +65,7 @@ export default {
 
 	spamIgnoreTrigger: "Spam protection triggered. Your messages will be ignored for: ",
 	spamIgnoreRevoke: "You are no longer ignored due to Spam. Next time you will be ignored for: ",
-	spamTimeUnit: " minutes.",
+
 	noAgreement: "Please read and agree to the Terms of Service (using /tos) before adding an server.",
 	addInfo:
 		"You will need the following information:<code>\r\n- server address\r\n- query port\r\n- vserver ID\r\n- a query account</code>\r\nTo begin, tell me how you want to call the server (e.g.: jeff)",
@@ -101,16 +102,22 @@ export default {
 		" Stored data is encrypted using RSA128 and only used to keep data between restarts.",
 	tosAgree: "To agree, please Type exactly: '<code>$tos_string$</code>'",
 	tosString: "I agree",
+
 	ignorebots: "Other TS3 query clients will be ignored.",
 	unignorebots: "Other TS3 query clients won't be ignored.",
+
 	addLink: "Now please tell me the name for the new link.",
+
 	accountSet: "Account details set.",
 	accBotName: " Next tell me a name for the Bot on your Server.",
+
 	channelSet: "Channel name set.",
 	channelComplete: " The Setup is complete. You can now:\r\n/link the Server to a group\r\n/connect the bot\r\nor edit the settings\r\n(see /commands)",
 	channelNameErr: "Error: The name requires between 2 and 32 chars.",
+
 	tosAccept: "Thanks :)",
 	tosReject: ":(",
+
 	addedServer: "Server created. Now tell me the server address in the following format:\r\n'ip_or_host|query_port|ts3_port'.",
 	nameInUse: "This name is already in use.",
 	linkDestroyed: "Deep-link '$link$' was destroyed.",
@@ -118,6 +125,7 @@ export default {
 	serverUnlinked: "Server was unlinked from this group.",
 	serverDeleted: "Server deleted.",
 	deleteError: "Error. Input is case-sensitive. Try again or /cancel",
+
 	linkGroup: "Ok, the bot can now be added to a group using this link:",
 	nameError: "The name must not contain spaces or special characters.",
 	serverSelected: "Server selected: ",
@@ -131,23 +139,33 @@ export default {
 	groupLinked: "TS3 server was successfully linked to this group",
 	invalidLink: "Error: deeplinking key invalid.",
 	startChat: "Hi! This bot can link your TeamSpeak3 Server to one or more Telegram group(s).",
+
 	spamCheck: "Spam checking set to: ",
 	silentMode: "Silent mode set to: ",
+
 	groupNameHidden: "Group name will be hidden in TeamSpeak.",
 	groupNameShown: "Group name will be hidden in TeamSpeak.",
+
 	shareMediaOn: "Shared group media will be available in TS3.",
 	shareMediaOff: "Shared group media won't be available in TS3.",
+
 	usage: "Usage: ",
+
 	setServerAddress: "Ok, please tell me the server address in format 'address|query_port|ts3_port'.",
 	setBotName: "Ok, please tell me how the bot should call itself on your server.",
+
 	setChatMode: "Chat mode set to: ",
 	setChannelDepth: "Channel-depth set to: ",
+
 	setChannelName: "Ok, please tell me the name of the channel the bot should join.",
 	setAccountDetails: "Ok, please tell me the account details in format 'query_user|query_passwd'.",
 	selectServer: "Tap or write the name of the server you want to edit / select.",
-	serverReconnecting: "Reconnecting.. this may sometimes take a while (for errors see private chat)",
+	serverReconnecting: "Reconnecting...\r\nOne moment please.",
+
 	setMoveNotifications: "Client move notifications set to: ",
 	setJoinNotifications: "Client join notifications set to: ",
+	setGreetMode: "Client greeting mode set to: ",
+
 	manageHeader: "Servers with linked Groups:<code>",
 	manageSelected: "(Selected)",
 	manageFooter: "/unlink [link_name] to delete.",
@@ -162,31 +180,30 @@ export default {
 	liveTreeFormat: "LiveTree\r\n<code>$tree$</code>\r\nChanged: $time$",
 	liveTreeError: " ⚠️ ",
 	liveTreeStop: "LiveTree stopped and removed.",
+	liveTreeRefresh: 'LiveTree was manually updated -> <a href="$url$">Message</a>\r\nUse <code>/livetree stop</code> to cancel.',
 
 	menu00: "Menu:",
 	menu01: "\r\nGroup is linked.",
 	menu02: "\r\nGroup is not linked.",
-	menu03: "\r\nYour servers:     ",
-	menu04: "\r\nYour linkings:    ",
-	menu05: "\r\nSelected server:  ",
+	menu03: "\r\nServers:       ",
+	menu04: "\r\nGrouplinks:    ",
+	menu05: "\r\nSelected:      ",
 	menu06: "\r\nNo Server selected.",
 
-	info00: "Group & Server Info:  ",
-	info01: "\r\nOwner:            ",
-	info02: "\r\nChanneldepth:     ",
-	info03: "\r\nOther groups:     ",
+	info00: "Group & Server:",
+	info01: "\r\nOwner:         ",
 
-	info10: "Selected Server Info: ",
-	info11: "\r\nLabel:            ",
-	info12: "\r\nLinked groups:    ",
+	info10: "Selected Server:",
+	info11: "\r\nLabel:         ",
+	info12: "\r\nLinked groups: ",
 
-	info21: "\r\nStatus:           ",
-	info22: "\r\nServer name:      ",
-	info23: "\r\nVersion:          ",
-	info24: "\r\nPlatform:         ",
-	info25: "\r\nOnline since:     ",
-	info26: "\r\nClients:          ",
-	info27: "\r\nChannel:          ",
+	info21: "\r\nStatus:        ",
+	info22: "\r\nServer name:   ",
+	info23: "\r\nVersion:       ",
+	info24: "\r\nPlatform:      ",
+	info25: "\r\nOnline since:  ",
+	info26: "\r\nClients:       ",
+	info27: "\r\nChannel:       ",
 
 	settings00: "Group & Server Settings:",
 	settings01: "\r\nAdmin 4 all:  ",
@@ -249,6 +266,7 @@ export default {
 	cmd_delete: "Delete server and linkings",
 	cmd_disconnect: "Disconnect",
 	cmd_faq: "FAQ",
+	cmd_greetmode: "Greeting mode",
 	cmd_help: "Help",
 	cmd_ignorebots: "Ignore other bots",
 	cmd_lang: "🇩🇪 / 🇺🇸",
@@ -257,7 +275,6 @@ export default {
 	cmd_manage: "Manage",
 	cmd_menu: "Menu",
 	cmd_notifyjoin: "Join message",
-	cmd_pm: "Personal message",
 	cmd_reconnect: "Reconnect",
 	cmd_sample: "sample",
 	cmd_select: "Select a server",
