@@ -61,6 +61,35 @@ export default function (self: TS3BotCtx) {
 		return;
 	});
 
+	// listen for files
+	bot.on("document", (tgCtx) => {
+		const msg = tgCtx.message;
+		// user & data ctx for this received message
+		const sender = Utils.getUser(msg.from);
+		// we only care about groups for now
+		if (msg.chat.type === "private") return;
+		// Set/Update the current group name
+		const title = (msg.chat as Chat.TitleChat).title;
+		self.groupnames.set(msg.chat.id, title);
+		// no linked server = abort
+		const groupLinking = Utils.getGroupLinking(msg.chat.id);
+		if (!groupLinking) return;
+		// add user
+		groupLinking.CheckAddUser(sender);
+
+		// someone shared a file?
+		if (self.settings.useFileProxy && groupLinking.sharemedia) {
+			let mft = Utils.getMsgFileType(msg);
+			if (mft !== null) {
+				// inform proxy
+				let proxiedFileUrl = self.fileProxyServer.getURL(msg, mft);
+				console.log("Proxy URL: " + proxiedFileUrl);
+				// make Telegram user clickable & send ts3 notification
+				groupLinking.NotifyTS3(title, Utils.tryNameClickable(sender) + " (" + mft + "): " + Utils.fixUrlToTS3(proxiedFileUrl));
+			}
+		}
+	});
+
 	// listen for messages
 	bot.on("text", (tgCtx) => {
 		const msg = tgCtx.message;
@@ -105,7 +134,7 @@ export default function (self: TS3BotCtx) {
 		} as MessageCtx;
 
 		// announcement check
-		if (self.run && (!self.announces[ctx.chatId] || self.announces[ctx.chatId] < self.settings.announceID)) {
+		if (!self.announces[ctx.chatId] || self.announces[ctx.chatId] < self.settings.announceID) {
 			self.announces[ctx.chatId] = self.settings.announceID;
 			bot.telegram.sendMessage(ctx.chatId, self.settings.announceText, { disable_web_page_preview: true });
 		}
@@ -128,7 +157,7 @@ export default function (self: TS3BotCtx) {
 			let tsname = Utils.tryNameClickable(ctx.sender);
 
 			// someone sent a message intended for ts3?
-			if (self.run && msg.text && msg.text.substring(0, 1) !== "/") {
+			if (msg.text && msg.text.substring(0, 1) !== "/") {
 				// check for spam
 				if (ctx.groupLinking.spamcheck) {
 					// Check if user is ignored due to spam
@@ -138,20 +167,22 @@ export default function (self: TS3BotCtx) {
 						else {
 							// user is no longer ignored.
 							ctx.sender.banneduntil = null;
-							const nexTime = ((ctx.sender.spams + 1) * (ctx.sender.spams + 1) * 5).toString();
+							const nexTime = ((ctx.sender.spams + 1) * 15).toString();
+							const msg = ctx.senderMessages.spamEnd.replace("$time$", nexTime);
 							try {
-								self.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamEnd.replace("$time$", nexTime), ctx.opt);
+								self.sendNewMessage(ctx.sender.id, msg, ctx.opt);
 							} catch (err) {
-								self.sendNewMessage(ctx.chatId, ctx.senderMessages.spamEnd.replace("$time$", nexTime), ctx.opt);
+								self.sendNewMessage(ctx.chatId, msg, ctx.opt);
 							}
 						}
 					} else if (self.antispam.CheckRegisterSpam(ctx.sender)) {
 						// Spam detected
-						const banTime = (ctx.sender.spams * ctx.sender.spams * 5).toString();
+						const banTime = (ctx.sender.spams * 15).toString();
+						const msg = ctx.senderMessages.spamStart1.replace("$time$", banTime);
 						try {
-							self.sendNewMessage(ctx.sender.id, ctx.senderMessages.spamStart1.replace("$time$", banTime));
+							self.sendNewMessage(ctx.sender.id, msg);
 						} catch (err) {
-							self.sendNewMessage(ctx.chatId, ctx.senderMessages.spamStart2.replace("$time$", banTime));
+							self.sendNewMessage(ctx.chatId, msg);
 						}
 						return;
 					}
@@ -159,40 +190,12 @@ export default function (self: TS3BotCtx) {
 				// send message
 				ctx.groupLinking.NotifyTS3(title, tsname + " : " + Utils.fixUrlToTS3(msg.text));
 			}
-			// someone shared a file?
-			else if (self.run && self.settings.useFileProxy && ctx.groupLinking.sharemedia) {
-				let mft = Utils.getMsgFileType(msg);
-				if (mft !== null) {
-					let proxiedFileUrl = self.fileProxyServer.getURL(msg, mft);
-					console.log("Proxy URL: " + proxiedFileUrl);
-					ctx.groupLinking.NotifyTS3(title, tsname + " (" + mft + "): " + Utils.fixUrlToTS3(proxiedFileUrl));
-				}
-			}
 		}
 
 		// Handle text message
 		if (msg.text) {
 			// Check if the text contains args and split them
 			CommandHandler.prepare(ctx, msg.text);
-
-			if (msg.from.id == self.settings.developer_id && ctx.cmd && ctx.cmd.toLocaleLowerCase() == "/runtoggle") {
-				self.run = !self.run;
-				console.log("runtoggle: " + self.run);
-				return;
-			}
-
-			if (!self.run) {
-				console.log("no run, return.");
-				return;
-			}
-
-			// '"developer bot shell"' (for unnecessary stuff like calculating something)
-			if (msg.from.id == self.settings.developer_id && ctx.cmd && ctx.cmd.toLocaleLowerCase() == "/xd") {
-				let myeval = msg.text.substring(4, msg.text.length);
-				console.log("/xd eval: " + myeval);
-				ctx.respondChat(eval(myeval), ctx.opt);
-				return;
-			}
 
 			// cancel command
 			if (!ctx.isGroup && ctx.cmd && ctx.cmd.toLowerCase() == "/cancel") {

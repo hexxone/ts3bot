@@ -17,23 +17,7 @@ export default {
 		if (ctx.senderSelectedInstance != null) {
 			if (ctx.text == ctx.senderMessages.delConfirmStr + ctx.sender.selected) {
 				ctx.sender.menu = "";
-				// Remove all Linkings with this Instance
-				main.linkings = main.linkings.filter(function (linking) {
-					// Check if is senderLinking and linking is affected
-					if (linking.instance.id != ctx.sender.id || Utils.getArrayObjectByName(ctx.senderLinkings, linking.name) == null || !ctx.senderSelectedInstance.HasGroup(linking.groupid))
-						return true;
-					// Notify, Unregister and remove it
-					ctx.respondChat(ctx.senderMessages.linkingDestroyed.replace("$linking$", linking.name), ctx.opt);
-					main.sendNewMessage(linking.groupid, ctx.senderMessages.serverUnlinked, ctx.opt);
-					linking.Unlink();
-					return false;
-				});
-				// Disconnect from the Server
-				ctx.senderSelectedInstance.Disconnect();
-				// Remove Instance
-				main.instances = main.instances.filter(function (instance) {
-					return instance.id != ctx.senderSelectedInstance.id || instance.name != ctx.senderSelectedInstance.name;
-				});
+				Utils.destroyInstance(ctx.senderSelectedInstance);
 				// Deselect
 				ctx.sender.selected = "";
 				// Success Message
