@@ -10,7 +10,7 @@ import { MessageCtx, TS3BotCtx } from "../context";
 import { QConState } from "../object/instance";
 
 export default {
-	id: 122,
+	id: 120,
 	available: 3,
 	groupperm: true,
 	needslinking: true,

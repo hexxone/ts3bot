@@ -14,13 +14,13 @@ export default {
 	langFlag: "🇩🇪",
 	langText: "Sprache auf Deutsch gestellt.",
 	langNotFound: "Sprache nicht gefunden.",
-	langCurrent: "Jetzige Sprache: Deutsch.",
+	langCurrent: "Sprache:       Deutsch.",
 
-	timeYears: "J",
-	timeDays: "T",
-	timeHours: "Std",
-	timeMins: "Min",
-	timeSecs: "Sek",
+	timeYears: "j",
+	timeDays: "t",
+	timeHours: "std",
+	timeMins: "min",
+	timeSecs: "sek",
 
 	invalidName: "Ungültiger Name. Es dürfen keine Leer- oder Sonderzeichen verwendet werden.",
 	invalidFormatSrv: "Ungültiges Format. Benutze: 'addresse|query_port|ts3_port'",
@@ -39,8 +39,8 @@ export default {
 	connectError: "Konnte nach $attempts$ Versuch(en) nicht verbinden. Letzer Fehler: ",
 	replyError: "Konnte Befehl nicht ausführen.",
 
-	optionOn: "An",
-	optionOff: "Aus",
+	optionOn: "<code>An</code>",
+	optionOff: "<code>Aus</code>",
 
 	stateIdle: "Getrennt",
 	stateConnecting: "Verbindet",
@@ -52,6 +52,10 @@ export default {
 	availableGroup: "für Gruppen",
 	availableAll: "für Benutzer und Gruppen",
 
+	greetOnJoin: "<code>Channel Beitritt</code>",
+	greetConnect: "<code>Verbindung</code>",
+	greetMsg: "\r\nNachricht: ",
+
 	groupJoin: " hat die Gruppe betreten.",
 	groupLeave: " hat die Gruppe verlassen.",
 
@@ -61,7 +65,7 @@ export default {
 
 	spamIgnoreTrigger: "Spam Schutz ausgelöst. Deine Nachrichten werden ignoriert für: ",
 	spamIgnoreRevoke: "Du wirst nicht länger ignoriert. Dauer beim nächsten mal: ",
-	spamTimeUnit: " Minuten.",
+
 	noAgreement: "Bitte lies und bestätige die AGB's (/tos) bevor du einen Server hinzufügst.",
 	addInfo:
 		"Du wirst folgende Informationen benötigen:<code>\r\n- server Addresse\r\n- Query Port\r\n- Vserver ID\r\n- Query Benutzer</code>\r\nUm zu beginnen, nenne mir einen Namen für den Server (z.B.: jeff)",
@@ -97,16 +101,22 @@ export default {
 		"'Sicherheits'-Tests zu unterziehen. Gegebenenfalls werden diese als DDoS gewertet und vom Provider verfolgt. Der Bot speichert gewisse Nutzerdaten verschlüsselt ab (zwischen neustarts).",
 	tosAgree: "Um zuzustimmen, tippe bitte folgendes: '<code>$tos_string$</code>'",
 	tosString: "Ich stimme zu",
+
 	ignorebots: "Andere TS3 query clients werden ignoriert",
 	unignorebots: "Andere TS3 query clients werden nicht mehr ignoriert.",
+
 	addLink: "Bitte gib einen Namen für die Verlinkung ein:",
+
 	accountSet: "Account Details gesetzt.",
 	accBotName: " Als nächstes nenne mir bitte den Namen für den Bot auf deinem Server:",
+
 	channelSet: "Channel Name gesetzt.",
 	channelComplete: " Erstellen abgeschlossen. Du kannst nun:\r\n/link (Server mit Gruppe verlinken)\r\n/connect (Zum Server verbinden)\r\nOder die Einstellungen bearbeiten\r\n(siehe /settings)",
 	channelNameErr: "Fehler: Der Name muss zwischen 2 und 32 Zeichen lang sein.",
+
 	tosAccept: "Danke :)",
 	tosReject: ":(",
+
 	addedServer: "Server erstellt. Als nächstes bitte die Server Addresse in folgendem Format eingeben:\r\n'ip_oder_host|query_port|ts3_port'.",
 	nameInUse: "Der Name ist bereits in Verwendung.",
 	linkDestroyed: "Deep-link '$link$' wurde zerstört.",
@@ -114,6 +124,7 @@ export default {
 	serverUnlinked: "Server-verlinkung mit Gruppe zerstört.",
 	serverDeleted: "Server gelöscht.",
 	deleteError: "Fehler. Achte auf Groß-und-Kleinschreibung.\r\n/cancel zum abbrechen",
+
 	linkGroup: "Benutze nun den Link um den Bot einer Gruppe hinzuzufügen:",
 	nameError: "Der Name darf keine Sonderzeichen enthalten.",
 	serverSelected: "Server ausgewählt: ",
@@ -127,23 +138,33 @@ export default {
 	groupLinked: "TS3 Server wurde erfolgreich mit der Gruppe verlinkt",
 	invalidLink: "Fehler: Ungültiger Deeplink-Schlüssel.",
 	startChat: "Hi! Dieser Bot verbindet deinen TeamSpeak3 Server mit Telegram Gruppen.",
+
 	spamCheck: "Spam Check gesetzt: ",
 	silentMode: "Stumm Modus gesetzt: ",
+
 	groupNameHidden: "Gruppen Name wird in TS3 versteckt.",
 	groupNameShown: "Gruppen Name wird in TS3 angezeigt",
+
 	shareMediaOn: "Gesendete Medien werden in TS3 geteilt.",
 	shareMediaOff: "Gesendete Medien werden nicht in TS3 geteilt.",
+
 	usage: "Syntax: ",
+
 	setServerAddress: "Bitte die Server Addresse in folgendem Format angeben: 'addresse|query_port|ts3_port'.",
 	setBotName: "Bitte den Namen für den Bot auf dem Server eingeben:",
+
 	setChatMode: "Chat Modus gesetzt: ",
 	setChannelDepth: "Channel-Tiefe gesetzt: ",
+
 	setChannelName: "Bitte den exakten Namen des Channels eingeben, den der Bot betreten soll:",
 	setAccountDetails: "Bitte die TS3 Query Account Daten in folgenden Format angeben: '<query_user>|<query_passwd>'.",
 	selectServer: "Tippe oder Schreibe den Namen des Servers den du auswählen willst.",
 	serverReconnecting: "Verbindet erneut. Bitte etwas Geduld...",
+
 	setMoveNotifications: "Client Move Benachrichtigungen gesetzt: ",
 	setJoinNotifications: "Client Join Benachrichtigungen gesetzt: ",
+	setGreetMode: "Client Begrüßung gesetzt: ",
+
 	manageHeader: "Server und Gruppen:<code>",
 	manageSelected: "(Ausgewählt)",
 	manageFooter: "/unlink [link_name] zum löschen.",
@@ -157,32 +178,31 @@ export default {
 	botChannelMsg: " halo I bims ein Nachrid vong Tesd",
 	liveTreeFormat: "LiveTree\r\n<code>$tree$</code>\r\nGeändert: $time$",
 	liveTreeError: " ⚠️",
-	liveTreeStop: "LiveTree gestoppt und gelöscht.",
+	liveTreeStop: "LiveTree gestoppt.",
+	liveTreeRefresh: 'LiveTree wurde manuell geupdated -> <a href="$url$">Nachricht</a>\r\nBenutze <code>/livetree stop</code> zum abbrechen.',
 
 	menu00: "Menü:",
 	menu01: "\r\nGruppe ist verlinkt.",
 	menu02: "\r\nGruppe ist nicht verlinkt.",
-	menu03: "\r\nServer:         ",
-	menu04: "\r\nVerlinkungen:   ",
-	menu05: "\r\nAusgewählt:     ",
+	menu03: "\r\nServer:       ",
+	menu04: "\r\nVerlinkungen: ",
+	menu05: "\r\nAusgewählt:   ",
 	menu06: "\r\nKein Server ausgewählt",
 
-	info00: "Gruppen & Server Info:",
-	info01: "\r\nBesitzer:       ",
-	info02: "\r\nChanneltiefe:   ",
-	info03: "\r\nAndere Gruppen: ",
+	info00: "Gruppe & Server:",
+	info01: "\r\nBesitzer:     ",
 
-	info10: "Server Info:",
-	info11: "\r\nName:           ",
-	info12: "\r\nGruppen:        ",
+	info10: "gewählter Server:",
+	info11: "\r\nName:         ",
+	info12: "\r\nGruppen:      ",
 
-	info21: "\r\nStatus:         ",
-	info22: "\r\nServer Name:    ",
-	info23: "\r\nVersion:        ",
-	info24: "\r\nPlattform:      ",
-	info25: "\r\nOnline seit:    ",
-	info26: "\r\nClients:        ",
-	info27: "\r\nChannel:        ",
+	info21: "\r\nStatus:       ",
+	info22: "\r\nServer Name:  ",
+	info23: "\r\nVersion:      ",
+	info24: "\r\nPlattform:    ",
+	info25: "\r\nOnline seit:  ",
+	info26: "\r\nClients:      ",
+	info27: "\r\nChannel:      ",
 
 	settings00: "Gruppen & Server Einstellungen:",
 	settings01: "\r\nAdmin für alle:  ",
@@ -245,6 +265,7 @@ export default {
 	cmd_delete: "Lösche Server und Verlinkungen",
 	cmd_disconnect: "Trennen",
 	cmd_faq: "Häufig gestellte Fragen",
+	cmd_greetmode: "Begrüßungs-modus",
 	cmd_help: "Hilfe",
 	cmd_ignorebots: "Ignoriere andere Bots",
 	cmd_lang: "🇺🇸 / 🇩🇪",
@@ -253,7 +274,6 @@ export default {
 	cmd_manage: "Management",
 	cmd_menu: "Menü",
 	cmd_notifyjoin: "Joint Nachricht",
-	cmd_pm: "Persönliche Mitteilung",
 	cmd_reconnect: "Neu Verbinden",
 	cmd_sample: "sample",
 	cmd_select: "Auswählen",

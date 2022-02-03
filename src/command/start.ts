@@ -14,7 +14,7 @@ import Utils from "../class/utils";
 import { GroupLinking } from "../object/grouplinking";
 
 export default {
-	id: 138,
+	id: 134,
 	hidden: true,
 	available: 3,
 	groupperm: false,

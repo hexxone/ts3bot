@@ -62,7 +62,7 @@ export class Instance extends IUtils {
 	channeldepth: number;
 	autoconnect: boolean;
 
-	// @TODO inform ts3-clients about the bot-presence?
+	// informs ts3-clients about the bot-presence
 	greetmode: GreetMode;
 	greetmsg: string;
 
@@ -74,6 +74,9 @@ export class Instance extends IUtils {
 	lastPing: Date;
 	serverinfo: ServerInfo; // info
 	whoami: TeamSpeakClient; // own id
+
+	sentGreetings: TeamSpeakClient[];
+	inChannel: TeamSpeakClient[];
 
 	connectionState: QConState;
 	connectionErr: string;
@@ -113,9 +116,11 @@ export class Instance extends IUtils {
 		this.channeldepth = 0;
 		this.autoconnect = false;
 
-		// TODO utilize greetmode & create setting command?
 		this.greetmode = GreetMode.OnJoin;
-		this.greetmsg = "Hi. TS3Bot is active in this channel and will stream the conversation :)";
+		this.greetmsg = "Hi. TS3Bot is active in this channel and will cross-chat messages with Telegram :)";
+
+		this.sentGreetings = [];
+		this.inChannel = [];
 	}
 
 	owner() {
@@ -144,6 +149,7 @@ export class Instance extends IUtils {
 
 	Connect(callback?, respond?) {
 		// connecting state update
+		this.sentGreetings = [];
 		this.connectionState = QConState.Connecting;
 		this.connectTry++;
 		// ts3 bot settings
@@ -208,9 +214,10 @@ export class Instance extends IUtils {
 				if (this.channelname !== "") {
 					// search all channels for the one with our desired name and get its id
 					let myChannel = this.GetChannelByName(this.channelname);
-					//console.log(this.name + ' | Found Channel: ' + myChannel);
-					if (myChannel === null) throw "Target channel was not found (case sensitive).";
-					this.channelid = myChannel.cid;
+					if (!myChannel) throw "Target channel was not found (case sensitive).";
+					this.myChannel = myChannel;
+					// get channel users
+					myChannel.getClients().then((inChannel) => (this.inChannel = inChannel));
 					// Move the bot to desired channel
 					return this.bot.clientMove(this.whoami, myChannel.cid);
 				}
@@ -279,8 +286,9 @@ export class Instance extends IUtils {
 
 	_onClientEnterView(data: ClientConnect) {
 		//console.log('Join data: ' + JSON.stringify(data));
-		for (let usr of this.users) if (usr.clid === data.client.clid) return; // user already connected
-
+		for (let usr of this.users) if (usr.databaseId === data.client.databaseId) return; // user already connected
+		// check to greet user immediately?
+		this._checkClientGreet(GreetMode.OnConnect, data.client);
 		// add object data
 		this.users.push(data.client);
 		this.SortUsers();
@@ -310,7 +318,7 @@ export class Instance extends IUtils {
 		//console.log('Left data: ' + JSON.stringify(data));
 		for (let i = 0; i < this.users.length; i++) {
 			let usr = this.users[i];
-			if (usr.clid !== data.client?.clid) continue;
+			if (usr.databaseId !== data.client?.databaseId) continue;
 			// we wanto to remove this user
 			this.users.splice(i, 1);
 			// if the client is of type server query, the type will be 1
@@ -332,14 +340,16 @@ export class Instance extends IUtils {
 				lnk.NotifyTelegram(bName + bFlag + msgs.leftServer);
 			}
 		}
+		// reset greeting
+		this.sentGreetings = this.sentGreetings.filter((sg) => sg.databaseId != data.client?.databaseId);
 		// trigger tree update
 		this.treeHelper.UpdateAll();
 	}
 
 	_onClientMoved(data: ClientMoved) {
 		const usr = data.client;
-		const oldChannel = usr.cid;
 		const isbot = usr.type == 1;
+		const wasInChannel = this.inChannel.some((c) => c.databaseId == usr.databaseId);
 		// notify all groups
 		for (let grp of this.groups) {
 			let lnk = Utils.getGroupLinking(grp);
@@ -354,12 +364,12 @@ export class Instance extends IUtils {
 				// notify channel
 				case 1:
 					let send = null as any;
-					// user left our channel
-					if (this.channelid == oldChannel) send = msgs.channelLeave;
 					// user joined our channel
-					else if (this.channelid == data.channel.cid) send = msgs.channelJoin;
+					if (this.myChannel?.cid === usr.cid) send = msgs.channelJoin;
+					// user left our channel
+					else if (wasInChannel) send = msgs.channelLeave;
 					// actual send
-					if (send) lnk.NotifyTelegram(bName + bFlag + send + " [" + this.GetChannelUser(this.channelid, lnk.ignorebots).length + "]");
+					if (send) lnk.NotifyTelegram(bName + bFlag + send + " [" + this.GetChannelUser(this.myChannel?.cid || "", lnk.ignorebots).length + "]");
 					break;
 				// notify global
 				case 2:
@@ -367,21 +377,36 @@ export class Instance extends IUtils {
 					break;
 			}
 		}
+		// check to add/greet the user if is in our channel
+		if (this.myChannel?.cid === usr.cid) {
+			if (!wasInChannel) this.inChannel.push(usr);
+			this._checkClientGreet(GreetMode.OnJoin, data.client);
+		}
+		// remove user from "inChannel" list if he left
+		else if (wasInChannel) {
+			this.inChannel = this.inChannel.filter((c) => c.databaseId != usr.databaseId);
+		}
 		// trigger tree update
 		this.treeHelper.UpdateAll();
 	}
 
 	_onTextMessage(data: TextMessage) {
 		// ignore messages by the bot itself
-		if (this.whoami != null && data.invoker.clid == this.whoami.clid) return;
-		// Get message
-		let msgText = ts3utils.unescapeStr(data.msg);
+		if (this.whoami != null && data.invoker.databaseId == this.whoami.databaseId) return;
 		// is private bot message?
 		if (data.targetmode === TextMessageTargetMode.CLIENT) {
 			// @TODO something?
 		}
 		// Notify groups
-		else if (data.targetmode === TextMessageTargetMode.CHANNEL) this.NotifyGroups("<b>" + ts3utils.fixNameToTelegram(data.invoker.nickname) + "</b> : " + ts3utils.fixUrlToTelegram(msgText));
+		else if (data.targetmode === TextMessageTargetMode.CHANNEL) {
+			// format user
+			let usrName = `<b>${ts3utils.fixNameToTelegram(data.invoker.nickname)}</b>`;
+			let usrFlag = ` ₍${Utils.getNumberSmallASCII(data.invoker.databaseId)}₎ `;
+			// build notification info msg
+			let msg = `<b>${this.serverinfo.virtualserverName}</b> - ${this.myChannel.name}:\r\n`;
+			msg += `${usrName + usrFlag} :<code>  ${ts3utils.fixUrlToTelegram(data.msg)}</code>`;
+			this.NotifyGroups(msg);
+		}
 	}
 
 	// serverinfo --all
@@ -400,12 +425,22 @@ export class Instance extends IUtils {
 			return cl;
 		});
 	}
+
 	// clientlist -uid -away -voice -times
 	_updateClientList() {
 		return this.bot.clientList().then((cl) => {
 			this.users = cl;
+			this.SortUsers();
 			return cl;
 		});
+	}
+
+	// check if the client was greeted before, or do it
+	_checkClientGreet(mode: GreetMode, client: TeamSpeakClient) {
+		if (client.type === 1) return; // dont greet bots lol
+		if (this.sentGreetings.some((sg) => sg.databaseId == client.databaseId) || mode != this.greetmode) return;
+		this.sentGreetings.push(client);
+		this.SendPrivateMessage(client, this.greetmsg);
 	}
 
 	// Disconnects the Bot from the server, no matter which state
@@ -511,13 +546,12 @@ export class Instance extends IUtils {
 	// URLS need ro be fixed beforehand using Utils.fixUrlToTS3
 	SendGlobalMessage(msg: string) {
 		// prep msg
-		msg = ts3utils.escapeStr(msg);
 		if (this.connectionState == QConState.Connected) {
-			this.bot.sendTextMessage(this.channelid as "0", TextMessageTargetMode.SERVER, msg);
+			this.bot.sendTextMessage("0", TextMessageTargetMode.SERVER, msg);
 		}
 		// bot not connected, but autoconnect is active and callback is given
 		else if (this.connectionState != QConState.Connecting && this.autoconnect) {
-			this.Connect(() => this.bot.sendTextMessage(this.channelid as "0", TextMessageTargetMode.SERVER, msg));
+			this.Connect(() => this.bot.sendTextMessage("0", TextMessageTargetMode.SERVER, msg));
 		}
 	}
 
@@ -525,22 +559,18 @@ export class Instance extends IUtils {
 	// URLS need ro be fixed beforehand using Utils.fixUrlToTS3
 	SendChannelMessage(msg: string) {
 		// prep msg
-		msg = ts3utils.escapeStr(msg);
 		if (this.connectionState == QConState.Connected) {
-			this.bot.sendTextMessage(this.channelid, TextMessageTargetMode.CHANNEL, msg);
+			this.bot.sendChannelMessage(this.myChannel, msg);
 		}
 		// bot not connected, but autoconnect is active and callback is given
 		else if (this.connectionState != QConState.Connecting && this.autoconnect) {
-			this.Connect(() => this.bot.sendTextMessage(this.channelid as "0", TextMessageTargetMode.SERVER, msg));
+			this.Connect(() => this.bot.sendChannelMessage(this.myChannel, msg));
 		}
 	}
 
 	// Send a Text Message to the given user (case sensitive)
 	SendPrivateMessage(user: TeamSpeakClient, msg: string) {
-		if (this.bot != null) {
-			msg = Utils.fixUrlToTS3(msg);
-			this.bot.sendTextMessage(user.clid, TextMessageTargetMode.CLIENT, msg);
-		}
+		if (this.connectionState == QConState.Connected) user.message(Utils.fixUrlToTS3(msg));
 	}
 
 	/*
@@ -597,7 +627,7 @@ export class Instance extends IUtils {
 			})
 			.catch((err) => {
 				this.connectionErr = JSON.stringify(err);
-				console.log("Ping Err: " + this.connectionErr);
+				console.error("Ping Err: ", err);
 				if (this.autoconnect) {
 					this.connectTry = 0;
 					this.Disconnect(true);

@@ -11,7 +11,7 @@ import { MessageCtx, TS3BotCtx } from "../context";
 import Utils from "../class/utils";
 
 export default {
-	id: 132,
+	id: 129,
 	available: 3,
 	groupperm: false,
 	needslinking: true,
@@ -28,6 +28,7 @@ export default {
 			let grb = ctx.groupLinking;
 			let secondLn = ["/showgroup " + !grb.showgroupname];
 			msg = "<a href='tg://user?id=" + ctx.sender.id + "'>@</a> " + gmsgs.settings00 + "<code>";
+
 			msg += gmsgs.settings01 + grb.alladmin;
 			msg += gmsgs.settings02 + grb.channelchat;
 			if (main.settings.useFileProxy) {
@@ -39,7 +40,7 @@ export default {
 			msg += gmsgs.settings07 + grb.silent;
 			msg += gmsgs.settings08 + grb.spamcheck;
 			msg += gmsgs.settings09 + grb.notifyjoin;
-			msg += gmsgs.settings10 + Utils.nmToStr(grb.language, grb.notifymove);
+			msg += gmsgs.settings10 + Utils.nmToStr(ctx.groupMessages, grb.notifymove);
 			msg += "</code>";
 			// if sender admin or all admin set keyboard
 			if (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking.alladmin) {
@@ -59,6 +60,7 @@ export default {
 			let ssi = ctx.senderSelectedInstance;
 			msg = smsgs.settings20 + "<code>";
 			msg += smsgs.settings21 + ssi.name;
+
 			msg += "\r\n</code>--- --- --- --- --- --- --- ---<code>";
 			msg += smsgs.settings22 + ssi.addr;
 			msg += smsgs.settings23 + ssi.qport;
@@ -69,7 +71,7 @@ export default {
 			msg += smsgs.settings28 + ssi.channelname;
 			msg += smsgs.settings29 + ssi.channeldepth;
 			msg += smsgs.settings30 + ssi.autoconnect;
-			msg += smsgs.settings31 + Utils.gmToStr(smsgs, ssi.greetmode); // @todo test
+			msg += smsgs.settings31 + Utils.gmToStr(smsgs, ssi.greetmode);
 			msg += "</code>";
 			// setttings keyboard, since sender is admin
 			let ncd = ssi.channeldepth + 1;

@@ -112,15 +112,22 @@ export default class TreeHelper {
 			this.Remove(tree);
 			return;
 		}
-
+		const manualRetrigger = cobj.livetree && !cobj.lasttree;
 		this.GetServerTree(
 			cobj,
 			(text) => {
+				const tg = this.parent.main.bot.telegram;
 				if (cobj.livetree) {
 					console.log("Update tree: " + cobj.livetree);
-					this.parent.main.bot.telegram.editMessageText(tree, cobj.livetree, undefined, text, { parse_mode: "HTML" });
+					tg.editMessageText(tree, cobj.livetree, undefined, text, { parse_mode: "HTML" });
+					if (manualRetrigger) {
+						const msgs = Utils.getLanguageMessages(cobj.language);
+						const url = `https://t.me/c/${tree.toString().substring(4)}/${cobj.livetree}`;
+						const msg = msgs.liveTreeRefresh.replace("$url$", url);
+						tg.sendMessage(tree, msg, Object.assign(DefaultOpt));
+					}
 				} else {
-					this.parent.main.bot.telegram.sendMessage(tree, text, DefaultOpt).then((msg) => {
+					tg.sendMessage(tree, text, DefaultOpt).then((msg) => {
 						cobj.livetree = msg.message_id;
 						console.log("New tree: " + cobj.livetree);
 					});

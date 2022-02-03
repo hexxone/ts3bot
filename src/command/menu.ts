@@ -12,7 +12,7 @@ import { MessageCtx, TS3BotCtx } from "../context";
 import Utils from "../class/utils";
 
 export default {
-	id: 118,
+	id: 117,
 	available: 3,
 	groupperm: false,
 	needslinking: true,
@@ -34,22 +34,7 @@ export default {
 				ins = ctx.groupLinking.instance;
 				let iusr = Utils.getUser({ id: ins.id });
 				// build message
-				msg =
-					msgs.menu00 +
-					"<code>" +
-					msgs.menu01 +
-					"\r\n" +
-					msgs.langCurrent +
-					msgs.info01 +
-					"</code><a href='tg://user?id=" +
-					ins.id +
-					"'>" +
-					iusr.GetName() +
-					"</a><code>" +
-					msgs.info02 +
-					ins.channeldepth +
-					msgs.info03 +
-					(ins.groups.length - 1);
+				msg = msgs.menu00 + "<code>" + msgs.menu01 + "\r\n" + msgs.langCurrent + msgs.info01 + "</code><a href='tg://user?id=" + ins.id + "'>" + iusr.GetName() + "</a><code>";
 			} else {
 				// print non specific info
 				msg += "\r\n" + msgs.langCurrent + msgs.menu02;
@@ -76,7 +61,7 @@ export default {
 		// instance?
 		if (ins) {
 			msg += "\r\n</code>--- --- --- --- --- --- --- ---<code>";
-			msg += msgs.info21 + Utils.stToStr(msgs.langCode, ins.connectionState);
+			msg += msgs.info21 + Utils.stToStr(msgs, ins.connectionState);
 			// connected?
 			if (ins.connectionState == QConState.Connected) {
 				// add 'users' command
