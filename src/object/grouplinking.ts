@@ -12,6 +12,12 @@ import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
 import { Instance } from "./instance";
 import { User } from "./user";
 
+export enum MoveNotification {
+	Off = 0,
+	Channel = 1,
+	Global = 2,
+}
+
 // represents a binding of a ts3 server to a Telegram group.
 export class GroupLinking {
 	main: TS3BotCtx;
@@ -25,14 +31,13 @@ export class GroupLinking {
 
 	silent: boolean;
 	notifyjoin: boolean;
-	notifymove: number;
+	notifymove: MoveNotification;
 
 	channelchat: boolean;
 	ignorebots: boolean;
 	showgroupname: boolean;
 	spamcheck: boolean;
 	alladmin: boolean;
-	pm: boolean;
 	language: string;
 	sharemedia: boolean;
 
@@ -52,15 +57,14 @@ export class GroupLinking {
 		this.instance = instance;
 		this.groupid = 0;
 		this.silent = false;
-		this.notifyjoin = true;
-		this.notifymove = 1; // 0 = off | 2 = channel | 3 = global
+		this.notifyjoin = false;
+		this.notifymove = MoveNotification.Channel;
 		this.channelchat = true; // chat with users in current ts3 bot channel
 
 		this.ignorebots = true;
 		this.showgroupname = true;
 		this.spamcheck = true;
 		this.alladmin = false;
-		this.pm = false;
 		// inherit owner language
 		this.language = instance.owner().language;
 		this.sharemedia = true;
@@ -89,7 +93,6 @@ export class GroupLinking {
 			showgroupname: this.showgroupname,
 			spamcheck: this.spamcheck,
 			alladmin: this.alladmin,
-			pm: this.pm,
 			language: this.language,
 			sharemedia: this.sharemedia,
 			livetree: this.livetree,
