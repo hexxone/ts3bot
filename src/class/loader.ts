@@ -14,6 +14,10 @@ const Algorithm = "aes-256-cbc";
 
 import { TS3BotCtx } from "../context";
 
+import { User } from "../object/user";
+import { Instance } from "../object/instance";
+import { GroupLinking } from "../object/grouplinking";
+
 import Utils from "./utils";
 
 class Loader {
@@ -65,7 +69,6 @@ class Loader {
 			usrr.menu = usr.menu;
 			usrr.selected = usr.selected;
 			usrr.agreement = usr.agreement;
-			usrr.sentdev = usr.sentdev;
 			usrr.spams = usr.spams;
 			usrr.banneduntil = usr.banneduntil;
 			usrr.last_bot_msg_id = usr.last_bot_msg_id;
@@ -228,9 +231,8 @@ class Loader {
 		lnkk.silent = lnk.silent;
 		lnkk.notifyjoin = lnk.notifyjoin;
 		lnkk.notifymove = lnk.notifymove;
-		lnkk.chatmode = lnk.chatmode;
+		lnkk.channelchat = lnk.channelchat;
 		lnkk.ignorebots = lnk.ignorebots;
-		lnkk.showservername = lnk.showservername;
 		lnkk.showgroupname = lnk.showgroupname;
 		lnkk.spamcheck = lnk.spamcheck;
 		lnkk.alladmin = lnk.alladmin;
@@ -246,10 +248,5 @@ class Loader {
 		return lnkk;
 	}
 }
-
-// circular reference ..
-import { User } from "../object/user";
-import { Instance } from "../object/instance";
-import { GroupLinking } from "../object/grouplinking";
 
 export default new Loader();

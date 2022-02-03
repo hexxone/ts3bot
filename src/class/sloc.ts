@@ -13,7 +13,7 @@ import sloc from "sloc";
 // Counts siginificant lines of code for all files in src.
 // if other files than .js are added, the params need to be adjusted.
 export default (callme: (sloc: number) => void) => {
-	console.log("asynchronously counting significant lines of code (SLOC)...");
+	console.log("Asynchronously counting SLOC..");
 	let slocc = 0;
 	let walk = function (dir, done) {
 		let results = [] as string[];
@@ -44,7 +44,7 @@ export default (callme: (sloc: number) => void) => {
 			if (err) {
 				console.error(err);
 			} else {
-				let stats = sloc(code, "js");
+				let stats = sloc(code, "ts");
 				slocc += stats.source;
 				done();
 			}

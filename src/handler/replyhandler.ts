@@ -21,8 +21,6 @@ export default function (self: TS3BotCtx) {
 	let bot = self.bot;
 
 	bot.on("callback_query", (cqCtx) => {
-		if (!self.run) return;
-
 		const cq = cqCtx.callbackQuery as CallbackQuery.DataCallbackQuery;
 
 		// debug print
