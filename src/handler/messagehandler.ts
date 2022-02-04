@@ -129,6 +129,7 @@ export default function (self: TS3BotCtx) {
 					one_time_keyboard: true,
 				},
 				disable_web_page_preview: true,
+				parse_mode: "HTML",
 			},
 			isGroup: msg.chat.type !== "private",
 		} as MessageCtx;
