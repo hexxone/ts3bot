@@ -12,7 +12,7 @@ NOTE: at this point I won't help with any issues regarding setup or usage.
 
 ## Requirements
 
-- docker & compose
+- docker && docker-compose
 
 ## Setup
 
@@ -43,7 +43,6 @@ services:
         image: hexxone/telegram-ts3bot
         container_name: node_ts3bot
         hostname: node_ts3bot
-        image: debian/latest
         restart: unless-stopped
         ports:
             - 8443:80 # can be removed if not using webhook
@@ -85,9 +84,9 @@ Here is the general structure:
 
 - COMMAND
 
-    create your own commands functions by placing a new \*.js
+    create your own commands functions by placing a new \*.ts
     file into the `/command/` folder.
-    Take a look at: `src/command/aaa_sample`
+    Take a look at: `src/command/aaa_sample.ts`
 
 - HANDLER
 
