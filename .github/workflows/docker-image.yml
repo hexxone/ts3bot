@@ -28,4 +28,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: telegram-ts3bot:${{(date +%s)}}
+          tags: telegram-ts3bot:latest
