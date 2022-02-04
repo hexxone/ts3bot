@@ -61,7 +61,7 @@ then
 
 If you wish, You can create your own language file.
 
-Just copy: `src/msg/msg_en.js` to e.g.: `src/msg/msg_it.js` (for italian)
+Just copy: `src/msg/msg_en.ts` to e.g.: `src/msg/msg_it.ts` (for italian)
 and translate all the strings (using deepl.com or google?).
 
 Feel free to open PR with new and/or fixed translations :)
@@ -73,21 +73,36 @@ The code is mostly commented => Hence no documentation :)
 
 Here is the general structure:
 
-- COMMANDS
-
-    create your own commands functions by placing a new \*.js
-    file into the `/commands/` folder. Take a look at this file:
-    `src/commands/aaa_sample.js`
-
-- ACTIONS
+- ACTION
 
     are usually text-inputs, needed for account setup etc., which can't be done inline.
     You find them in `src/action/`
 
-- CLASSES
+- CLASS
 
     if you think you need an additional static classes or functions,
-    feel free to add a new class here: `src/class/`
+    feel free to add them here: `src/class/`
+
+- COMMAND
+
+    create your own commands functions by placing a new \*.js
+    file into the `/command/` folder.
+    Take a look at: `src/command/aaa_sample`
+
+- HANDLER
+
+    are the functions which are called when a Telegram message is received.
+    You find them in `src/handler/`
+
+- MSG
+
+    are the translations / languages which are used in the bot.
+    You find them in `src/msg/`
+
+- OBJECT
+
+    are the objects which are used in the bot.
+    You find them in `src/object/`
 
 ## Features
 
