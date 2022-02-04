@@ -15,18 +15,18 @@ export default {
 	id: 7,
 	action: ["set_channel", "set_channel_first"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let msgs = ctx.senderMessages;
+		const msgs = ctx.senderMessages;
 		if (ctx.senderSelectedInstance != null) {
 			if (ctx.text.length > 1 && ctx.text.length < 33) {
 				ctx.senderSelectedInstance.channelname = ctx.text;
 				// Output / Next
 				let msg = msgs.channelSet;
-				let kb = [] as any[];
+				const kb = [] as any[];
 				if (Utils.endsWith(ctx.sender.menu, "_first")) {
 					kb.push(Utils.getCmdBtn("link", msgs));
 					msg += "\r\n" + msgs.channelComplete;
 				}
-				let conSt = ctx.senderSelectedInstance.connectionState;
+				const conSt = ctx.senderSelectedInstance.connectionState;
 				if (conSt == QConState.Connected) kb.push(Utils.getCmdBtn("reconnect", msgs));
 				else if (conSt != QConState.Connecting) kb.push(Utils.getCmdBtn("connect", msgs));
 				ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("menu", msgs)], kb];

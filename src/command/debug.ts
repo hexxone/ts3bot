@@ -20,7 +20,7 @@ export default {
 	description: "debug",
 	command: ["/debug"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let usage = ctx.senderMessages.usage + this.usage;
+		const usage = ctx.senderMessages.usage + this.usage;
 		if (ctx.args.length == 2) {
 			if (Utils.isYes(ctx.args[1])) {
 				main.settings.debug = true;

@@ -22,7 +22,7 @@ export default {
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		Utils.fixRemoveKeyboard(main, ctx);
 		ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("settings", ctx.senderMessages)]];
-		let usage = ctx.senderMessages.usage + this.usage;
+		const usage = ctx.senderMessages.usage + this.usage;
 		if (ctx.args.length == 2) {
 			if (Utils.isYes(ctx.args[1])) {
 				ctx.senderSelectedInstance.autoconnect = true;

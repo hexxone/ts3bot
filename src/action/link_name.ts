@@ -21,14 +21,14 @@ export default {
 			if (ctx.args.length == 1 && Utils.testName(ctx.args[0])) {
 				// Check if Name exists in deeplinkings
 				let hasUnlinked = false;
-				main.deeplinking.forEach(function (val, key) {
+				main.deeplinking.forEach((val) => {
 					if (val.instance.id == ctx.sender.id && val.name === ctx.args[0]) hasUnlinked = true;
 				});
 				// Check if Name exists in Bindings
 				if (!hasUnlinked && Utils.getArrayObjectByName(ctx.senderLinkings, ctx.args[0]) === null) {
-					let hash = Utils.randomString(16);
+					const hash = Utils.randomString(16);
 					main.deeplinking.set(hash, new GroupLinking(ctx.args[0], ctx.senderSelectedInstance));
-					let link = "https://t.me/" + main.me.username + "?startgroup=" + hash;
+					const link = "https://t.me/" + main.me.username + "?startgroup=" + hash;
 					ctx.sender.menu = "";
 					ctx.opt.disable_web_page_preview = true;
 					ctx.respondChat(ctx.senderMessages.linkGroup + "\r\n" + link, ctx.opt, true);

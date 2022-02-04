@@ -76,8 +76,8 @@ export class GroupLinking {
 	}
 
 	Export() {
-		let userids = [] as number[];
-		for (let usr of this.users) userids.push(usr.id);
+		const userids = [] as number[];
+		for (const usr of this.users) userids.push(usr.id);
 		return {
 			name: this.name,
 			instance: {
@@ -121,7 +121,7 @@ export class GroupLinking {
 
 	// check if group contains a user
 	HasUser(userObj) {
-		for (let usr of this.users) {
+		for (const usr of this.users) {
 			if (usr.id == userObj.id) return true;
 		}
 		return false;
@@ -142,7 +142,7 @@ export class GroupLinking {
 	// Sends a mesage to the relating telegram group respecting the
 	// .. 'show server name'- and notification-settings
 	NotifyTelegram(msg: string) {
-		let oobj = { parse_mode: "HTML" } as ExtraReplyMessage;
+		const oobj = { parse_mode: "HTML" } as ExtraReplyMessage;
 		if (this.silent) oobj.disable_notification = true;
 		// notifications should be new messages, dont delete old
 		this.main.sendNewMessage(this.groupid, msg, oobj, true);

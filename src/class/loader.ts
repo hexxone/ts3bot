@@ -31,9 +31,9 @@ class Loader {
 	// load stored bot data from json
 	loadData() {
 		// set or get telegram api key
-		let s = this.Parent.settings.telegram_bot_token.split(":");
+		const s = this.Parent.settings.telegram_bot_token.split(":");
 		// file name is 'bot id' of api key
-		let filePath = "./data/bot_" + s[0] + ".stor";
+		const filePath = "./data/bot_" + s[0] + ".stor";
 		// File exists?
 		if (!FS.existsSync(filePath)) {
 			console.warn("DataFile doesnt exist... Cant load");
@@ -42,15 +42,15 @@ class Loader {
 		let objj = {} as any;
 		try {
 			// generate hash of api key part
-			let hash = Crypto.createHash("md5").update(s[1], "utf8").digest("hex").toUpperCase();
+			const hash = Crypto.createHash("md5").update(s[1], "utf8").digest("hex").toUpperCase();
 			// read file content
-			let crypted = FS.readFileSync(filePath).toString().split("|");
+			const crypted = FS.readFileSync(filePath).toString().split("|");
 			// first part is hex'd IV
-			let iv = Buffer.from(crypted[0], "hex");
+			const iv = Buffer.from(crypted[0], "hex");
 			// create Decipher with Hash & IV
-			let decipher = Crypto.createDecipheriv(Algorithm, hash, iv);
+			const decipher = Crypto.createDecipheriv(Algorithm, hash, iv);
 			// decrypt & finalize data
-			let data = decipher.update(crypted[1], "hex", "utf8") + decipher.final("utf8");
+			const data = decipher.update(crypted[1], "hex", "utf8") + decipher.final("utf8");
 			// parse to object
 			objj = parse(data);
 			// debug print
@@ -65,7 +65,7 @@ class Loader {
 		this.Parent.receivedMessages = parseInt(objj.msgcnt);
 		this.Parent.users = [];
 		objj.users.forEach((usr) => {
-			let usrr = new User(usr.id, usr.username, usr.first_name, usr.last_name, usr.language);
+			const usrr = new User(usr.id, usr.username, usr.first_name, usr.last_name, usr.language);
 			usrr.menu = usr.menu;
 			usrr.selected = usr.selected;
 			usrr.agreement = usr.agreement;
@@ -80,7 +80,7 @@ class Loader {
 		});
 		this.Parent.instances = [];
 		objj.instances.forEach((inst) => {
-			let instt = new Instance(this.Parent, inst.id, inst.name);
+			const instt = new Instance(this.Parent, inst.id, inst.name);
 			instt.groups = inst.groups;
 			instt.trees = inst.trees;
 			instt.qname = inst.qname;
@@ -99,8 +99,8 @@ class Loader {
 		});
 		this.Parent.linkings = [];
 		objj.linkings.forEach((lnk) => {
-			let instts = Utils.getUserInstances(lnk.instance.id);
-			let instt = Utils.getArrayObjectByName(instts, lnk.instance.name) as Instance;
+			const instts = Utils.getUserInstances(lnk.instance.id);
+			const instt = Utils.getArrayObjectByName(instts, lnk.instance.name) as Instance;
 			if (!instt) {
 				console.error(
 					"Error loading linking! Debug: " +
@@ -111,15 +111,15 @@ class Loader {
 				);
 				return;
 			}
-			let lnkk = this.createLinkingFromData(instt, lnk);
+			const lnkk = this.createLinkingFromData(instt, lnk);
 			this.Parent.linkings.push(lnkk);
 			console.info("Loaded linking: " + instt.id + " name: " + lnkk.name);
 		});
 		this.Parent.deeplinking = new Map();
 		objj.deeplinking.forEach((keyset) => {
-			let v = keyset.v;
-			let instts = Utils.getUserInstances(v.instance.id);
-			let instt = Utils.getArrayObjectByName(instts, v.instance.name) as Instance;
+			const v = keyset.v;
+			const instts = Utils.getUserInstances(v.instance.id);
+			const instt = Utils.getArrayObjectByName(instts, v.instance.name) as Instance;
 			if (!instt) {
 				console.error(
 					"Error loading deeplink! Debug: " +
@@ -130,7 +130,7 @@ class Loader {
 				);
 				return;
 			}
-			let lnkk = this.createLinkingFromData(instt, v);
+			const lnkk = this.createLinkingFromData(instt, v);
 			this.Parent.deeplinking.set(keyset.k, lnkk);
 			console.log("Loaded deeplink: " + instt.id + " name: " + lnkk.name);
 		});
@@ -144,7 +144,7 @@ class Loader {
 	// store bot data in json
 	saveData() {
 		// Create root object
-		let objj = {
+		const objj = {
 			msgcnt: this.Parent.receivedMessages,
 			fileMappings: this.Parent.fileMappings,
 			announces: this.Parent.announces,
@@ -161,19 +161,19 @@ class Loader {
 		this.Parent.deeplinking.forEach((val, key) => objj.deeplinking.push({ k: key, v: val.Export() }));
 		this.Parent.groupnames.forEach((val, key) => objj.groupnames.push({ k: key, v: val }));
 		// safe-parse data structure to string
-		let txtt = stringify(objj);
+		const txtt = stringify(objj);
 		// get telegram api key
-		let s = this.Parent.settings.telegram_bot_token.split(":");
+		const s = this.Parent.settings.telegram_bot_token.split(":");
 		// hash of api key is used as password
-		let hash = Crypto.createHash("md5").update(s[1], "utf8").digest("hex").toUpperCase();
+		const hash = Crypto.createHash("md5").update(s[1], "utf8").digest("hex").toUpperCase();
 		// generate random IV
-		let iv = Crypto.randomBytes(16);
+		const iv = Crypto.randomBytes(16);
 		// create 256bit Cipher with hash & IV
-		let cipher = Crypto.createCipheriv(Algorithm, hash, iv);
+		const cipher = Crypto.createCipheriv(Algorithm, hash, iv);
 		// encrypt data from utf => hex
-		let crypted = cipher.update(txtt, "utf8", "hex") + cipher.final("hex");
+		const crypted = cipher.update(txtt, "utf8", "hex") + cipher.final("hex");
 		// file path = bot id of api key string
-		let filePath = "./data/bot_" + s[0] + ".stor";
+		const filePath = "./data/bot_" + s[0] + ".stor";
 		// save
 		FS.writeFileSync(filePath, iv.toString("hex") + "|" + crypted);
 		console.info("Data successfully encrypted & stored.");
@@ -188,13 +188,12 @@ class Loader {
 
 	// loads a folder's modules
 	loadFolder(folder, array, strAppend) {
-		let self = this;
 		let cnt = 0;
 		array.length = 0; // reset array, but keep reference
 		FS.readdirSync(folder).forEach(async (file, i, arr) => {
-			let mod,
-				fp = folder + "/" + file;
-			if ((mod = await self.loadModule(array, fp))) console.info("Loaded: " + mod.id + " | " + fp);
+			let mod;
+			const fp = folder + "/" + file;
+			if ((mod = await this.loadModule(array, fp))) console.info("Loaded: " + mod.id + " | " + fp);
 			if (++cnt == arr.length) console.info("Done loading " + cnt + strAppend);
 		});
 	}
@@ -208,10 +207,10 @@ class Loader {
 		}
 		try {
 			// require & find module
-			let mod = (await import(file.replace(".ts", "")))["default"];
+			const mod = (await import(file.replace(".ts", "")))["default"];
 			if (!mod || !mod.id) console.warn("reload did not include id: " + file);
 			let ix = -1;
-			array.forEach(function (obj, i, arr) {
+			array.forEach((obj, i) => {
 				if (obj.id === mod.id) ix = i;
 			});
 			// replace or insert module
@@ -226,7 +225,7 @@ class Loader {
 
 	// will create a grouplinking from given object params
 	createLinkingFromData(instt, lnk) {
-		let lnkk = new GroupLinking(lnk.name, instt);
+		const lnkk = new GroupLinking(lnk.name, instt);
 		lnkk.groupid = lnk.groupid;
 		lnkk.silent = lnk.silent;
 		lnkk.notifyjoin = lnk.notifyjoin;
@@ -242,7 +241,7 @@ class Loader {
 		lnkk.lasttree = lnk.lasttree;
 		lnkk.lasterror = lnk.lasterror;
 
-		for (let usrid of lnk.userids) for (let usrr of this.Parent.users) if (usrid == usrr.id) lnkk.CheckAddUser(usrr);
+		for (const usrid of lnk.userids) for (const usrr of this.Parent.users) if (usrid == usrr.id) lnkk.CheckAddUser(usrr);
 
 		return lnkk;
 	}

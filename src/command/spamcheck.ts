@@ -20,9 +20,9 @@ export default {
 	description: "spamcheck",
 	command: ["/spamcheck"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let usage = ctx.groupMessages.usage + this.usage;
+		const usage = ctx.groupMessages.usage + this.usage;
 		if (ctx.args.length == 2) {
-			let setmsg = ctx.groupMessages.spamCheck;
+			const setmsg = ctx.groupMessages.spamCheck;
 			if (Utils.isYes(ctx.args[1])) {
 				ctx.groupLinking.spamcheck = true;
 				ctx.respondChat(setmsg + ctx.groupMessages.optionOn, ctx.opt);

@@ -33,7 +33,7 @@ export default {
 				if (ctx.groupLinking !== null) ctx.respondChat(msgs.groupAlreadyLinked, ctx.opt);
 				else if (main.deeplinking.has(ctx.args[1])) {
 					// get linking object & remove from hash-map
-					let inst = main.deeplinking.get(ctx.args[1]) as GroupLinking;
+					const inst = main.deeplinking.get(ctx.args[1]) as GroupLinking;
 					main.deeplinking.delete(ctx.args[1]);
 					// set groupid and add to linkings
 					inst.Link(ctx.chatId);

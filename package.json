@@ -3,7 +3,8 @@
 	"version": "3.0.0",
 	"description": "A Telegram to TS3 bridge",
 	"scripts": {
-		"start": "ts-node src/main.ts"
+		"start": "ts-node src/main.ts",
+		"lint": "eslint ./src/ --ext js,ts,jsx,tsx --fix"
 	},
 	"author": "hexxone",
 	"license": "GPLv3",
@@ -20,6 +21,12 @@
 	},
 	"devDependencies": {
 		"@types/node": "^17.0.13",
+		"@typescript-eslint/eslint-plugin": "^5.10.2",
+		"eslint": "^7.32.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"prettier": "^2.5.1",
+		"prettier-eslint": "^13.0.0",
 		"tslib": "^2.3.1"
 	},
 	"repository": {
