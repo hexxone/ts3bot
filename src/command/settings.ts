@@ -22,7 +22,7 @@ export default {
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		ctx.opt.parse_mode = "HTML";
 		ctx.opt.reply_markup.one_time_keyboard = true;
-		let msg = "_";
+		let msg: string;
 		if (ctx.isGroup) {
 			let gmsgs = ctx.groupMessages;
 			let grb = ctx.groupLinking;

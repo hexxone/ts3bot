@@ -13,7 +13,6 @@ import { MessageCtx, TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 import CommandHandler from "./commandhandler";
-import { TextMessage } from "ts3-nodejs-library/lib/types/Events";
 
 // Telegram message-receive-handler
 

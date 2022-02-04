@@ -42,7 +42,7 @@ export default class {
 	// Function that excludes the [spacer] strings from channel names
 	static fixSpacer(str): string {
 		return String(str)
-			.replace(/(\[\*{0,1}[l,r,c]{0,1}spacer[0-9]{0,}\])/g, "")
+			.replace(/(\[\*{0,1}[lrc]{0,1}spacer[0-9]{0,}\])/g, "")
 			.trim();
 	}
 
@@ -108,6 +108,6 @@ export default class {
 
 	// removes [URL]-Tags from links
 	static fixUrlToTelegram(str): string {
-		return str.replace(/\[\/*URL\]/g, "").replace(/[<|>]/, "");
+		return str.replace(/\[\/*URL\]/g, "").replace(/[<|>]/g, "");
 	}
 }
