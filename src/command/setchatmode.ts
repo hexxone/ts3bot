@@ -22,8 +22,8 @@ export default {
 	description: "channelchat",
 	command: ["/channelchat"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let msgs = ctx.groupMessages;
-		let usage = msgs.usage + this.usage;
+		const msgs = ctx.groupMessages;
+		const usage = msgs.usage + this.usage;
 		if (ctx.args.length == 2) {
 			const arg = ctx.args[1].toLowerCase();
 			if (Utils.isYes(arg)) ctx.groupLinking.channelchat = true;
@@ -33,7 +33,7 @@ export default {
 				return;
 			}
 			// build message
-			let msg = msgs.setChatMode + (ctx.groupLinking.channelchat ? msgs.optionOn : msgs.optionOff);
+			const msg = msgs.setChatMode + (ctx.groupLinking.channelchat ? msgs.optionOn : msgs.optionOff);
 			ctx.respondChat(msg, ctx.opt);
 			ctx.groupLinking.NotifyTS3((ctx.msg.chat as Chat.TitleChat).title, msg);
 		} else ctx.respondChat(usage, ctx.opt);

@@ -21,16 +21,16 @@ export default {
 	command: ["/manage"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		Utils.fixRemoveKeyboard(main, ctx);
-		let msgs = ctx.senderMessages;
+		const msgs = ctx.senderMessages;
 		let msg = msgs.manageHeader;
 		let lnks = 0;
 		// process user servers
-		for (let inst of ctx.senderInstances) {
+		for (const inst of ctx.senderInstances) {
 			// write server name
 			msg += "\r\n= " + inst.name;
 			if (ctx.senderSelectedInstance && inst.name == ctx.senderSelectedInstance.name) msg += " " + msgs.manageSelected;
 			// process linked groups
-			for (let linking of ctx.senderLinkings) {
+			for (const linking of ctx.senderLinkings) {
 				if (linking.instance.name == inst.name) {
 					msg += "\r\n  - [" + linking.name + "] " + main.groupnames.get(linking.groupid);
 					lnks++;
@@ -47,7 +47,7 @@ export default {
 		}
 		msg += "</code>";
 		if (lnks > 0) msg += "\r\n" + msgs.manageFooter;
-		let kbarr = [[Utils.getCmdBtn("addServer", msgs)]];
+		const kbarr = [[Utils.getCmdBtn("addServer", msgs)]];
 		// could select other? => add 'select'
 		if (ctx.senderInstances.length > 1) kbarr[0].push(Utils.getCmdBtn("select", msgs));
 		// add 'link'

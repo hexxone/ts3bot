@@ -25,7 +25,7 @@ export default {
 			// destroy
 			Utils.destroyGroupLinking(ctx.groupLinking);
 		} else {
-			let msgs = ctx.senderMessages;
+			const msgs = ctx.senderMessages;
 			if (ctx.args.length != 2 || !Utils.testName(ctx.args[1])) {
 				ctx.respondChat(msgs.usage + this.usage, ctx.opt);
 				return;

@@ -16,7 +16,7 @@ export default {
 	action: ["select"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.args.length == 1 && Utils.testName(ctx.args[0])) {
-			let inst = Utils.getArrayObjectByName(ctx.senderInstances, ctx.args[0]) as Instance;
+			const inst = Utils.getArrayObjectByName(ctx.senderInstances, ctx.args[0]) as Instance;
 			if (inst != null) {
 				Utils.fixRemoveKeyboard(main, ctx);
 				// set new selected vars
@@ -25,7 +25,7 @@ export default {
 				ctx.senderSelectedInstance = inst;
 
 				// call menu command
-				let cmdo = Utils.getCmdByDesc("menu");
+				const cmdo = Utils.getCmdByDesc("menu");
 				if (cmdo) cmdo.callback(main, ctx);
 			} else ctx.respondChat(ctx.senderMessages.serverNotFound, ctx.opt);
 		} else ctx.respondChat(ctx.senderMessages.invalidName, ctx.opt);

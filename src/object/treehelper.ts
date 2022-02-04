@@ -46,25 +46,25 @@ export default class TreeHelper {
 	// optionally bots can be ignored and child channels can be included with recursion.
 	GetChannelTree(root: string, ignorebots, recursive, level, onlyUsrChn) {
 		const prnt = this.parent;
-		let childr = prnt.GetChannelsBymain(root);
+		const childr = prnt.GetChannelsBymain(root);
 		let chres = "";
 		if (root === "0") {
 			chres += prnt.serverinfo.virtualserverName + " (" + prnt.GetUserCount(ignorebots) + " / " + prnt.serverinfo.virtualserverMaxclients + ")";
 		} else {
 			// get users in channel
-			let userr = prnt.GetChannelUser(root, ignorebots);
+			const userr = prnt.GetChannelUser(root, ignorebots);
 			// only channels with users?
 			if (!onlyUsrChn || userr.length >= 0 || prnt.GetAnyTreeUsers(root)) {
 				// get channel object, flag & name
-				let rootc = prnt.GetChannelById(root);
+				const rootc = prnt.GetChannelById(root);
 				chres += ts3utils.getChannelFlag(rootc) + " " + rootc.name;
 			}
 			// process users
 			if (userr.length > 0) {
 				chres += " [" + userr.length + "]";
-				for (let usr in userr) {
+				for (const usr in userr) {
 					// get user object & check bot
-					let usrr = userr[usr];
+					const usrr = userr[usr];
 					// get user flag, name & id
 					chres += "\r\n  " + ts3utils.getUserAudioFlag(usrr) + " " + ts3utils.fixNameToTelegram(usrr.nickname);
 					// get user database-id in small number if not a bot
@@ -74,15 +74,15 @@ export default class TreeHelper {
 		}
 		// recursive downwards call
 		if (root === "0" || recursive) {
-			for (let chil in childr) {
-				let cmsg = this.GetChannelTree(childr[chil].cid, ignorebots, recursive, level + 1, onlyUsrChn);
+			for (const chil in childr) {
+				const cmsg = this.GetChannelTree(childr[chil].cid, ignorebots, recursive, level + 1, onlyUsrChn);
 				chres += "\r\n" + cmsg.split("\r\n").join("\r\n  ");
 			}
 		}
 		// final spacer processing
 		if (level == 0) {
 			chres = ts3utils.fixSpacers(chres);
-			let longest = ts3utils.longestRow(chres);
+			const longest = ts3utils.longestRow(chres);
 			if (longest > 38) chres = chres.replace("  ", " ");
 		}
 		// done with this level
@@ -91,9 +91,9 @@ export default class TreeHelper {
 
 	// returns the current server tree and calls the update if its different from the last one sent to chat
 	GetServerTree(cobj: User | GroupLinking, callback, isError) {
-		let msgs = Utils.getLanguageMessages(cobj.language);
+		const msgs = Utils.getLanguageMessages(cobj.language);
 		const ignorebots = cobj instanceof GroupLinking && cobj.ignorebots;
-		let currenttree = isError ? undefined : this.GetChannelTree("0", ignorebots, true, 0, false);
+		const currenttree = isError ? undefined : this.GetChannelTree("0", ignorebots, true, 0, false);
 		let msg = msgs.liveTreeFormat;
 		if ((isError && !cobj.lasterror) || !cobj.lasttree || cobj.lasttree != currenttree) {
 			if (!isError) cobj.lasttree = currenttree;
@@ -106,7 +106,7 @@ export default class TreeHelper {
 
 	// will try to update the tree in the given chat.
 	UpdateLiveTree(tree: number, error?) {
-		let cobj = tree > 0 ? Utils.getUser({ id: tree }) : Utils.getGroupLinking(tree);
+		const cobj = tree > 0 ? Utils.getUser({ id: tree }) : Utils.getGroupLinking(tree);
 		if (!cobj || !cobj.language) {
 			console.error("Critical: cant find chat object for live tree: " + JSON.stringify([tree, cobj]));
 			this.Remove(tree);
@@ -139,16 +139,16 @@ export default class TreeHelper {
 
 	// will try to update all livetress for this instance.
 	UpdateAll(error?) {
-		for (let lt of this.parent.trees) this.UpdateLiveTree(lt, error);
+		for (const lt of this.parent.trees) this.UpdateLiveTree(lt, error);
 	}
 
 	// will add a new livetree to the chat or force it to update.
 	Add(chatId: number) {
 		const prnt = this.parent;
-		let index = prnt.trees.indexOf(chatId);
+		const index = prnt.trees.indexOf(chatId);
 		if (index < 0) prnt.trees.push(chatId);
 		// get chat that should contain the tree
-		let cobj = chatId > 0 ? Utils.getUser({ id: chatId }) : Utils.getGroupLinking(chatId);
+		const cobj = chatId > 0 ? Utils.getUser({ id: chatId }) : Utils.getGroupLinking(chatId);
 		// reset last tree to force an update now
 		cobj.lasttree = undefined;
 		// auto connect wrapper
@@ -166,9 +166,9 @@ export default class TreeHelper {
 	// will remove an existing livetree (delete msg & stop updates)
 	Remove(chatId: number) {
 		const prnt = this.parent;
-		let index = prnt.trees.indexOf(chatId);
+		const index = prnt.trees.indexOf(chatId);
 		if (index > -1) prnt.trees.splice(index, 1);
-		let chatObject = chatId > 0 ? Utils.getUser({ id: chatId }) : Utils.getGroupLinking(chatId);
+		const chatObject = chatId > 0 ? Utils.getUser({ id: chatId }) : Utils.getGroupLinking(chatId);
 		if (chatObject.livetree) {
 			prnt.main.bot.telegram.deleteMessage(chatId, chatObject.livetree);
 			chatObject.livetree = 0;

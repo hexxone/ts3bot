@@ -21,9 +21,9 @@ export default {
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.senderInstances.length > 0) {
 			ctx.sender.menu = "select";
-			let keyboardTop = [["/cancel"]];
+			const keyboardTop = [["/cancel"]];
 			let keyboardArr = [] as any[];
-			for (let instance of ctx.senderInstances) {
+			for (const instance of ctx.senderInstances) {
 				keyboardArr.push(instance.name);
 				if (keyboardArr.length > 1) {
 					keyboardTop.push(keyboardArr.slice(0));

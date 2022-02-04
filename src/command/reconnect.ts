@@ -19,7 +19,7 @@ export default {
 	description: "reconnect",
 	command: ["/reconnect"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let msgs = ctx.senderMessages;
+		const msgs = ctx.senderMessages;
 		if (ctx.isGroup) {
 			if (ctx.groupLinking !== null) {
 				if (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking.alladmin) {

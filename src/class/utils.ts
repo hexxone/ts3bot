@@ -65,7 +65,7 @@ class Utils {
 		if (!tg_user) return null as any;
 		// check if the user-id is already known
 		// and check for updated name props
-		for (let user of this.Parent.users)
+		for (const user of this.Parent.users)
 			if (user.id == tg_user.id) {
 				if (tg_user.username && user.username != tg_user.username) {
 					console.log("Update username: " + tg_user.id);
@@ -85,17 +85,17 @@ class Utils {
 		console.log("New User: " + tg_user.id);
 		// try to get the user-specific language, or fallback to the default.-
 		// then get the validated language code
-		let lang = this.getLanguageMessages(tg_user.language_code ? tg_user.language_code : "").langCode;
+		const lang = this.getLanguageMessages(tg_user.language_code ? tg_user.language_code : "").langCode;
 		// finally create the user
-		let newUser = new UHelper.User(tg_user.id || 0, tg_user.username || "err", tg_user.first_name || "err", tg_user.last_name || "err", lang);
+		const newUser = new UHelper.User(tg_user.id || 0, tg_user.username || "err", tg_user.first_name || "err", tg_user.last_name || "err", lang);
 		this.Parent.users.push(newUser);
 		return newUser;
 	}
 
 	// Gets all the Instance the User with the given id owns
 	getUserInstances(id: number): Instance[] {
-		let res = [] as Instance[];
-		for (let instance of this.Parent.instances) {
+		const res = [] as Instance[];
+		for (const instance of this.Parent.instances) {
 			if (instance.id == id) res.push(instance);
 		}
 		return res;
@@ -103,8 +103,8 @@ class Utils {
 
 	// Gets all the Linkings the User with the given id has
 	getUserLinkings(id: number): GroupLinking[] {
-		let res = [] as GroupLinking[];
-		for (let linking of this.Parent.linkings) {
+		const res = [] as GroupLinking[];
+		for (const linking of this.Parent.linkings) {
 			if (linking.instance.id == id) res.push(linking);
 		}
 		return res;
@@ -113,7 +113,7 @@ class Utils {
 	// Finds a Linking for a group with the given id
 	// (or null if not found)
 	getGroupLinking(groupid: number): GroupLinking {
-		for (let linking of this.Parent.linkings) {
+		for (const linking of this.Parent.linkings) {
 			if (linking.groupid == groupid) return linking;
 		}
 		return null as any;
@@ -121,7 +121,7 @@ class Utils {
 
 	// Finds Instances and Linkings from Object Array by Name
 	getArrayObjectByName(arr: Partial<Instance | GroupLinking>[], name) {
-		for (let instance of arr) if ((instance.name || "").toLowerCase() == name.toLowerCase()) return instance;
+		for (const instance of arr) if ((instance.name || "").toLowerCase() == name.toLowerCase()) return instance;
 		return null;
 	}
 
@@ -136,7 +136,7 @@ class Utils {
 		msg += s.stats05 + this.Parent.instances.length;
 		msg += s.stats06 + this.Parent.linkings.length;
 		let ts3users = 0;
-		for (let linking of this.Parent.linkings) {
+		for (const linking of this.Parent.linkings) {
 			if (linking.instance.connectionState == QConState.Connected) {
 				ts3users += linking.instance.users.length;
 			}
@@ -150,7 +150,7 @@ class Utils {
 	// get a millisecond timespan string-formatted in given language
 	getTimeSpan(ms: number, msgs: TS3BotMsgs) {
 		ms = Math.abs(ms); // dont be so negative
-		let years = Math.round(ms / MS_PER_YEAR),
+		const years = Math.round(ms / MS_PER_YEAR),
 			dms = ms % MS_PER_YEAR,
 			days = Math.round(dms / MS_PER_DAY),
 			hms = dms % MS_PER_DAY,
@@ -158,8 +158,8 @@ class Utils {
 			mms = hms % MS_PER_HOUR,
 			mins = Math.round(mms / MS_PER_MINUTE),
 			sms = mms % MS_PER_MINUTE,
-			secs = Math.round(sms / MS_PER_SECOND),
-			res = "";
+			secs = Math.round(sms / MS_PER_SECOND);
+		let res = "";
 		if (years > 0) res += `${years} ${msgs.timeYears}`;
 		if (res != "" || days > 0) res += ` ${days} ${msgs.timeDays}`;
 		if (res != "" || hours > 0) res += ` ${hours} ${msgs.timeHours}`;
@@ -176,7 +176,7 @@ class Utils {
 	// returns messages-object for the desired language
 	getLanguageMessages(lang?: string): TS3BotMsgs {
 		let deff;
-		for (let msgobj of this.Parent.languages) {
+		for (const msgobj of this.Parent.languages) {
 			if (msgobj.langCode === lang || msgobj.langName === lang) return msgobj;
 			if (msgobj.langCode === this.Parent.settings.defaultLanguage) deff = msgobj;
 		}
@@ -186,8 +186,8 @@ class Utils {
 	// returns the file type string for a telegram message
 	getMsgFileType(msg) {
 		if (!msg) return null;
-		let fileTypeArr = ["file", "audio", "document", "photo", "sticker", "video", "voice"];
-		for (let ft of fileTypeArr) if (msg[ft]) return ft;
+		const fileTypeArr = ["file", "audio", "document", "photo", "sticker", "video", "voice"];
+		for (const ft of fileTypeArr) if (msg[ft]) return ft;
 		return null;
 	}
 
@@ -215,8 +215,8 @@ class Utils {
 		this.Parent.instances = this.Parent.instances.filter((instance) => {
 			const filtr = instance.id != ins.id || instance.name != ins.name;
 			if (!filtr && !noUsrMsg) {
-				let usr = this.getUser({ id: instance.id });
-				let msgs = this.getLanguageMessages(usr.language);
+				const usr = this.getUser({ id: instance.id });
+				const msgs = this.getLanguageMessages(usr.language);
 				this.Parent.sendNewMessage(usr.id, msgs.serverDeleted);
 			}
 			return filtr;
@@ -231,14 +231,14 @@ class Utils {
 			if (linking.instance.id != lnk.instance.id || linking.name != lnk.name) return true;
 			// Notify user (if not blocked)
 			if (!noUsrMsg) {
-				let usr = this.getUser({ id: lnk.instance.id });
-				let msgs = this.getLanguageMessages(usr.language);
+				const usr = this.getUser({ id: lnk.instance.id });
+				const msgs = this.getLanguageMessages(usr.language);
 				this.Parent.sendNewMessage(usr.id, msgs.linkingDestroyed.replace("$linking$", linking.name));
 			}
 			// notify group (if not removed)
 			if (!noGroupMsg) {
-				let grp = this.getGroupLinking(linking.groupid);
-				let gmsgs = this.getLanguageMessages(grp.language);
+				const grp = this.getGroupLinking(linking.groupid);
+				const gmsgs = this.getLanguageMessages(grp.language);
 				this.Parent.sendNewMessage(linking.groupid, gmsgs.serverUnlinked);
 			}
 			linking.Unlink();
@@ -255,7 +255,7 @@ class Utils {
 
 	// returns a command by its description name
 	getCmdByDesc(desc: string) {
-		let objs = this.Parent.commands.filter(function (obj) {
+		const objs = this.Parent.commands.filter(function (obj) {
 			return obj.description == desc;
 		});
 		if (objs.length == 1) return objs[0];
@@ -269,7 +269,7 @@ class Utils {
 				text: msgs["cmd_cancel"],
 				callback_data: "cc",
 			};
-		let obj = this.getCmdByDesc(desc);
+		const obj = this.getCmdByDesc(desc);
 		if (obj)
 			return {
 				text: msgs["cmd_" + desc],
@@ -285,7 +285,7 @@ class Utils {
 	// Returns a Random string of desired length
 	randomString(length: number) {
 		let text = "";
-		let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		for (let i = 0; i < length; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
 		return text;
 	}
@@ -374,7 +374,7 @@ class Utils {
 	// will surround urls with given TAG for being clickable TS3
 	fixUrlToTS3(str: string) {
 		// make urls clickable for ts3 clients
-		let urll = str.match(urlRegex());
+		const urll = str.match(urlRegex());
 		if (urll) {
 			if (urll instanceof Array) {
 				for (let i = 0; i < urll.length; i++) str = str.replace(urll[i], "[URL]" + urll[i] + "[/URL]");
@@ -385,12 +385,12 @@ class Utils {
 
 	// converts an 'int' to a string with lower cased numbers
 	getNumberSmallASCII(num: string) {
-		let narr = "₀₁₂₃₄₅₆₇₈₉".split(""),
-			res = "";
-		let str = num.toString();
+		const str = num.toString(),
+			narr = "₀₁₂₃₄₅₆₇₈₉".split("");
+		let res = "";
 		for (let i = 0; i < str.length; i++) {
-			let a = str.charAt(i);
-			let x = parseInt(a);
+			const a = str.charAt(i);
+			const x = parseInt(a);
 			if (narr[x]) res += narr[x];
 		}
 		return res;

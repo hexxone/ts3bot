@@ -20,7 +20,7 @@ export default {
 	description: "ignorebots",
 	command: ["/ignorebots"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let usage = ctx.groupMessages.usage + this.usage;
+		const usage = ctx.groupMessages.usage + this.usage;
 		if (ctx.args.length == 2) {
 			if (Utils.isYes(ctx.args[1])) {
 				ctx.groupLinking.ignorebots = true;

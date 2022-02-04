@@ -20,7 +20,7 @@ export default {
 	description: "commands",
 	command: ["/commands"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let isDev = ctx.sender.id == main.settings.developer_id;
+		const isDev = ctx.sender.id == main.settings.developer_id;
 		let cmsgs = ctx.senderMessages;
 		if (ctx.groupMessages) cmsgs = ctx.groupMessages;
 
@@ -28,11 +28,11 @@ export default {
 			// specific command requested?
 			let ifomsg = cmsgs.commandResult;
 			let resCnt = 0;
-			main.commands.some(function (obj, i) {
+			main.commands.some(function (obj) {
 				if (obj.available > CmdAvailable.AdminOnly || (isDev && !ctx.isGroup)) {
 					// build search string from command & language description
-					let desc = cmsgs["cmd_" + obj.description];
-					let searchString = obj.usage + desc;
+					const desc = cmsgs["cmd_" + obj.description];
+					const searchString = obj.usage + desc;
 					// contains search term? add to list
 					if (searchString.includes(ctx.args[1])) {
 						resCnt++;
@@ -73,14 +73,14 @@ export default {
 			return;
 		}
 		// put detailed info behind a command, under what conditions its available?
-		let info = ctx.args.length > 1 && ctx.args[1] == "-i";
+		const info = ctx.args.length > 1 && ctx.args[1] == "-i";
 
 		let msgtxt = cmsgs.availableCommands + "\r\n";
 		let msgtxt2 = "";
-		let hasLinking = ctx.groupLinking ? true : false;
-		let hasAdmin = (hasLinking && (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking?.alladmin)) || false;
-		let hasSelected = ctx.senderSelectedInstance ? true : false;
-		main.commands.some(function (obj, i) {
+		const hasLinking = ctx.groupLinking ? true : false;
+		const hasAdmin = (hasLinking && (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking?.alladmin)) || false;
+		const hasSelected = ctx.senderSelectedInstance ? true : false;
+		main.commands.some(function (obj) {
 			if (obj.hidden) return;
 			let isAvailable = true;
 			if (ctx.isGroup && obj.available > CmdAvailable.SingleChat) {
@@ -95,7 +95,7 @@ export default {
 
 			if (isAvailable) {
 				let between = ctx.senderMessages["cmd_" + obj.description] || "empty";
-				let overlen = obj.usage.length + between.length - (info ? 37 : 39);
+				const overlen = obj.usage.length + between.length - (info ? 37 : 39);
 				if (overlen > 0) between = between.substring(0, between.length - overlen - 2) + "..";
 				// put detailed info behind a command, under what conditions its available
 				let ifo = "";

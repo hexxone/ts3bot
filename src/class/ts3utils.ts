@@ -33,7 +33,7 @@ export default class {
 
 	// returns the clock emoji closest to the given (idle) time
 	static getClockEmoji(timeSpan): string {
-		let a = new Date(timeSpan);
+		const a = new Date(timeSpan);
 		let d = ~~((a.getHours() % 12) * 2 + a.getMinutes() / 30 + 0.5);
 		d += d < 2 ? 24 : 0;
 		return String.fromCharCode(55357, 56655 + (d % 2 ? 23 + d : d) / 2);
@@ -49,33 +49,33 @@ export default class {
 	// Function that actually fixes the [spacer] strings from channel names
 	static fixSpacers(str): string {
 		// get longest row's length
-		let longest = this.longestRow(str);
+		const longest = this.longestRow(str);
 
 		// left spacers will be displayed like normal channels but without Icon in front
 		// the icon will be captured in the following regex and removed.
 		let noLSpacer = String(str).replace(/(.*\[\*{0,1}lspacer[0-9]{0,}\])/g, "");
 
 		// fix right and center spacers
-		let spacers = [...noLSpacer.matchAll(/(.*\[\*{0,1}[c,r]{1}spacer[0-9]{0,}\])(.*)/g)];
-		for (let spacer of spacers) {
+		const spacers = [...noLSpacer.matchAll(/(.*\[\*{0,1}[c,r]{1}spacer[0-9]{0,}\])(.*)/g)];
+		for (const spacer of spacers) {
 			// 0=wohle match, 1=1st capture group 2=2nd capture group etc.
-			let txt = spacer[2].trim();
+			const txt = spacer[2].trim();
 			// get amount of spaces for correct positioning
 			let spaceCnt = longest - txt.length;
 			// if centered spacer, divide by 2
 			if (spacer[1].match("cspacer")) spaceCnt /= 2;
 			// rebuild and replace the old row
 			// ~~ = math.floor after divide
-			let realRow = this.getSpaces(~~spaceCnt) + txt;
+			const realRow = this.getSpaces(~~spaceCnt) + txt;
 			noLSpacer = noLSpacer.replace(spacer[0], realRow);
 		}
 
 		// fix repeating spacers
 		// => *spacer is same as spacer
-		let repeating = [...noLSpacer.matchAll(/(.*\[\*{0,1}spacer[0-9]{0,}\])(.*)/g)];
-		for (let repeat of repeating) {
+		const repeating = [...noLSpacer.matchAll(/(.*\[\*{0,1}spacer[0-9]{0,}\])(.*)/g)];
+		for (const repeat of repeating) {
 			// 0=wohle match, 1=1st capture group 2=2nd capture group etc.
-			let txt = repeat[2].trim();
+			const txt = repeat[2].trim();
 			// rebuild and replace the old row
 			let realRow = txt;
 			while (realRow.length < longest) realRow += txt;
@@ -95,7 +95,7 @@ export default class {
 
 	// fix ip address leak for ts3 bot names
 	static fixNameToTelegram(str): string {
-		let ip = str.match(/([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})\:?([0-9]{1,5})?/);
+		const ip = str.match(/([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}):?([0-9]{1,5})?/);
 		if (ip) {
 			if (ip instanceof Array) {
 				for (let i = 0; i < ip.length; i++) str = str.replace(ip[i], "[IP]");

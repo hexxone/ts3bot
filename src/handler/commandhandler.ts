@@ -14,7 +14,7 @@ export default {
 	// prepares ctx strings from message
 	prepare: function (ctx: MessageCtx, txt: string): void {
 		let cmd = "";
-		let args = txt.includes(" ") ? txt.split(" ") : [txt];
+		const args = txt.includes(" ") ? txt.split(" ") : [txt];
 		// Check if the text starts as command and set it
 		if (txt.startsWith("/")) {
 			// if args, set first - else set text
@@ -31,7 +31,7 @@ export default {
 	cancel: function (ctx: MessageCtx): boolean {
 		ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("menu", ctx.senderMessages)]];
 		if (ctx.sender.menu !== "") {
-			let tmenu = ctx.sender.menu;
+			const tmenu = ctx.sender.menu;
 			ctx.sender.menu = "";
 			ctx.respondChat(ctx.senderMessages.actionCancel + tmenu, ctx.opt);
 			return true;

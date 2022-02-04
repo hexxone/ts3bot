@@ -20,21 +20,21 @@ export default {
 	description: "lang",
 	command: ["/lang"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let kb = [] as any[];
+		const kb = [] as any[];
 		let msg = ctx.isGroup ? ctx.groupMessages.langCurrent : ctx.senderMessages.langCurrent;
 		if (!ctx.isGroup) {
 			kb.push([Utils.getCmdBtn("start", ctx.senderMessages)]);
 			ctx.opt.reply_markup.inline_keyboard = kb;
 		}
 		if (ctx.args.length == 2) {
-			let trylang = ctx.args[1];
-			for (let lang of main.languages) {
+			const trylang = ctx.args[1];
+			for (const lang of main.languages) {
 				if (lang.langCode == trylang || lang.langName == trylang || lang.langFlag == trylang) {
 					// set language
 					if (ctx.isGroup) ctx.groupLinking.language = lang.langCode;
 					else ctx.sender.language = lang.langCode;
 					// set response text
-					let local = Utils.getLanguageMessages(lang.langCode);
+					const local = Utils.getLanguageMessages(lang.langCode);
 					ctx.respondChat(local.langText, ctx.opt);
 					return;
 				}
@@ -47,7 +47,7 @@ export default {
 			ctx.opt.reply_markup.keyboard = kb;
 			ctx.opt.parse_mode = "HTML";
 		}
-		for (let lng of main.languages) {
+		for (const lng of main.languages) {
 			if (lng.langCode == ctx.sender.language) continue;
 			if (ctx.isGroup) kb.push(["/lang " + lng.langFlag]);
 			else

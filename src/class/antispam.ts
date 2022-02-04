@@ -21,10 +21,10 @@ export class AntiSpam {
 	// if the ratio is above max, antispam measures are taken.
 	CheckRegisterSpam(user) {
 		this.register.push({ date: new Date(), usrid: user.id });
-		let last = this.register.filter(function (reg) {
+		const last = this.register.filter(function (reg) {
 			if (reg.usrid == user.id) {
-				let timeDiff = Math.abs(new Date().getTime() - reg.date.getTime());
-				let diffSecs = Math.ceil(timeDiff / 1000);
+				const timeDiff = Math.abs(new Date().getTime() - reg.date.getTime());
+				const diffSecs = Math.ceil(timeDiff / 1000);
 				return diffSecs <= 10;
 			}
 			return false;

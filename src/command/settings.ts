@@ -24,9 +24,9 @@ export default {
 		ctx.opt.reply_markup.one_time_keyboard = true;
 		let msg: string;
 		if (ctx.isGroup) {
-			let gmsgs = ctx.groupMessages;
-			let grb = ctx.groupLinking;
-			let secondLn = ["/showgroup " + !grb.showgroupname];
+			const gmsgs = ctx.groupMessages;
+			const grb = ctx.groupLinking;
+			const secondLn = ["/showgroup " + !grb.showgroupname];
 			msg = "<a href='tg://user?id=" + ctx.sender.id + "'>@</a> " + gmsgs.settings00 + "<code>";
 
 			msg += gmsgs.settings01 + grb.alladmin;
@@ -56,8 +56,8 @@ export default {
 				ctx.opt.reply_markup.selective = true;
 			}
 		} else {
-			let smsgs = ctx.senderMessages;
-			let ssi = ctx.senderSelectedInstance;
+			const smsgs = ctx.senderMessages;
+			const ssi = ctx.senderSelectedInstance;
 			msg = smsgs.settings20 + "<code>";
 			msg += smsgs.settings21 + ssi.name;
 

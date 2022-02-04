@@ -17,14 +17,14 @@ import CommandHandler from "./commandhandler";
 // Telegram message-receive-handler
 
 export default function (self: TS3BotCtx) {
-	let bot = self.bot;
+	const bot = self.bot;
 
 	bot.on("callback_query", (cqCtx) => {
 		const cq = cqCtx.callbackQuery as CallbackQuery.DataCallbackQuery;
 
 		// debug print
 		// console.log('callback_query: ' + JSON.stringify(cq));
-		let msg = cq.message as Message.TextMessage;
+		const msg = cq.message as Message.TextMessage;
 		if (msg === undefined || cq.data === undefined || cqCtx.from === undefined) return;
 
 		self.receivedMessages++;
@@ -37,18 +37,20 @@ export default function (self: TS3BotCtx) {
 		const senderMessages = Utils.getLanguageMessages(sender.language);
 
 		// ctx to work with
-		let ctx = {
+		const ctx = {
 			isReply: true,
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			respondChat: (txt: string, opt: ExtraReplyMessage, noDel: boolean) => {
 				return new Promise((res, rej) => {
-					self.bot.telegram.editMessageText(msg.chat.id, msg.message_id, undefined, txt, opt as any).then((dat) => {
-						res(dat as any);
-					});
+					self.bot.telegram
+						.editMessageText(msg.chat.id, msg.message_id, undefined, txt, opt as any)
+						.then((dat) => res(dat as any))
+						.catch((e) => rej(e));
 				});
 			},
 			msg: msg,
 			text: msg.text,
-			args: new Array<String>(),
+			args: new Array<string>(),
 			chatId: msg.chat.id,
 			sender,
 			senderInstances,
@@ -81,12 +83,12 @@ export default function (self: TS3BotCtx) {
 		if (cq.data) {
 			// execute command
 			if (cq.data.startsWith("c")) {
-				let cid = cq.data.substring(1);
+				const cid = cq.data.substring(1);
 				// cancel command
 				if (!ctx.isGroup && cid == "c") CommandHandler.cancel(ctx);
 				else {
 					// Callback Commands with text args are not possible = no need to prep ctx.
-					let exec = CommandHandler.handle(self, ctx, 1, cid);
+					const exec = CommandHandler.handle(self, ctx, 1, cid);
 					if (!exec) {
 						cqCtx.answerCbQuery(ctx.senderMessages.replyError);
 						return;
@@ -96,10 +98,10 @@ export default function (self: TS3BotCtx) {
 			// special case set language, doesnt need any checks
 			if (cq.data.startsWith("l")) {
 				// prepare fake ctx
-				let flag = cq.data.substring(1);
+				const flag = cq.data.substring(1);
 				CommandHandler.prepare(ctx, "/lang " + flag);
 				// call lang command
-				let cmdo = Utils.getCmdByDesc("lang");
+				const cmdo = Utils.getCmdByDesc("lang");
 				if (cmdo) cmdo.callback(self, ctx);
 			}
 			// execute action
