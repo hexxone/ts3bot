@@ -8,7 +8,7 @@
 
 import FS from "fs";
 import Crypto from "crypto";
-import { parse, stringify, toJSON, fromJSON } from "flatted";
+import { parse, stringify } from "flatted";
 
 const Algorithm = "aes-256-cbc";
 

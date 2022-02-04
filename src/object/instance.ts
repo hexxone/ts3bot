@@ -6,7 +6,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-import { ClientDisconnectEvent, TeamSpeak, TeamSpeakChannel, TeamSpeakClient, TextMessageTargetMode } from "ts3-nodejs-library";
+import { ClientDisconnectEvent, TeamSpeak, TeamSpeakClient, TextMessageTargetMode } from "ts3-nodejs-library";
 
 import { ServerInfo } from "ts3-nodejs-library/lib/types/ResponseTypes";
 import { ClientConnect, ClientMoved, TextMessage } from "ts3-nodejs-library/lib/types/Events";
@@ -14,7 +14,7 @@ import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
 
 import { TS3BotCtx } from "../context";
 
-import Utils, { DefaultOpt } from "../class/utils";
+import Utils from "../class/utils";
 
 import { IUtils } from "./iutils";
 import ts3utils from "../class/ts3utils";
