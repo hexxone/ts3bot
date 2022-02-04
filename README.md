@@ -16,12 +16,46 @@ NOTE: at this point I won't help with any issues regarding setup or usage.
 
 ## Setup
 
-You should know what youre doing...
+.env:
 
-1. `git clone https://github.com/hexxone/ts3bot.git`
-2. `cd ts3bot && cp bot-variables.env .env && nano .env`
-3. edit **bot_token** & **developer_id**, then save & quit
-4. `docker-compose up -d`
+```bash
+BOT_TOKEN=123456:ABCDEFGHIJKKL
+WEBHOOK=false
+WEBHOOK_ADDR=bot.example.com
+WEBHOOK_PORT=80
+CUSTOM_CERT=false
+FILE_PROXY=false
+FILE_PROXY_PORT=8080
+FILE_PROXY_ADDR=files.example.com
+DEVELOPER_ID=12345678
+DEBUG=false
+LANGUAGE=Eng
+MOTD_ID=1
+MOTD_TXT=Hi, thanks for still using the bot!
+```
+
+docker-compose.yml:
+
+```yaml
+version: '2'
+services:
+    node_ts3bot:
+        image: hexxone/telegram-ts3bot
+        container_name: node_ts3bot
+        hostname: node_ts3bot
+        image: debian/latest
+        restart: unless-stopped
+        ports:
+            - 8443:80 # can be removed if not using webhook
+            - 8080:8080 # can be removed if not using fileProxy
+        volumes:
+            - ./data:/app/data # bot settings storage directory
+            - ./.env:/app/.env # all possible environment variables (change BOT_TOKEN !)
+```
+
+then
+
+`docker-compose up -d`
 
 ## i18n
 
