@@ -136,7 +136,7 @@ export default {
 	setServerFirst: " Now please tell me the account details in the following format:\r\n'query_user|query_password'.",
 	linkingNotFound: "Linking doesn't exist.",
 	groupAlreadyLinked: "This group is already linked to a server.",
-	groupLinked: "TS3 server was successfully linked to this group",
+	groupLinked: "TS3 $server$ was successfully linked to this group",
 	invalidLink: "Error: deeplinking key invalid.",
 	startChat: "Hi! This bot can link your TeamSpeak3 Server to one or more Telegram group(s).",
 
