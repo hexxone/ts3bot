@@ -28,7 +28,7 @@ export default {
 			// specific command requested?
 			let ifomsg = cmsgs.commandResult;
 			let resCnt = 0;
-			let none = main.commands.some(function (obj, i) {
+			main.commands.some(function (obj, i) {
 				if (obj.available > CmdAvailable.AdminOnly || (isDev && !ctx.isGroup)) {
 					// build search string from command & language description
 					let desc = cmsgs["cmd_" + obj.description];

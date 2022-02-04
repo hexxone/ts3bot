@@ -1,11 +1,14 @@
-# @TS3Bot
+# [@TS3Bot](https://t.me/TS3Bot)
 
-**This bot can link your TeamSpeak3-server to Telegram-groups for customizable cross-chat & notifications.**
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/hexxone/ts3bot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/hexxone/ts3bot/alerts/)
+
+## This bot may link your TeamSpeak3-server to Telegram-groups for customizable cross-chat & notifications
+
+### Author: [hexx.one](https://hexx.one)
 
 Code is written in TypeScript and deployed using docker-compose.
-_Author: hexxone_
 
-_NOTE: at this point I won't help with any issues regarding setup or usage._
+NOTE: at this point I won't help with any issues regarding setup or usage.
 
 ## Requirements
 
@@ -78,3 +81,29 @@ Here is the general structure:
 - `/commands` will show a list of all _actually available_ commands for the context
 - Easy to add _languages_, _commands_ and response _actions_.
 - `/FAQ`, `/Help`, `/Stats`
+
+### LiveTree example
+
+```text
+Server Name (5 / 32)
+==============================
+         Entry Hall [1]
+    🤖 otherbot
+==============================
+💬 Business
+💬 Retirement home [2]
+    🤐 Sattalit ₍₇₎
+    🔇 SaaS ₍₃₎
+💬 Movie
+💬 Jobcenter
+🔒 TopSecret
+📍 Bottom Secret [1]
+    🤖 TS3Bot
+==============================
+              AFK
+💬 Eat
+💬 Sleep [1]
+    🔇 hexx.one ₍₁₁₎
+==============================
+Changed: 2077-12-24 13:37:42
+```
