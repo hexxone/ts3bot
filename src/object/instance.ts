@@ -81,7 +81,6 @@ export class Instance extends IUtils {
 	connectionState: QConState;
 	connectionErr: string;
 	connectTry: number;
-	connectCallback: () => void;
 
 	constructor(main: TS3BotCtx, id, name) {
 		super();
@@ -100,7 +99,6 @@ export class Instance extends IUtils {
 		this.connectionState = QConState.Disconnected;
 		this.connectionErr = "";
 		this.connectTry = 0;
-		this.connectCallback = () => {};
 
 		// data to be exported when saving
 		this.groups = [];
@@ -213,7 +211,7 @@ export class Instance extends IUtils {
 				// if a channel is set, try to find it & move to it
 				if (this.channelname !== "") {
 					// search all channels for the one with our desired name and get its id
-					let myChannel = this.GetChannelByName(this.channelname);
+					const myChannel = this.GetChannelByName(this.channelname);
 					if (!myChannel) throw "Target channel was not found (case sensitive).";
 					this.myChannel = myChannel;
 					// get channel users
@@ -225,25 +223,25 @@ export class Instance extends IUtils {
 			// ts3 connecting-part succeeded, notify groups / ts3 and start keepalive
 			.then(() => {
 				const uCount = this.GetUserCount(true);
-				let userCntStr = uCount.toString();
-				let botCntStr = (this.users.length - uCount).toString();
-				let botUsr = this.main.me.username;
+				const userCntStr = uCount.toString();
+				const botCntStr = (this.users.length - uCount).toString();
+				const botUsr = this.main.me.username;
 				// send ts3 msg
 				this.SendChannelMessage("Hi! [URL=https://t.me/" + botUsr + "]" + botUsr + "[/URL] is now active.");
 				// send message for each group & language seperately
-				for (let grp of this.groups) {
-					let lnk = Utils.getGroupLinking(grp);
+				for (const grp of this.groups) {
+					const lnk = Utils.getGroupLinking(grp);
 					if (!lnk) continue;
 					// build message
-					let msgs = Utils.getLanguageMessages(lnk.language);
-					let tmpmsg = "<b>" + this.serverinfo.virtualserverName + msgs.botConnected.replace("$users$", userCntStr).replace("$bots$", botCntStr);
+					const msgs = Utils.getLanguageMessages(lnk.language);
+					const tmpmsg = "<b>" + this.serverinfo.virtualserverName + msgs.botConnected.replace("$users$", userCntStr).replace("$bots$", botCntStr);
 					lnk.NotifyTelegram(tmpmsg);
 				}
 				// send message to owner
-				let owner = Utils.getUser({ id: this.id });
-				let msgs = Utils.getLanguageMessages(owner.language);
-				let tmpmsg = "<b>" + this.serverinfo.virtualserverName + msgs.botConnected.replace("$users$", userCntStr).replace("$bots$", botCntStr);
-				let opt = {
+				const owner = Utils.getUser({ id: this.id });
+				const msgs = Utils.getLanguageMessages(owner.language);
+				const tmpmsg = "<b>" + this.serverinfo.virtualserverName + msgs.botConnected.replace("$users$", userCntStr).replace("$bots$", botCntStr);
+				const opt = {
 					parse_mode: "HTML",
 					reply_markup: {
 						inline_keyboard: [[Utils.getCmdBtn("menu", msgs)]],
@@ -278,7 +276,7 @@ export class Instance extends IUtils {
 
 	_onClose() {
 		console.log(this.name + " | Disconnected.");
-		let msgs = Utils.getLanguageMessages(this.owner().language);
+		const msgs = Utils.getLanguageMessages(this.owner().language);
 		this.main.sendNewMessage(this.id, msgs.botDisconnected + this.name);
 		this.connectionErr = "Connection closed by server.";
 		this.Disconnect(this.autoconnect);
@@ -286,27 +284,27 @@ export class Instance extends IUtils {
 
 	_onClientEnterView(data: ClientConnect) {
 		//console.log('Join data: ' + JSON.stringify(data));
-		for (let usr of this.users) if (usr.databaseId === data.client.databaseId) return; // user already connected
+		for (const usr of this.users) if (usr.databaseId === data.client.databaseId) return; // user already connected
 		// check to greet user immediately?
 		this._checkClientGreet(GreetMode.OnConnect, data.client);
 		// add object data
 		this.users.push(data.client);
 		this.SortUsers();
 		// if the client is of type server query, the type will be 1
-		let isbot = data.client.type == 1;
+		const isbot = data.client.type == 1;
 		//console.log(this.name + ' | Join: ',  data)
 		// Notify groups by looping all
-		for (let gid of this.groups) {
+		for (const gid of this.groups) {
 			// get the linking for this group
-			let lnk = Utils.getGroupLinking(gid);
+			const lnk = Utils.getGroupLinking(gid);
 			// dont notify for joins ?
 			if (!lnk.notifyjoin) continue;
 			// ignore query clients in this group ?
 			if (isbot && lnk.ignorebots) continue;
 			// build message
-			let bName = "<b>" + ts3utils.fixNameToTelegram(data.client.nickname) + "</b>";
-			let bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(data.client.databaseId) + "₎ ";
-			let msgs = Utils.getLanguageMessages(lnk.language);
+			const bName = "<b>" + ts3utils.fixNameToTelegram(data.client.nickname) + "</b>";
+			const bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(data.client.databaseId) + "₎ ";
+			const msgs = Utils.getLanguageMessages(lnk.language);
 			// send Message
 			lnk.NotifyTelegram(bName + bFlag + msgs.joinedServer);
 		}
@@ -317,25 +315,25 @@ export class Instance extends IUtils {
 	_onClientLeftView(data: ClientDisconnectEvent) {
 		//console.log('Left data: ' + JSON.stringify(data));
 		for (let i = 0; i < this.users.length; i++) {
-			let usr = this.users[i];
+			const usr = this.users[i];
 			if (usr.databaseId !== data.client?.databaseId) continue;
 			// we wanto to remove this user
 			this.users.splice(i, 1);
 			// if the client is of type server query, the type will be 1
-			let isbot = usr.type == 1;
+			const isbot = usr.type == 1;
 			//console.log(this.name + ' | Left: ' + usr.nickname);
 			// Notify groups by looping all
-			for (let gid of this.groups) {
+			for (const gid of this.groups) {
 				// get the linking for this group
-				let lnk = Utils.getGroupLinking(gid);
+				const lnk = Utils.getGroupLinking(gid);
 				// dont notify for joins ?
 				if (!lnk.notifyjoin) continue;
 				// ignore query clients in this group ?
 				if (isbot && lnk.ignorebots) continue;
 				// build message
-				let bName = "<b>" + ts3utils.fixNameToTelegram(usr.nickname) + "</b>";
-				let bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(usr.databaseId) + "₎ ";
-				let msgs = Utils.getLanguageMessages(lnk.language);
+				const bName = "<b>" + ts3utils.fixNameToTelegram(usr.nickname) + "</b>";
+				const bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(usr.databaseId) + "₎ ";
+				const msgs = Utils.getLanguageMessages(lnk.language);
 				// send messages
 				lnk.NotifyTelegram(bName + bFlag + msgs.leftServer);
 			}
@@ -351,31 +349,32 @@ export class Instance extends IUtils {
 		const isbot = usr.type == 1;
 		const wasInChannel = this.inChannel.some((c) => c.databaseId == usr.databaseId);
 		// notify all groups
-		for (let grp of this.groups) {
-			let lnk = Utils.getGroupLinking(grp);
+		for (const grp of this.groups) {
+			const lnk = Utils.getGroupLinking(grp);
 			// ignore query clients in this group ?
 			if (!lnk || (isbot && lnk.ignorebots)) continue;
 			// build message
-			let msgs = Utils.getLanguageMessages(lnk.language);
-			let bName = "<b>" + ts3utils.fixNameToTelegram(usr.nickname) + "</b>";
-			let bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(usr.databaseId) + "₎ ";
+			const msgs = Utils.getLanguageMessages(lnk.language);
+			const bName = "<b>" + ts3utils.fixNameToTelegram(usr.nickname) + "</b>";
+			const bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(usr.databaseId) + "₎ ";
+			// choose options
+			let chanUsrId = this.myChannel?.cid;
+			let send = "";
 			// notify group
 			switch (lnk.notifymove) {
-				// notify channel
+				// user joined or left our channel
 				case 1:
-					let send = null as any;
-					// user joined our channel
 					if (this.myChannel?.cid === usr.cid) send = msgs.channelJoin;
-					// user left our channel
 					else if (wasInChannel) send = msgs.channelLeave;
-					// actual send
-					if (send) lnk.NotifyTelegram(bName + bFlag + send + " [" + this.GetChannelUser(this.myChannel?.cid || "", lnk.ignorebots).length + "]");
 					break;
 				// notify global
 				case 2:
-					lnk.NotifyTelegram(bName + bFlag + msgs.channelSwitch + " <b>" + data.channel.name + "</b> [" + this.GetChannelUser(data.channel.cid, lnk.ignorebots).length + "]");
+					chanUsrId = data.channel.cid;
+					send = msgs.channelSwitch + " <b>" + data.channel.name + "</b>";
 					break;
 			}
+			// actual send
+			if (send != "") lnk.NotifyTelegram(bName + bFlag + send + " [" + this.GetChannelUser(chanUsrId || "", lnk.ignorebots).length + "]");
 		}
 		// check to add/greet the user if is in our channel
 		if (this.myChannel?.cid === usr.cid) {
@@ -400,8 +399,8 @@ export class Instance extends IUtils {
 		// Notify groups
 		else if (data.targetmode === TextMessageTargetMode.CHANNEL) {
 			// format user
-			let usrName = `<b>${ts3utils.fixNameToTelegram(data.invoker.nickname)}</b>`;
-			let usrFlag = ` ₍${Utils.getNumberSmallASCII(data.invoker.databaseId)}₎ `;
+			const usrName = `<b>${ts3utils.fixNameToTelegram(data.invoker.nickname)}</b>`;
+			const usrFlag = ` ₍${Utils.getNumberSmallASCII(data.invoker.databaseId)}₎ `;
 			// build notification info msg
 			let msg = `<b>${this.serverinfo.virtualserverName}</b> - ${this.myChannel.name}:\r\n`;
 			msg += `${usrName + usrFlag} :<code>  ${ts3utils.fixUrlToTelegram(data.msg)}</code>`;
@@ -457,7 +456,7 @@ export class Instance extends IUtils {
 		} else if (onerror) {
 			this.treeHelper.UpdateAll(true);
 			this.connectionState = QConState.Error;
-			let msgs = Utils.getLanguageMessages(this.owner().language);
+			const msgs = Utils.getLanguageMessages(this.owner().language);
 			this.main.sendNewMessage(this.id, msgs.connectError.replace("$attempts$", this.connectTry.toString()) + this.connectionErr);
 		}
 	}
@@ -469,10 +468,10 @@ export class Instance extends IUtils {
 	// Returns the currently online users grouped by channels as String
 	GetUserString(language, ignorebots, responder: (msg: string) => void) {
 		this.WrapAutoConnect(language, responder, () => {
-			let msgs = Utils.getLanguageMessages(language);
-			let userStruct: { [cid: string]: TeamSpeakClient[] } = {};
+			const msgs = Utils.getLanguageMessages(language);
+			const userStruct: { [cid: string]: TeamSpeakClient[] } = {};
 			// Add users to array grouped by channel
-			for (let usr of this.users) {
+			for (const usr of this.users) {
 				// if this is a query client, ignore him
 				if (usr.type == 1 && ignorebots) continue;
 				// if array not defined, do it
@@ -483,22 +482,22 @@ export class Instance extends IUtils {
 			//console.log(this.name + ' | getting users: ' + JSON.stringify(userStruct));
 			let result = this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserverMaxclients + msgs.userOnline + " <code>";
 			// Loop all channelIds
-			for (let cid of Object.keys(userStruct)) {
+			for (const cid of Object.keys(userStruct)) {
 				// get channel
 				let channel = this.GetChannelById(cid);
 				if (!channel) continue;
 				// Add channelname and users
 				let chres = "\r\n( " + ts3utils.fixSpacer(channel.name) + " ) [" + userStruct[cid].length + "]";
-				for (let user of userStruct[cid]) {
-					let isbot = user.type == 1;
+				for (const user of userStruct[cid]) {
+					const isbot = user.type == 1;
 					if (isbot && ignorebots) continue;
-					let bName = ts3utils.fixNameToTelegram(user.nickname);
-					let bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(user.databaseId) + "₎ ";
+					const bName = ts3utils.fixNameToTelegram(user.nickname);
+					const bFlag = isbot ? " (bot) " : " ₍" + Utils.getNumberSmallASCII(user.databaseId) + "₎ ";
 					chres += "\r\n - " + bName + bFlag;
 				}
 				// channeldepth thingy
 				for (let i = 0; i < this.channeldepth; i++) {
-					let mainCh = this.GetChannelById(channel.pid);
+					const mainCh = this.GetChannelById(channel.pid);
 					if (mainCh === null) break;
 					chres = "\r\n( " + ts3utils.fixSpacer(mainCh.name) + " ) " + chres.replace("\r\n", "\r\n\t");
 					channel = mainCh;
@@ -517,11 +516,11 @@ export class Instance extends IUtils {
 	// callack is function and takes 1 argument: msg string
 	GetSimpleUserString(language: string, ignorebots: boolean, responder: (msg: string) => void) {
 		this.WrapAutoConnect(language, responder, () => {
-			let msgs = Utils.getLanguageMessages(language);
+			const msgs = Utils.getLanguageMessages(language);
 			let result = this.GetUserCount(ignorebots) + " / " + this.serverinfo.virtualserverMaxclients + msgs.userOnline + " <code>";
-			let userStruct = {};
+			const userStruct = {};
 			// Add users to array grouped by channel
-			for (let usr of this.users) {
+			for (const usr of this.users) {
 				// if this is a query client, ignore him
 				if (usr.type == 1 && ignorebots) continue;
 				// Add /Increment user channel count
@@ -529,9 +528,9 @@ export class Instance extends IUtils {
 				userStruct[usr.cid]++;
 			}
 			// Loop all channelIds
-			for (let cid of Object.keys(userStruct)) {
+			for (const cid of Object.keys(userStruct)) {
 				// Add channelname and user count
-				let channel = this.GetChannelById(cid);
+				const channel = this.GetChannelById(cid);
 				result += "\r\n( " + ts3utils.fixSpacer(channel.name) + " ) [" + userStruct[cid] + "]";
 			}
 			responder(result + "</code>");
@@ -579,8 +578,8 @@ export class Instance extends IUtils {
 
 	// send a chatmessage from ts3 to all Telegram groups with the correct channel/chat mode
 	NotifyGroups(message: string) {
-		for (let gid of this.groups) {
-			let gl = Utils.getGroupLinking(gid);
+		for (const gid of this.groups) {
+			const gl = Utils.getGroupLinking(gid);
 			if (!gl.channelchat) continue;
 			gl.NotifyTelegram(message);
 		}
@@ -588,8 +587,8 @@ export class Instance extends IUtils {
 
 	// Checks if the desired groupid is already registered
 	HasGroup(group: number) {
-		let index = this.groups.indexOf(group);
-		let ret = index > -1;
+		const index = this.groups.indexOf(group);
+		const ret = index > -1;
 		return ret;
 	}
 
@@ -601,7 +600,7 @@ export class Instance extends IUtils {
 
 	// Removes the given groupid
 	RemoveGroup(group: number) {
-		let index = this.groups.indexOf(group);
+		const index = this.groups.indexOf(group);
 		if (index > -1) this.groups.splice(index, 1);
 	}
 
@@ -643,7 +642,7 @@ export class Instance extends IUtils {
 	// will check if the server is currently connected.
 	// if not, it will
 	WrapAutoConnect(language: string, responder: (msg: string) => void, connectedCallback: () => void, passCondition = false) {
-		let msgs = Utils.getLanguageMessages(language);
+		const msgs = Utils.getLanguageMessages(language);
 		if (this.connectionState == QConState.Connected || passCondition) {
 			connectedCallback();
 		}

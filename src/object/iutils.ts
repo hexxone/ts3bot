@@ -53,13 +53,13 @@ export class IUtils {
 	GetUserCount(ignorebots: boolean) {
 		let cnt = this.users.length;
 		// subtract query clients
-		if (ignorebots) for (let usr of this.users) if (usr.type == 1) cnt--;
+		if (ignorebots) for (const usr of this.users) if (usr.type == 1) cnt--;
 		return cnt;
 	}
 
 	// find channel object by name
 	GetChannelByName(name): TeamSpeakChannel {
-		for (let chn of this.channels) {
+		for (const chn of this.channels) {
 			if (chn.name == name) return chn;
 		}
 		return null as any;
@@ -67,7 +67,7 @@ export class IUtils {
 
 	// find channel object by channel id
 	GetChannelById(id): TeamSpeakChannel {
-		for (let chn of this.channels) {
+		for (const chn of this.channels) {
 			if (chn.cid == id) return chn;
 		}
 		return null as any;
@@ -75,9 +75,9 @@ export class IUtils {
 
 	// find users by channel id, bots can be ignored
 	GetChannelUser(cid: string, ignorebots): TeamSpeakClient[] {
-		let userArr = [] as TeamSpeakClient[];
+		const userArr = [] as TeamSpeakClient[];
 		// Add users to array grouped by channel
-		for (let usr of this.users) {
+		for (const usr of this.users) {
 			// if wrong channel, ignore
 			if (usr.cid != cid) continue;
 			// if this is a query client, ignore him
@@ -90,8 +90,8 @@ export class IUtils {
 
 	// returns all Child-channels of a given channel-id.
 	GetChannelsBymain(id): TeamSpeakChannel[] {
-		let res = [] as TeamSpeakChannel[];
-		for (let chn of this.channels) {
+		const res = [] as TeamSpeakChannel[];
+		for (const chn of this.channels) {
 			if (chn.pid == id) res.push(chn);
 		}
 		return res;
@@ -100,8 +100,8 @@ export class IUtils {
 	// returns if there are any users in the channel tree below
 	GetAnyTreeUsers(cid: string): boolean {
 		if (this.GetChannelUser(cid, false).length > 0) return true;
-		let chns = this.GetChannelsBymain(cid);
-		for (let chn of chns) {
+		const chns = this.GetChannelsBymain(cid);
+		for (const chn of chns) {
 			if (this.GetAnyTreeUsers(chn.cid)) return true;
 		}
 		return false;

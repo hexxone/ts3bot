@@ -22,9 +22,9 @@ export default {
 	command: ["/setchanneldepth"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		Utils.fixRemoveKeyboard(main, ctx);
-		let usage = ctx.senderMessages.usage + this.usage;
+		const usage = ctx.senderMessages.usage + this.usage;
 		if (ctx.args.length == 2 && Utils.isInt(ctx.args[1])) {
-			let arg = parseInt(ctx.args[1]);
+			const arg = parseInt(ctx.args[1]);
 			if (arg < 0 || arg > 5) ctx.respondChat(usage, ctx.opt);
 			else {
 				ctx.senderSelectedInstance.channeldepth = arg;

@@ -21,7 +21,7 @@ export default {
 	command: ["/users"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		ctx.opt.parse_mode = "HTML";
-		let showBots = ctx.args.length == 2 && ctx.args[1] == "-a";
+		const showBots = ctx.args.length == 2 && ctx.args[1] == "-a";
 		const responder = (msg: string) => ctx.respondChat(msg, ctx.opt);
 		if (ctx.isGroup) {
 			ctx.groupLinking.instance.GetUserString(ctx.groupLinking.language, !showBots && ctx.groupLinking.ignorebots, responder);

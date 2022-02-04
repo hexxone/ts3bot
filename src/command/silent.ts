@@ -20,8 +20,8 @@ export default {
 	description: "silent",
 	command: ["/silent"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let usage = ctx.groupMessages.usage + this.usage;
-		let setmsg = ctx.groupMessages.silentMode;
+		const usage = ctx.groupMessages.usage + this.usage;
+		const setmsg = ctx.groupMessages.silentMode;
 		if (ctx.args.length == 2) {
 			if (Utils.isYes(ctx.args[1])) {
 				ctx.groupLinking.silent = true;

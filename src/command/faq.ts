@@ -20,8 +20,8 @@ export default {
 	description: "faq",
 	command: ["/faq"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let msgs = ctx.isGroup && ctx.groupLinking !== null ? ctx.groupMessages : ctx.senderMessages;
-		let txtt = msgs.faqText;
+		const msgs = ctx.isGroup && ctx.groupLinking !== null ? ctx.groupMessages : ctx.senderMessages;
+		const txtt = msgs.faqText;
 		ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("help", msgs)]];
 		ctx.respondChat(txtt, ctx.opt);
 	},

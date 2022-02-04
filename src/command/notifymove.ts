@@ -20,8 +20,8 @@ export default {
 	description: "notifymove",
 	command: ["/notifymove"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let usage = "Use: /notifymove [global|channel|false]";
-		let msgs = ctx.senderMessages;
+		const usage = "Use: /notifymove [global|channel|false]";
+		const msgs = ctx.senderMessages;
 		if (ctx.isGroup) {
 			if (ctx.groupLinking !== null) {
 				if (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking.alladmin) {
@@ -47,7 +47,7 @@ export default {
 								ctx.respondChat(usage, ctx.opt);
 								return;
 						}
-						let msg = ctx.groupMessages.setMoveNotifications + Utils.nmToStr(ctx.groupMessages, ctx.groupLinking.notifymove);
+						const msg = ctx.groupMessages.setMoveNotifications + Utils.nmToStr(ctx.groupMessages, ctx.groupLinking.notifymove);
 						ctx.respondChat(msg, ctx.opt);
 					} else ctx.respondChat(usage, ctx.opt);
 				} else ctx.respondChat(msgs.notAllowed, ctx.opt);

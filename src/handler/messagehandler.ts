@@ -20,20 +20,20 @@ const REPLY_IN_GROUPS = false;
 
 export default function (self: TS3BotCtx) {
 	self.receivedMessages++;
-	let bot = self.bot;
+	const bot = self.bot;
 
 	// Some TG user joined a group
 	bot.on("new_chat_members", (tgCtx) => {
 		if (tgCtx.message.chat.type == "private") return;
 		// group connection
-		let groupBinding = Utils.getGroupLinking(tgCtx.message.chat.id);
+		const groupBinding = Utils.getGroupLinking(tgCtx.message.chat.id);
 		if (groupBinding == null) return;
 		// group messages
-		let groupMessages = Utils.getLanguageMessages(groupBinding.language);
-		for (var usr of tgCtx.message.new_chat_members) {
+		const groupMessages = Utils.getLanguageMessages(groupBinding.language);
+		for (const usr of tgCtx.message.new_chat_members) {
 			// add all new users
-			let newuser = Utils.getUser(usr);
-			let nuname = Utils.tryNameClickable(newuser);
+			const newuser = Utils.getUser(usr);
+			const nuname = Utils.tryNameClickable(newuser);
 			groupBinding.NotifyTS3(tgCtx.message.chat.title, nuname + groupMessages.groupJoin);
 			groupBinding.CheckAddUser(newuser);
 		}
@@ -43,7 +43,7 @@ export default function (self: TS3BotCtx) {
 	bot.on("left_chat_member", (tgCtx) => {
 		if (tgCtx.message.chat.type == "private") return;
 		// group connection
-		let groupBinding = Utils.getGroupLinking(tgCtx.message.chat.id);
+		const groupBinding = Utils.getGroupLinking(tgCtx.message.chat.id);
 		if (groupBinding == null) return;
 		// the bot itself was removed from the group?
 		if (tgCtx.message.left_chat_member.id == self.me.id) {
@@ -52,10 +52,10 @@ export default function (self: TS3BotCtx) {
 			return;
 		}
 		// group messages
-		let groupMessages = Utils.getLanguageMessages(groupBinding.language);
+		const groupMessages = Utils.getLanguageMessages(groupBinding.language);
 		// remove user from mapping
-		let leftuser = Utils.getUser(tgCtx.message.left_chat_member);
-		let luname = Utils.tryNameClickable(leftuser);
+		const leftuser = Utils.getUser(tgCtx.message.left_chat_member);
+		const luname = Utils.tryNameClickable(leftuser);
 		groupBinding.NotifyTS3(tgCtx.message.chat.title, luname + groupMessages.groupLeave);
 		groupBinding.RemoveUser(leftuser);
 		return;
@@ -79,10 +79,10 @@ export default function (self: TS3BotCtx) {
 
 		// someone shared a file?
 		if (self.settings.useFileProxy && groupLinking.sharemedia) {
-			let mft = Utils.getMsgFileType(msg);
+			const mft = Utils.getMsgFileType(msg);
 			if (mft !== null) {
 				// inform proxy
-				let proxiedFileUrl = self.fileProxyServer.getURL(msg, mft);
+				const proxiedFileUrl = self.fileProxyServer.getURL(msg, mft);
 				console.log("Proxy URL: " + proxiedFileUrl);
 				// make Telegram user clickable & send ts3 notification
 				groupLinking.NotifyTS3(title, Utils.tryNameClickable(sender) + " (" + mft + "): " + Utils.fixUrlToTS3(proxiedFileUrl));
@@ -105,17 +105,18 @@ export default function (self: TS3BotCtx) {
 		// Get user language messages
 		const senderMessages = Utils.getLanguageMessages(sender.language);
 
-		let ctx = {
+		const ctx = {
 			respondChat: (txt: string, opt: ExtraReplyMessage, noDel: boolean) => {
-				return new Promise((res, rej) => {
-					self.sendNewMessage(msg.chat.id, txt, opt, noDel).then((dat) => {
-						res(dat as any);
-					});
-				});
+				return new Promise((res, rej) =>
+					self
+						.sendNewMessage(msg.chat.id, txt, opt, noDel)
+						.then((dat) => res(dat as any))
+						.catch((e) => rej(e))
+				);
 			},
 			msg: msg,
 			text: msg.text,
-			args: new Array<String>(),
+			args: new Array<string>(),
 			chatId: msg.chat.id,
 			sender,
 			senderInstances,
@@ -155,7 +156,7 @@ export default function (self: TS3BotCtx) {
 			// get messages for group language
 			ctx.groupMessages = Utils.getLanguageMessages(ctx.groupLinking.language);
 			// make Telegram user clickable
-			let tsname = Utils.tryNameClickable(ctx.sender);
+			const tsname = Utils.tryNameClickable(ctx.sender);
 
 			// someone sent a message intended for ts3?
 			if (msg.text && msg.text.substring(0, 1) !== "/") {

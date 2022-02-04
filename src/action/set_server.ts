@@ -15,10 +15,10 @@ export default {
 	id: 9,
 	action: ["set_server", "set_server_first"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let msgs = ctx.senderMessages;
+		const msgs = ctx.senderMessages;
 		if (ctx.senderSelectedInstance != null) {
 			if (ctx.args.length == 1 && ctx.args[0].includes("|")) {
-				let splits = ctx.args[0].split("|");
+				const splits = ctx.args[0].split("|");
 				if (splits.length == 3) {
 					ctx.senderSelectedInstance.addr = splits[0];
 					// check for number && port
@@ -33,8 +33,8 @@ export default {
 							ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("cancel", ctx.senderMessages)]];
 						} else {
 							ctx.sender.menu = "";
-							let kb = [] as any[];
-							let conSt = ctx.senderSelectedInstance.connectionState;
+							const kb = [] as any[];
+							const conSt = ctx.senderSelectedInstance.connectionState;
 							if (conSt == QConState.Connected) kb.push(Utils.getCmdBtn("reconnect", msgs));
 							else if (conSt != QConState.Connecting) kb.push(Utils.getCmdBtn("connect", msgs));
 							ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("menu", msgs)], kb];

@@ -21,7 +21,7 @@ export default {
 	command: ["/notifyjoin"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.groupLinking.instance.id == ctx.sender.id || ctx.groupLinking.alladmin) {
-			let usage = ctx.groupMessages.usage + this.usage;
+			const usage = ctx.groupMessages.usage + this.usage;
 			if (ctx.args.length == 2) {
 				let opt = "";
 				if (Utils.isYes(ctx.args[1])) {
