@@ -21,7 +21,6 @@ export default {
 		ctx.opt.parse_mode = "HTML";
 		if (ctx.isGroup) {
 			ctx.groupLinking.instance.GetSimpleUserString(ctx.groupLinking.language, ctx.groupLinking.ignorebots, (res) => {
-				let mymsg = "<code>" + res + "</code>";
 				ctx.respondChat(res, ctx.opt);
 			});
 		} else {

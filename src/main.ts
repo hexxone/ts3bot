@@ -24,7 +24,8 @@
     @TODO-LIST
     - catch all possible edit & delte message handlers?
 
-	- greet mode
+	- fix TOS <code>
+	- fix link <ts3 server> -> real name
 	~ catch send/(edit)/delete telegram permission error -> unlink
 	~ test everything
 */
