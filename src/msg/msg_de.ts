@@ -135,7 +135,7 @@ export default {
 	setServerFirst: " Als nächstes bitte die TS3 Query Account Daten in folgenden Format angeben:\r\n'query_user|query_password'.",
 	linkingNotFound: "Diese Verlinkung existiert nicht.",
 	groupAlreadyLinked: "Diese Gruppe ist bereits mit einem Server verlinkt.",
-	groupLinked: "TS3 Server wurde erfolgreich mit der Gruppe verlinkt",
+	groupLinked: "TS3 $server$ wurde erfolgreich mit der Gruppe verlinkt",
 	invalidLink: "Fehler: Ungültiger Deeplink-Schlüssel.",
 	startChat: "Hi! Dieser Bot verbindet deinen TeamSpeak3 Server mit Telegram Gruppen.",
 
