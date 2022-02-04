@@ -12,6 +12,7 @@ import { MessageCtx, TS3BotCtx } from "../context";
 
 import Utils from "../class/utils";
 import { GroupLinking } from "../object/grouplinking";
+import { QConState } from "../object/instance";
 
 export default {
 	id: 134,
@@ -37,8 +38,11 @@ export default {
 					// set groupid and add to linkings
 					inst.Link(ctx.chatId);
 					main.linkings.push(inst);
+					// get server name if connected
+					const sName = inst.instance.connectionState === QConState.Connected ? `<code>${inst.instance.serverinfo.virtualserverName}</code>` : "Server";
+					const gMsg = msgs.groupLinked.replace("$server$", sName) + ".";
 					// Notify
-					ctx.respondChat(msgs.groupLinked + ".", ctx.opt).then((msg) => {
+					ctx.respondChat(gMsg + ".", ctx.opt).then((msg) => {
 						// add menu for user
 						ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("menu", msgs)]];
 						let txt = (ctx.msg.chat as Chat.TitleChat).title;
