@@ -84,12 +84,12 @@ export default {
 			if (obj.hidden) return;
 			let isAvailable = true;
 			if (ctx.isGroup && obj.available > CmdAvailable.SingleChat) {
-				if (obj.groupperm) isAvailable = isAvailable && hasAdmin;
+				if (obj.groupperm) isAvailable = hasAdmin;
 				if (obj.needslinking) isAvailable = isAvailable && hasLinking;
 			} else if (!ctx.isGroup) {
-				if (obj.available === CmdAvailable.AdminOnly) isAvailable = isAvailable && isDev;
+				if (obj.available === CmdAvailable.AdminOnly) isAvailable = isDev;
 				else if (obj.available === CmdAvailable.SingleChat || obj.available === CmdAvailable.All) {
-					if (obj.needsselected) isAvailable = isAvailable && hasSelected;
+					if (obj.needsselected) isAvailable = hasSelected;
 				} else isAvailable = false;
 			} else isAvailable = false;
 
