@@ -31,6 +31,8 @@ export default {
 	needsselected: false, // the command requires the sender to have an instance selected (available 1|3)
 	usage: "/sample", // command usage (including arguments)
 	description: "sample", // language bundle description has to be unique aswell to be found by the inline keyboard
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		// This code will be called when the specified command is run and the required conditions are met.
 		// fyi: The following arguments will also be used when calling an 'action'

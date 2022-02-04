@@ -60,7 +60,7 @@ import Loader from "./class/loader";
 import Configure from "./config";
 import { User } from "./object/user";
 
-let l = "+-------------------------------------------------+";
+const l = "+-------------------------------------------------+";
 console.log(l);
 console.log("|        TS3Bot Copyright (c) 2022 hexxone        |");
 console.log("|       This bot comes without ANY WARRANTY       |");
@@ -83,6 +83,7 @@ console.log("Running from directory: " + __dirname);
 // load config into ctx
 const settings = Configure();
 
+/* eslint-disable */
 const customCtx = {
 	startDate: new Date(),
 	actionsPath: Path.join(__dirname, "action"),

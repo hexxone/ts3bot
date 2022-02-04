@@ -20,9 +20,9 @@ export default {
 	command: ["/stats"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		ctx.opt.parse_mode = "HTML";
-		let s = ctx.isGroup && ctx.groupLinking ? ctx.groupMessages : ctx.senderMessages;
+		const s = ctx.isGroup && ctx.groupLinking ? ctx.groupMessages : ctx.senderMessages;
 
-		let msg = "Stats:<code>" + Utils.getStats(s) + "</code>";
+		const msg = "Stats:<code>" + Utils.getStats(s) + "</code>";
 		if (!ctx.isGroup) ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("start", s)]];
 		ctx.respondChat(msg, ctx.opt);
 	},

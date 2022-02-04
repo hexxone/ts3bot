@@ -18,7 +18,7 @@ export default {
 	description: "tos",
 	command: ["/tos"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
-		let agree = "\r\n\r\n" + ctx.senderMessages.tosAgree.replace("$tos_string$", ctx.senderMessages.tosString);
+		const agree = "\r\n\r\n" + ctx.senderMessages.tosAgree.replace("$tos_string$", ctx.senderMessages.tosString);
 
 		ctx.respondChat(ctx.senderMessages.tosText + (ctx.sender.agreement ? "" : agree), ctx.opt);
 

@@ -22,7 +22,7 @@ export default {
 	command: ["/greetmode"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		const msgs = ctx.senderMessages;
-		let usage = msgs.usage + this.usage;
+		const usage = msgs.usage + this.usage;
 		if (ctx.args.length >= 2) {
 			let opt = "";
 			if (Utils.isNo(ctx.args[1])) {

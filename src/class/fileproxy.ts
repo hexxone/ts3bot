@@ -41,9 +41,9 @@ export class FileProxy {
 		this.port = port;
 
 		http.createServer((request, response) => {
-			let params = this.getParams(request);
-			let s_id = params["sid"] || null;
-			let file_id = this.Parent.fileMappings[s_id] ? this.Parent.fileMappings[s_id] || null : null;
+			const params = this.getParams(request);
+			const s_id = params["sid"] || null;
+			const file_id = this.Parent.fileMappings[s_id] ? this.Parent.fileMappings[s_id] || null : null;
 			if (s_id === null || file_id === null) {
 				console.log("fileproxy Error: sid not given: " + JSON.stringify(request));
 				response.write("No sid.");
@@ -53,14 +53,14 @@ export class FileProxy {
 				this.bot.telegram
 					.getFile(file_id)
 					.then((lnk) => {
-						let lpath = "https://api.telegram.org/file/bot" + this.Parent.settings.telegram_bot_token + "/" + lnk.file_path;
-						let options = {
+						const lpath = "https://api.telegram.org/file/bot" + this.Parent.settings.telegram_bot_token + "/" + lnk.file_path;
+						const options = {
 							method: "GET",
 							host: url.parse(lpath).host,
 							port: 80,
 							path: url.parse(lpath).pathname,
 						};
-						let proxy_request = http.request(options, (proxy_response) => {
+						const proxy_request = http.request(options, (proxy_response) => {
 							proxy_response.on("data", (chunk) => {
 								response.write(chunk, "binary");
 								//console.log('data: ' + JSON.stringify(chunk));
@@ -93,7 +93,7 @@ export class FileProxy {
 
 	// splits url params
 	getParams(req) {
-		let q = req.url.split("?"),
+		const q = req.url.split("?"),
 			result = {};
 		if (q.length >= 2) {
 			q[1].split("&").forEach((item) => {
@@ -113,12 +113,12 @@ export class FileProxy {
 		if (filetype == "photo") {
 			//console.log(msg[filetype]);
 			let photo;
-			for (let phot of msg[filetype]) {
+			for (const phot of msg[filetype]) {
 				if (!photo || photo.file_size < phot.file_size) photo = phot;
 			}
 			fa = photo.file_id;
 		} else fa = msg[filetype].file_id;
-		let sid = nanoid();
+		const sid = nanoid();
 		this.Parent.fileMappings[sid] = fa;
 		return "http://" + this.address + ":" + this.port + "/?sid=" + sid;
 	}

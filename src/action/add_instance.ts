@@ -17,7 +17,7 @@ export default {
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		if (ctx.args.length == 1 && Utils.testName(ctx.args[0])) {
 			if (Utils.getArrayObjectByName(ctx.senderInstances, ctx.args[0]) == null) {
-				let newInst = new Instance(main, ctx.sender.id, ctx.args[0]);
+				const newInst = new Instance(main, ctx.sender.id, ctx.args[0]);
 				main.instances.push(newInst);
 				ctx.sender.selected = ctx.args[0];
 				ctx.sender.menu = "set_server_first";

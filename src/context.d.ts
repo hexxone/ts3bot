@@ -1,8 +1,6 @@
 import { Telegraf } from "telegraf";
-import { Message, User, UserFromGetMe } from "typegram";
+import { Message, UserFromGetMe } from "typegram";
 import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
-
-import { TextMessage } from "ts3-nodejs-library/lib/types/Events";
 
 import * as UHelpr from "./object/user";
 import { GroupLinking } from "./object/grouplinking";

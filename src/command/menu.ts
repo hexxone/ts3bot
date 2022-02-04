@@ -1,6 +1,5 @@
 "use strict";
 
-import { QConState, Instance } from "../object/instance";
 //
 // Copyright (c) 2022 hexxone All rights reserved.
 // Licensed under the GNU GENERAL PUBLIC LICENSE.
@@ -9,6 +8,7 @@ import { QConState, Instance } from "../object/instance";
 
 import { MessageCtx, TS3BotCtx } from "../context";
 
+import { QConState, Instance } from "../object/instance";
 import Utils from "../class/utils";
 
 export default {
@@ -25,14 +25,14 @@ export default {
 		let msgs = ctx.senderMessages;
 		let msg = msgs.menu00 + "<code>";
 		let ins!: Instance;
-		let kbarr = [] as any[];
+		const kbarr = [] as any[];
 		ctx.opt.reply_markup.remove_keyboard = true;
 		if (ctx.isGroup) {
 			// group has linked server
 			if (ctx.groupLinking) {
 				msgs = ctx.groupMessages;
 				ins = ctx.groupLinking.instance;
-				let iusr = Utils.getUser({ id: ins.id });
+				const iusr = Utils.getUser({ id: ins.id });
 				// build message
 				msg = msgs.menu00 + "<code>" + msgs.menu01 + "\r\n" + msgs.langCurrent + msgs.info01 + "</code><a href='tg://user?id=" + ins.id + "'>" + iusr.GetName() + "</a><code>";
 			} else {
@@ -57,7 +57,7 @@ export default {
 			}
 		}
 		// 'connected' command array
-		let conArr = [] as any[];
+		const conArr = [] as any[];
 		// instance?
 		if (ins) {
 			msg += "\r\n</code>--- --- --- --- --- --- --- ---<code>";
@@ -80,6 +80,7 @@ export default {
 				switch (ins.connectionState) {
 					case QConState.Connected:
 						conArr.push(Utils.getCmdBtn("reconnect", msgs));
+					// eslint-disable-next-line no-fallthrough
 					case QConState.Connecting:
 						conArr.push(Utils.getCmdBtn("disconnect", msgs));
 						break;

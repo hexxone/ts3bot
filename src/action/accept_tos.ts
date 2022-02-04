@@ -15,7 +15,7 @@ export default {
 	action: ["accept_tos"],
 	callback: function (main: TS3BotCtx, ctx: MessageCtx) {
 		ctx.sender.menu = "";
-		let msgs = ctx.senderMessages;
+		const msgs = ctx.senderMessages;
 		if (ctx.text == msgs.tosString) {
 			ctx.sender.agreement = true;
 			ctx.opt.reply_markup.inline_keyboard = [[Utils.getCmdBtn("addServer", msgs)]];
